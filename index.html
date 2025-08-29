@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Odd Heroes - Select Your Hero</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #000;
+      font-family: 'Share Tech Mono', monospace;
+      color: #0f0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      user-select: none;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #0f0;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 220px);
+      grid-template-rows: repeat(6, 90px); /* Increased to fit new hero */
+      gap: 20px;
+    }
+
+    .hero-tile {
+      background-color: #003300;
+      border: 2px solid #0f0;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+    }
+
+    .hero-tile:hover {
+      background-color: #005500;
+      box-shadow: 0 0 15px #0f0, 0 0 30px #0f0;
+    }
+
+    .hero-tile.selected {
+      background-color: #00ff00;
+      color: #000;
+      box-shadow: 0 0 25px #00ff00, 0 0 40px #00ff00;
+      font-weight: bold;
+    }
+
+    .hero-icon {
+      font-size: 2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    #selected-hero {
+      margin-top: 2rem;
+      font-size: 1.8rem;
+      text-shadow: 0 0 10px #0f0;
+      min-height: 2.5rem;
+    }
+
+    #start-button {
+      margin-top: 1rem;
+      padding: 0.8rem 2rem;
+      font-size: 1.5rem;
+      background-color: #0f0;
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #0f0;
+      display: none;
+      transition: background-color 0.3s ease;
+    }
+
+    #start-button:hover {
+      background-color: #00ff00;
+      box-shadow: 0 0 20px #00ff00;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Pick Your Odd Hero</h1>
+
+  <div class="grid-container" id="hero-list">
+    <div class="hero-tile"><div class="hero-icon">🛡️</div>Warrior</div>
+    <div class="hero-tile"><div class="hero-icon">🧙‍♂️</div>Wizard</div>
+    <div class="hero-tile"><div class="hero-icon">🔫</div>Gun-slinger</div>
+    <div class="hero-tile"><div class="hero-icon">🦠</div>Germ</div>
+    <div class="hero-tile"><div class="hero-icon">🦶</div>Big-Foot</div>
+    <div class="hero-tile"><div class="hero-icon">🏹</div>Tracker</div>
+    <div class="hero-tile"><div class="hero-icon">🦎</div>Chameleon</div>
+    <div class="hero-tile"><div class="hero-icon">⚔️</div>Viking</div>
+    <div class="hero-tile"><div class="hero-icon">🐹</div>Mole</div>
+    <div class="hero-tile"><div class="hero-icon">🧜‍♂️</div>Merfolk</div>
+    <div class="hero-tile"><div class="hero-icon">🦖</div>T-Rex</div>
+  </div>
+
+  <div id="selected-hero"></div>
+
+  <button id="start-button">Start Game</button>
+
+  <script>
+    const heroList = document.getElementById('hero-list');
+    const selectedHeroDiv = document.getElementById('selected-hero');
+    const startButton = document.getElementById('start-button');
+    let selectedHero = null;
+
+    heroList.addEventListener('click', (e) => {
+      const tile = e.target.closest('.hero-tile');
+      if (tile) {
+        [...heroList.children].forEach(t => t.classList.remove('selected'));
+        tile.classList.add('selected');
+        selectedHero = tile.textContent.trim();
+        selectedHeroDiv.textContent = `You selected: ${selectedHero}`;
+        startButton.style.display = 'inline-block';
+      }
+    });
+
+    startButton.addEventListener('click', () => {
+      alert(`Starting game with ${selectedHero}!`);
+      // Hook this up to your game logic later
+    });
+  </script>
+
+</body>
+</html>
