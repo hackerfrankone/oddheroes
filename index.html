@@ -74,7 +74,7 @@
 
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      grid-template-columns: repeat(3, 1fr); /* Exactly 3 columns */
       gap: 15px;
       padding: 10px;
       background-color: #001100;
@@ -185,6 +185,10 @@
         font-size: 1.1rem;
         padding: 0.6rem 1.5rem;
       }
+
+      .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* Fallback to 2 columns on smaller screens */
+      }
     }
   </style>
 </head>
@@ -198,6 +202,7 @@
       <div class="hero-tile"><div class="hero-icon">🧜‍♂️</div>Merfolk</div>
       <div class="hero-tile"><div class="hero-icon">🦖</div>Dinosaur</div>
       <div class="hero-tile"><div class="hero-icon">🐉</div>Dragon</div>
+      <div class="hero-tile"><div class="hero-icon">👻</div>Ghost</div>
     </div>
   </div>
 
@@ -209,14 +214,22 @@
       <div class="hero-tile"><div class="hero-icon">🔫</div>Gun-slinger</div>
       <div class="hero-tile"><div class="hero-icon">🏹</div>Tracker</div>
       <div class="hero-tile"><div class="hero-icon">⚔️</div>Viking</div>
+      <div class="hero-tile"><div class="hero-icon">🧛</div>Vampire</div>
+      <div class="hero-tile"><div class="hero-icon">🐺</div>Werewolf</div>
     </div>
   </div>
 
   <div class="category-container">
-    <div class="category-title" id="animals-title">Animals</div>
-    <div class="grid-container" id="animals-list">
+    <div class="category-title" id="creatures-title">Creatures</div>
+    <div class="grid-container" id="creatures-list">
       <div class="hero-tile"><div class="hero-icon">🦎</div>Chameleon</div>
       <div class="hero-tile"><div class="hero-icon">🐹</div>Mole</div>
+    </div>
+  </div>
+
+  <div class="category-container">
+    <div class="category-title" id="uniques-title">Uniques</div>
+    <div class="grid-container" id="uniques-list">
       <div class="hero-tile"><div class="hero-icon">🦠</div>Germ</div>
     </div>
   </div>
@@ -235,13 +248,23 @@
         list: document.getElementById('humans-list')
       },
       {
-        title: document.getElementById('animals-title'),
-        list: document.getElementById('animals-list')
+        title: document.getElementById('creatures-title'),
+        list: document.getElementById('creatures-list')
+      },
+      {
+        title: document.getElementById('uniques-title'),
+        list: document.getElementById('uniques-list')
       }
     ];
     const selectedHeroDiv = document.getElementById('selected-hero');
     const startButton = document.getElementById('start-button');
     let selectedHero = null;
+
+    // Ensure all categories are closed by default
+    categories.forEach(category => {
+      category.list.classList.remove('expanded');
+      category.title.classList.remove('expanded');
+    });
 
     // Category toggle functionality
     categories.forEach(category => {
