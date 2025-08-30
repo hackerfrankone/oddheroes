@@ -11,7 +11,7 @@
     html, body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
+      overflow: auto;
       background-color: #000;
       font-family: 'Share Tech Mono', monospace;
       color: #0f0;
@@ -19,21 +19,38 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       user-select: none;
     }
 
     h1 {
-      font-size: 3rem;
+      font-size: 2.5rem;
       margin-bottom: 1rem;
       text-shadow: 0 0 10px #0f0;
+      text-align: center;
+    }
+
+    .category-container {
+      width: 90%;
+      max-width: 500px;
+      margin-bottom: 2rem;
+    }
+
+    .category-title {
+      font-size: 1.8rem;
+      margin: 1.5rem 0 0.5rem;
+      text-shadow: 0 0 8px #0f0;
+      text-align: left;
     }
 
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(2, 220px);
-      grid-template-rows: repeat(6, 90px); /* Increased to fit new hero */
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px;
+      padding: 10px;
+      background-color: #001100;
+      border-radius: 8px;
+      border: 1px solid #0f0;
     }
 
     .hero-tile {
@@ -41,7 +58,7 @@
       border: 2px solid #0f0;
       border-radius: 8px;
       text-align: center;
-      font-size: 1.2rem;
+      font-size: 1rem;
       cursor: pointer;
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
       display: flex;
@@ -49,6 +66,7 @@
       justify-content: center;
       align-items: center;
       padding: 0.5rem;
+      min-height: 80px;
     }
 
     .hero-tile:hover {
@@ -64,21 +82,22 @@
     }
 
     .hero-icon {
-      font-size: 2rem;
+      font-size: 1.8rem;
       margin-bottom: 0.3rem;
     }
 
     #selected-hero {
-      margin-top: 2rem;
-      font-size: 1.8rem;
+      margin-top: 1.5rem;
+      font-size: 1.5rem;
       text-shadow: 0 0 10px #0f0;
-      min-height: 2.5rem;
+      min-height: 2rem;
+      text-align: center;
     }
 
     #start-button {
-      margin-top: 1rem;
+      margin: 1.5rem 0;
       padding: 0.8rem 2rem;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       background-color: #0f0;
       border: none;
       border-radius: 8px;
@@ -94,45 +113,93 @@
       background-color: #00ff00;
       box-shadow: 0 0 20px #00ff00;
     }
+
+    @media (max-width: 400px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .category-title {
+        font-size: 1.5rem;
+      }
+
+      .hero-tile {
+        font-size: 0.9rem;
+        min-height: 70px;
+      }
+
+      .hero-icon {
+        font-size: 1.5rem;
+      }
+
+      #selected-hero {
+        font-size: 1.2rem;
+      }
+
+      #start-button {
+        font-size: 1.1rem;
+        padding: 0.6rem 1.5rem;
+      }
+    }
   </style>
 </head>
 <body>
-
   <h1>Pick Your Odd Hero</h1>
 
-  <div class="grid-container" id="hero-list">
-    <div class="hero-tile"><div class="hero-icon">🛡️</div>Warrior</div>
-    <div class="hero-tile"><div class="hero-icon">🧙‍♂️</div>Wizard</div>
-    <div class="hero-tile"><div class="hero-icon">🔫</div>Gun-slinger</div>
-    <div class="hero-tile"><div class="hero-icon">🦠</div>Germ</div>
-    <div class="hero-tile"><div class="hero-icon">🦶</div>Big-Foot</div>
-    <div class="hero-tile"><div class="hero-icon">🏹</div>Tracker</div>
-    <div class="hero-tile"><div class="hero-icon">🦎</div>Chameleon</div>
-    <div class="hero-tile"><div class="hero-icon">⚔️</div>Viking</div>
-    <div class="hero-tile"><div class="hero-icon">🐹</div>Mole</div>
-    <div class="hero-tile"><div class="hero-icon">🧜‍♂️</div>Merfolk</div>
-    <div class="hero-tile"><div class="hero-icon">🦖</div>T-Rex</div>
+  <div class="category-container">
+    <div class="category-title">Legends</div>
+    <div class="grid-container" id="legends-list">
+      <div class="hero-tile"><div class="hero-icon">🦶</div>Big-Foot</div>
+      <div class="hero-tile"><div class="hero-icon">🧜‍♂️</div>Merfolk</div>
+    </div>
+  </div>
+
+  <div class="category-container">
+    <div class="category-title">Humans</div>
+    <div class="grid-container" id="humans-list">
+      <div class="hero-tile"><div class="hero-icon">🛡️</div>Warrior</div>
+      <div class="hero-tile"><div class="hero-icon">🧙‍♂️</div>Wizard</div>
+      <div class="hero-tile"><div class="hero-icon">🔫</div>Gun-slinger</div>
+      <div class="hero-tile"><div class="hero-icon">🏹</div>Tracker</div>
+      <div class="hero-tile"><div class="hero-icon">⚔️</div>Viking</div>
+    </div>
+  </div>
+
+  <div class="category-container">
+    <div class="category-title">Animals</div>
+    <div class="grid-container" id="animals-list">
+      <div class="hero-tile"><div class="hero-icon">🦎</div>Chameleon</div>
+      <div class="hero-tile"><div class="hero-icon">🐹</div>Mole</div>
+      <div class="hero-tile"><div class="hero-icon">🦠</div>Germ</div>
+      <div class="hero-tile"><div class="hero-icon">🦖</div>T-Rex</div>
+    </div>
   </div>
 
   <div id="selected-hero"></div>
-
   <button id="start-button">Start Game</button>
 
   <script>
-    const heroList = document.getElementById('hero-list');
+    const heroLists = [
+      document.getElementById('legends-list'),
+      document.getElementById('humans-list'),
+      document.getElementById('animals-list')
+    ];
     const selectedHeroDiv = document.getElementById('selected-hero');
     const startButton = document.getElementById('start-button');
     let selectedHero = null;
 
-    heroList.addEventListener('click', (e) => {
-      const tile = e.target.closest('.hero-tile');
-      if (tile) {
-        [...heroList.children].forEach(t => t.classList.remove('selected'));
-        tile.classList.add('selected');
-        selectedHero = tile.textContent.trim();
-        selectedHeroDiv.textContent = `You selected: ${selectedHero}`;
-        startButton.style.display = 'inline-block';
-      }
+    heroLists.forEach(list => {
+      list.addEventListener('click', (e) => {
+        const tile = e.target.closest('.hero-tile');
+        if (tile) {
+          // Remove 'selected' class from all tiles in all lists
+          heroLists.forEach(l => [...l.children].forEach(t => t.classList.remove('selected')));
+          tile.classList.add('selected');
+          selectedHero = tile.textContent.trim();
+          selectedHeroDiv.textContent = `You selected: ${selectedHero}`;
+          startButton.style.display = 'inline-block';
+        }
+      });
     });
 
     startButton.addEventListener('click', () => {
@@ -140,6 +207,5 @@
       // Hook this up to your game logic later
     });
   </script>
-
 </body>
 </html>
