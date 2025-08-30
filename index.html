@@ -33,14 +33,43 @@
     .category-container {
       width: 90%;
       max-width: 500px;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
     }
 
     .category-title {
       font-size: 1.8rem;
-      margin: 1.5rem 0 0.5rem;
-      text-shadow: 0 0 8px #0f0;
+      margin: 0.5rem 0;
+      text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
       text-align: left;
+      cursor: pointer;
+      padding: 0.7rem 1rem;
+      background: linear-gradient(to bottom, #003300, #001100);
+      border: 2px solid #0f0;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: box-shadow 0.3s ease, background 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .category-title:hover {
+      box-shadow: 0 0 20px #0f0, 0 0 30px #0f0;
+      background: linear-gradient(to bottom, #005500, #003300);
+    }
+
+    .category-title::after {
+      content: '▶';
+      font-size: 1.5rem;
+      text-shadow: 0 0 5px #0f0;
+      transition: transform 0.3s ease;
+    }
+
+    .category-title.expanded::after {
+      content: '▼';
+      transform: rotate(0deg);
     }
 
     .grid-container {
@@ -51,6 +80,17 @@
       background-color: #001100;
       border-radius: 8px;
       border: 1px solid #0f0;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.3s ease, opacity 0.2s ease;
+      visibility: hidden;
+    }
+
+    .grid-container.expanded {
+      max-height: 500px; /* Adjust based on content height */
+      opacity: 1;
+      visibility: visible;
     }
 
     .hero-tile {
@@ -121,6 +161,11 @@
 
       .category-title {
         font-size: 1.5rem;
+        padding: 0.5rem 0.8rem;
+      }
+
+      .category-title::after {
+        font-size: 1.2rem;
       }
 
       .hero-tile {
@@ -147,7 +192,7 @@
   <h1>Pick Your Odd Hero</h1>
 
   <div class="category-container">
-    <div class="category-title">Legends</div>
+    <div class="category-title" id="legends-title">Legends</div>
     <div class="grid-container" id="legends-list">
       <div class="hero-tile"><div class="hero-icon">🦶</div>Big-Foot</div>
       <div class="hero-tile"><div class="hero-icon">🧜‍♂️</div>Merfolk</div>
@@ -155,7 +200,7 @@
   </div>
 
   <div class="category-container">
-    <div class="category-title">Humans</div>
+    <div class="category-title" id="humans-title">Humans</div>
     <div class="grid-container" id="humans-list">
       <div class="hero-tile"><div class="hero-icon">🛡️</div>Warrior</div>
       <div class="hero-tile"><div class="hero-icon">🧙‍♂️</div>Wizard</div>
@@ -166,7 +211,7 @@
   </div>
 
   <div class="category-container">
-    <div class="category-title">Animals</div>
+    <div class="category-title" id="animals-title">Animals</div>
     <div class="grid-container" id="animals-list">
       <div class="hero-tile"><div class="hero-icon">🦎</div>Chameleon</div>
       <div class="hero-tile"><div class="hero-icon">🐹</div>Mole</div>
@@ -179,21 +224,48 @@
   <button id="start-button">Start Game</button>
 
   <script>
-    const heroLists = [
-      document.getElementById('legends-list'),
-      document.getElementById('humans-list'),
-      document.getElementById('animals-list')
+    const categories = [
+      {
+        title: document.getElementById('legends-title'),
+        list: document.getElementById('legends-list')
+      },
+      {
+        title: document.getElementById('humans-title'),
+        list: document.getElementById('humans-list')
+      },
+      {
+        title: document.getElementById('animals-title'),
+        list: document.getElementById('animals-list')
+      }
     ];
     const selectedHeroDiv = document.getElementById('selected-hero');
     const startButton = document.getElementById('start-button');
     let selectedHero = null;
 
-    heroLists.forEach(list => {
-      list.addEventListener('click', (e) => {
+    // Category toggle functionality
+    categories.forEach(category => {
+      category.title.addEventListener('click', () => {
+        const isExpanded = category.list.classList.contains('expanded');
+        // Collapse all categories
+        categories.forEach(c => {
+          c.list.classList.remove('expanded');
+          c.title.classList.remove('expanded');
+        });
+        // Toggle the clicked category
+        if (!isExpanded) {
+          category.list.classList.add('expanded');
+          category.title.classList.add('expanded');
+        }
+      });
+    });
+
+    // Hero selection functionality
+    categories.forEach(category => {
+      category.list.addEventListener('click', (e) => {
         const tile = e.target.closest('.hero-tile');
         if (tile) {
           // Remove 'selected' class from all tiles in all lists
-          heroLists.forEach(l => [...l.children].forEach(t => t.classList.remove('selected')));
+          categories.forEach(c => [...c.list.children].forEach(t => t.classList.remove('selected')));
           tile.classList.add('selected');
           selectedHero = tile.textContent.trim();
           selectedHeroDiv.textContent = `You selected: ${selectedHero}`;
