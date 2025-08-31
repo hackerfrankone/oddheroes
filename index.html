@@ -151,6 +151,12 @@
       box-shadow: 0 0 20px #00ff00;
     }
 
+    #start-button:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
     @media (max-width: 400px) {
       h1 { font-size: 2rem; }
       .category-title { font-size: 1.5rem; padding: 0.5rem 0.8rem; }
@@ -223,6 +229,9 @@
     const startButton = document.getElementById('start-button');
     let selectedHero = null;
 
+    // Disable start button by default
+    startButton.disabled = true;
+
     // Toggle categories
     categories.forEach(cat => {
       cat.title.addEventListener('click', () => {
@@ -245,6 +254,7 @@
         selectedHero = tile.textContent.trim();
         selectedHeroDiv.textContent = `You selected: ${selectedHero}`;
         startButton.style.display = 'inline-block';
+        startButton.disabled = false; // Enable button
       });
     });
 
