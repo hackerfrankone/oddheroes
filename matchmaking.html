@@ -4,48 +4,49 @@
 <meta charset="UTF-8">
 <title>Odd Heroes - Matchmaking</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-  html, body { margin:0; padding:0; background:#000; color:#0f0; font-family:'Share Tech Mono', monospace; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; user-select:none; }
-  h1 { font-size:2rem; text-shadow:0 0 10px #0f0; margin-bottom:1rem; text-align:center; }
-  #status { font-size:1.5rem; margin:1rem 0; text-shadow:0 0 10px #0f0; }
-  #opponent-hero { font-size:1.2rem; margin-top:1rem; text-shadow:0 0 10px #0f0; }
+  body { background: #000; color: #0f0; font-family: monospace; text-align: center; padding: 2rem; }
+  #status { font-size: 1.5rem; margin-top: 1rem; }
 </style>
 </head>
 <body>
 <h1>Odd Heroes - Matchmaking</h1>
 <div id="status">Searching for opponent...</div>
-<div id="opponent-hero"></div>
 
 <script>
 const params = new URLSearchParams(window.location.search);
 const hero = params.get('hero') || 'Unknown Hero';
 const statusDiv = document.getElementById('status');
-const opponentDiv = document.getElementById('opponent-hero');
 
-async function joinQueue(hero) {
+// Generate a unique player id
+const playerId = crypto.randomUUID();
+
+async function joinQueue() {
   try {
     const res = await fetch("https://matchmaking.oddheroesonline.workers.dev/find-match", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ hero })
+      body: JSON.stringify({ hero, id: playerId })
     });
+
     const data = await res.json();
     console.log("Queue response:", data);
 
     if (data.status === "matched") {
+      // Redirect to game.html only when real opponent found
       window.location.href = data.url;
     } else {
+      // Still waiting
       statusDiv.textContent = "Searching for opponent...";
-      setTimeout(() => joinQueue(hero), 2000);
+      setTimeout(joinQueue, 2000);
     }
   } catch (err) {
     console.error("Matchmaking error:", err);
     statusDiv.textContent = "Error connecting to server. Retrying...";
-    setTimeout(() => joinQueue(hero), 3000);
+    setTimeout(joinQueue, 3000);
   }
 }
 
-joinQueue(hero);
+joinQueue();
 </script>
 </body>
 </html>
