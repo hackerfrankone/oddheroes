@@ -72,7 +72,7 @@
 
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(3, 1fr); /* Exactly 3 columns */
+      grid-template-columns: repeat(3, 1fr);
       gap: 15px;
       padding: 10px;
       background-color: #001100;
@@ -86,7 +86,7 @@
     }
 
     .grid-container.expanded {
-      max-height: 500px; /* Adjust based on content height */
+      max-height: 500px;
       opacity: 1;
       visibility: visible;
     }
@@ -185,7 +185,7 @@
       }
 
       .grid-container {
-        grid-template-columns: repeat(2, 1fr); /* Fallback to 2 columns on smaller screens */
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
@@ -239,69 +239,30 @@
 
   <script>
     const categories = [
-      {
-        title: document.getElementById('legends-title'),
-        list: document.getElementById('legends-list')
-      },
-      {
-        title: document.getElementById('humans-title'),
-        list: document.getElementById('humans-list')
-      },
-      {
-        title: document.getElementById('creatures-title'),
-        list: document.getElementById('creatures-list')
-      },
-      {
-        title: document.getElementById('uniques-title'),
-        list: document.getElementById('uniques-list')
-      }
+      { title: document.getElementById('legends-title'), list: document.getElementById('legends-list') },
+      { title: document.getElementById('humans-title'), list: document.getElementById('humans-list') },
+      { title: document.getElementById('creatures-title'), list: document.getElementById('creatures-list') },
+      { title: document.getElementById('uniques-title'), list: document.getElementById('uniques-list') }
     ];
     const selectedHeroDiv = document.getElementById('selected-hero');
     const startButton = document.getElementById('start-button');
     let selectedHero = null;
 
-    // Ensure all categories are closed by default
-    categories.forEach(category => {
-      category.list.classList.remove('expanded');
-      category.title.classList.remove('expanded');
-    });
+    // Collapse all categories initially
+    categories.forEach(c => { c.list.classList.remove('expanded'); c.title.classList.remove('expanded'); });
 
-    // Category toggle functionality
-    categories.forEach(category => {
-      category.title.addEventListener('click', () => {
-        const isExpanded = category.list.classList.contains('expanded');
-        // Collapse all categories
-        categories.forEach(c => {
-          c.list.classList.remove('expanded');
-          c.title.classList.remove('expanded');
-        });
-        // Toggle the clicked category
-        if (!isExpanded) {
-          category.list.classList.add('expanded');
-          category.title.classList.add('expanded');
-        }
+    // Toggle category
+    categories.forEach(c => {
+      c.title.addEventListener('click', () => {
+        const isExpanded = c.list.classList.contains('expanded');
+        categories.forEach(cat => { cat.list.classList.remove('expanded'); cat.title.classList.remove('expanded'); });
+        if (!isExpanded) { c.list.classList.add('expanded'); c.title.classList.add('expanded'); }
       });
     });
 
-    // Hero selection functionality
-    categories.forEach(category => {
-      category.list.addEventListener('click', (e) => {
+    // Hero selection
+    categories.forEach(c => {
+      c.list.addEventListener('click', e => {
         const tile = e.target.closest('.hero-tile');
         if (tile) {
-          // Remove 'selected' class from all tiles in all lists
-          categories.forEach(c => [...c.list.children].forEach(t => t.classList.remove('selected')));
-          tile.classList.add('selected');
-          selectedHero = tile.textContent.trim();
-          selectedHeroDiv.textContent = `You selected: ${selectedHero}`;
-          startButton.style.display = 'inline-block';
-        }
-      });
-    });
-
-    startButton.addEventListener('click', () => {
-      alert(`Starting game with ${selectedHero}!`);
-      // Hook this up to your game logic later
-    });
-  </script>
-</body>
-</html>
+          categories.forEach(cat => [...cat.list.children].forEach(t => t.classList.remove
