@@ -36,37 +36,34 @@ const hero = params.get('hero') || 'Unknown Hero';
 const statusDiv = document.getElementById('status');
 const opponentDiv = document.getElementById('opponent-hero');
 
-// Connect to Worker WebSocket (root path)
-const socket = new WebSocket('wss://matchmaking.oddheroesonline.workers.dev/');
+const ws = new WebSocket('wss://matchmaking.oddheroesonline.workers.dev/ws');
 
-socket.addEventListener('open', () => {
+ws.addEventListener('open', () => {
   statusDiv.textContent = 'Connected! Searching for opponent...';
-  socket.send(JSON.stringify({ type: 'join', hero }));
+  ws.send(JSON.stringify({ type: 'join', hero }));
 });
 
-socket.addEventListener('message', (event) => {
+ws.addEventListener('message', (event) => {
   const data = JSON.parse(event.data);
-
-  if (data.type === 'status') {
-    statusDiv.textContent = data.message;
-  }
-
   if (data.type === 'match_found') {
     statusDiv.textContent = 'Opponent Found!';
     opponentDiv.textContent = `Opponent picked: ${data.opponentHero}`;
-    // Redirect to battle/game page if desired
-    // window.location.href = `game.html?hero=${encodeURIComponent(hero)}&opponent=${encodeURIComponent(data.opponentHero)}`;
+    console.log('Matched with opponent:', data.opponentHero);
+
+    // Redirect to battle page
+    window.location.href = `game.html?hero=${encodeURIComponent(hero)}&opponent=${encodeURIComponent(data.opponentHero)}`;
   }
 });
 
-socket.addEventListener('close', () => {
+ws.addEventListener('close', () => {
   statusDiv.textContent = 'Connection closed.';
 });
 
-socket.addEventListener('error', () => {
+ws.addEventListener('error', () => {
   statusDiv.textContent = 'Error connecting to server.';
 });
 </script>
+
 
 </body>
 </html>
