@@ -1,29 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Odd Heroes - Battle</title>
-<style>
-  body { margin:0; padding:0; background:#000; color:#0f0; font-family:'Share Tech Mono', monospace; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; }
-  h1 { text-shadow:0 0 10px #0f0; font-size:2rem; margin-bottom:1rem; text-align:center; }
-  #battle-log { width:90%; max-width:600px; border:1px solid #0f0; padding:1rem; margin-top:1rem; min-height:200px; overflow:auto; }
-</style>
+  <meta charset="UTF-8">
+  <title>Odd Heroes Battle</title>
 </head>
 <body>
-<h1>Odd Heroes Battle</h1>
-<div id="battle-log"></div>
+  <h1>1v1 Battle</h1>
+  <div id="info"></div>
 
-<script>
-const params = new URLSearchParams(window.location.search);
-const player1 = params.get('player1') || 'Unknown';
-const player2 = params.get('player2') || 'Unknown';
-const gameId = params.get('gameId') || crypto.randomUUID();
-const logDiv = document.getElementById('battle-log');
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const player1 = params.get('player1');
+    const player2 = params.get('player2');
+    const gameId = params.get('gameId');
 
-logDiv.innerHTML += `Game ID: ${gameId}<br>`;
-logDiv.innerHTML += `Player 1: ${player1}<br>`;
-logDiv.innerHTML += `Player 2: ${player2}<br>`;
-logDiv.innerHTML += `<br>Battle starting...<br>`;
-</script>
+    document.getElementById('info').textContent =
+      `Game ID: ${gameId} | Player 1: ${player1} vs Player 2: ${player2}`;
+  </script>
 </body>
 </html>
