@@ -5,46 +5,56 @@
   <title>Odd Heroes - Matchmaking</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
     html, body {
-      margin: 0; padding: 0;
-      background: #000; color: #0f0;
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #0f0;
       font-family: 'Share Tech Mono', monospace;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
       user-select: none;
     }
-    h1 { font-size: 2rem; margin-bottom: 1rem; text-shadow:0 0 10px #0f0; text-align:center; }
-    #status { font-size: 1.5rem; margin: 1rem 0; text-shadow:0 0 10px #0f0; }
-    #battle-log { font-size: 1.2rem; margin-top:1rem; text-shadow:0 0 10px #0f0; max-height: 200px; overflow-y: auto; width: 80%; }
-    .btn { margin:5px; padding:5px 10px; background:#0f0; color:#000; font-weight:bold; border-radius:5px; cursor:pointer; }
-    .btn:hover { background:#00ff00; }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #0f0;
+      text-align: center;
+    }
+
+    #status {
+      font-size: 1.5rem;
+      margin: 1rem 0;
+      text-shadow: 0 0 10px #0f0;
+    }
+
+    #opponent-hero {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      text-shadow: 0 0 10px #0f0;
+    }
   </style>
 </head>
 <body>
   <h1>Odd Heroes - Matchmaking</h1>
   <div id="status">Searching for opponent...</div>
-  <div id="battle-log"></div>
-  <div id="controls" style="display:none;">
-    <button class="btn" onclick="sendMove('attack')">Attack</button>
-    <button class="btn" onclick="sendMove('defend')">Defend</button>
-  </div>
+  <div id="opponent-hero"></div>
 
   <script>
     const statusDiv = document.getElementById('status');
-    const battleLog = document.getElementById('battle-log');
-    const controlsDiv = document.getElementById('controls');
+    const opponentDiv = document.getElementById('opponent-hero');
 
+    // Get selected hero from URL
     const params = new URLSearchParams(window.location.search);
     const hero = params.get('hero') || 'Unknown Hero';
+    console.log('Your selected hero:', hero);
 
-    let ws;
-
-    function log(msg) {
-      battleLog.innerHTML += `<div>${msg}</div>`;
-      battleLog.scrollTop = battleLog.scrollHeight;
-    }
-
+    // Join matchmaking queue
     async function joinQueue() {
       try {
         const res = await fetch('https://matchmaking.oddheroesonline.workers.dev/find-match', {
@@ -52,52 +62,52 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ hero })
         });
-        const data = await res.json();
 
-        if (data.status === 'waiting') {
+        const data = await res.json();
+        console.log('Queue response:', data);
+
+        if (data.status === 'matched') {
+          statusDiv.textContent = 'Opponent Found!';
+          opponentDiv.textContent = `Opponent joined the game!`;
+          connectWebSocket(data.gameId);
+        } else {
           statusDiv.textContent = 'Waiting for opponent...';
-          setTimeout(joinQueue, 2000); // retry every 2s
-        } else if (data.status === 'matched') {
-          statusDiv.textContent = 'Opponent found!';
-          log(`Opponent picked: ${data.opponentHero}`);
-          openGameWS(data.gameId);
+          // Poll every 2 seconds until matched
+          setTimeout(joinQueue, 2000);
         }
       } catch (err) {
+        console.error('Error connecting to server:', err);
         statusDiv.textContent = 'Error connecting to server.';
-        console.error('Error:', err);
-        setTimeout(joinQueue, 3000); // retry after error
       }
     }
 
-    function openGameWS(gameId) {
-      ws = new WebSocket(`wss://matchmaking.oddheroesonline.workers.dev/game/${gameId}`);
+    function connectWebSocket(gameId) {
+      const ws = new WebSocket(`wss://matchmaking.oddheroesonline.workers.dev/game/${gameId}`);
+
       ws.addEventListener('open', () => {
-        log('Connected to game server!');
-        controlsDiv.style.display = 'block';
+        console.log('Connected to game:', gameId);
+        ws.send(JSON.stringify({ type: 'join', hero }));
+        statusDiv.textContent = 'Connected! Waiting for opponent moves...';
       });
 
       ws.addEventListener('message', (event) => {
-        const data = JSON.parse(event.data);
-        log(data.message);
+        const msg = JSON.parse(event.data);
+        console.log('Server:', msg);
+        opponentDiv.textContent = msg.message || JSON.stringify(msg);
       });
 
       ws.addEventListener('close', () => {
-        log('Connection closed.');
-        controlsDiv.style.display = 'none';
+        console.log('Disconnected from server');
+        statusDiv.textContent = 'Connection closed.';
       });
 
       ws.addEventListener('error', (err) => {
-        log('WebSocket error.');
-        console.error(err);
+        console.error('WebSocket error:', err);
+        statusDiv.textContent = 'Error connecting to server.';
       });
     }
 
-    function sendMove(move) {
-      if (!ws) return;
-      ws.send(JSON.stringify({ move }));
-      log(`You used: ${move}`);
-    }
-
+    // Start the matchmaking process
     joinQueue();
   </script>
 </body>
