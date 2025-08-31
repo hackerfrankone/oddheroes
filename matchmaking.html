@@ -45,41 +45,37 @@
   <div id="status">Searching for opponent...</div>
   <div id="opponent-hero"></div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const hero = params.get('hero') || 'Unknown Hero';
-    console.log('Your selected hero:', hero);
+<script>
+const params = new URLSearchParams(window.location.search);
+const hero = params.get('hero') || 'Unknown Hero';
+const statusDiv = document.getElementById('status');
 
-    const statusDiv = document.getElementById('status');
-    const opponentDiv = document.getElementById('opponent-hero');
+async function joinQueue(hero) {
+  try {
+    const res = await fetch("https://matchmaking.oddheroesonline.workers.dev/find-match", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ hero })
+    });
 
-    async function joinQueue(hero) {
-      try {
-        const res = await fetch("https://matchmaking.oddheroesonline.workers.dev/find-match", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ hero })
-        });
-        const data = await res.json();
-        console.log("Queue response:", data);
+    const data = await res.json();
+    console.log("Queue response:", data);
 
-        if (data.status === "matched") {
-          // Redirect to game.html with real opponent
-          window.location.href = data.url;
-        } else {
-          // Still waiting
-          statusDiv.textContent = "Searching for opponent...";
-          setTimeout(() => joinQueue(hero), 2000);
-        }
-      } catch (err) {
-        console.error("Matchmaking error:", err);
-        statusDiv.textContent = "Error connecting to server. Retrying...";
-        setTimeout(() => joinQueue(hero), 3000);
-      }
+    if (data.status === "matched") {
+      window.location.href = data.url;
+    } else {
+      statusDiv.textContent = "Searching for opponent...";
+      setTimeout(() => joinQueue(hero), 2000);
     }
+  } catch (err) {
+    console.error("Matchmaking error:", err);
+    statusDiv.textContent = "Error connecting to server. Retrying...";
+    setTimeout(() => joinQueue(hero), 3000);
+  }
+}
 
-    // Start matchmaking
-    joinQueue(hero);
-  </script>
+joinQueue(hero);
+</script>
+
 </body>
 </html>
