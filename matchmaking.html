@@ -1,54 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Odd Heroes - Matchmaking</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-      color: #0f0;
-      font-family: 'Share Tech Mono', monospace;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      user-select: none;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      text-align: center;
-      text-shadow: 0 0 10px #0f0;
-    }
-
-    #status {
-      font-size: 1.5rem;
-      margin: 1rem 0;
-      text-shadow: 0 0 10px #0f0;
-    }
-
-    #opponent-hero {
-      font-size: 1.2rem;
-      margin-top: 1rem;
-      text-shadow: 0 0 10px #0f0;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Odd Heroes - Matchmaking</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  html, body { margin:0; padding:0; background:#000; color:#0f0; font-family:'Share Tech Mono', monospace; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; user-select:none; }
+  h1 { font-size:2rem; text-shadow:0 0 10px #0f0; margin-bottom:1rem; text-align:center; }
+  #status { font-size:1.5rem; margin:1rem 0; text-shadow:0 0 10px #0f0; }
+  #opponent-hero { font-size:1.2rem; margin-top:1rem; text-shadow:0 0 10px #0f0; }
+</style>
 </head>
 <body>
-  <h1>Odd Heroes - Matchmaking</h1>
-  <div id="status">Searching for opponent...</div>
-  <div id="opponent-hero"></div>
+<h1>Odd Heroes - Matchmaking</h1>
+<div id="status">Searching for opponent...</div>
+<div id="opponent-hero"></div>
 
 <script>
 const params = new URLSearchParams(window.location.search);
 const hero = params.get('hero') || 'Unknown Hero';
 const statusDiv = document.getElementById('status');
+const opponentDiv = document.getElementById('opponent-hero');
 
 async function joinQueue(hero) {
   try {
@@ -57,7 +29,6 @@ async function joinQueue(hero) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ hero })
     });
-
     const data = await res.json();
     console.log("Queue response:", data);
 
@@ -76,6 +47,5 @@ async function joinQueue(hero) {
 
 joinQueue(hero);
 </script>
-
 </body>
 </html>
