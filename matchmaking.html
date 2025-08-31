@@ -20,34 +20,29 @@
       user-select: none;
     }
 
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 10px #0f0;
-      text-align: center;
-    }
-
-    #status {
-      font-size: 1.5rem;
-      margin: 1rem 0;
-      text-shadow: 0 0 10px #0f0;
-    }
+    h1 { font-size: 2rem; margin-bottom: 1rem; text-shadow: 0 0 10px #0f0; text-align: center; }
+    #status { font-size: 1.5rem; margin: 1rem 0; text-shadow: 0 0 10px #0f0; }
+    #opponent-hero { font-size: 1.2rem; margin-top: 1rem; text-shadow: 0 0 10px #0f0; }
   </style>
 </head>
 <body>
   <h1>Odd Heroes - Matchmaking</h1>
   <div id="status">Searching for opponent...</div>
+  <div id="opponent-hero"></div>
 
   <script>
-    // Get selected hero from URL
     const params = new URLSearchParams(window.location.search);
     const hero = params.get('hero') || 'Unknown Hero';
-
     const statusDiv = document.getElementById('status');
+    const opponentDiv = document.getElementById('opponent-hero');
 
-    async function findMatch() {
+    let playerId = null;
+    let gameId = null;
+    let interval = null;
+
+    async function joinQueue() {
       try {
-        const res = await fetch('https://matchmaking.oddheroesonline.workers.dev/join', {
+        const res = await fetch('https://matchmaking.oddheroesonline.workers.dev/find-match', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ hero })
@@ -55,21 +50,27 @@
         const data = await res.json();
 
         if (data.status === 'matched') {
-          const player = data.players.find(p => p.hero === hero);
-          // Redirect to game.html with gameId, playerId, hero
-          window.location.href = `game.html?gameId=${data.gameId}&playerId=${player.playerId}&hero=${encodeURIComponent(hero)}`;
+          playerId = data.playerId;
+          gameId = data.gameId;
+          const opponentHero = data.opponentHero || 'Unknown';
+          statusDiv.textContent = 'Opponent Found!';
+          opponentDiv.textContent = `Opponent picked: ${opponentHero}`;
+          clearInterval(interval);
+
+          // Redirect to game page
+          window.location.href = `game.html?gameId=${gameId}&playerId=${playerId}&hero=${encodeURIComponent(hero)}`;
         } else {
           statusDiv.textContent = 'Waiting for opponent...';
-          // Retry every 2 seconds
-          setTimeout(findMatch, 2000);
         }
       } catch (err) {
+        console.error('Error connecting to server:', err);
         statusDiv.textContent = 'Error connecting to server.';
-        console.error(err);
       }
     }
 
-    findMatch();
+    // Start polling matchmaking every 2 seconds
+    interval = setInterval(joinQueue, 2000);
+    joinQueue(); // also call immediately
   </script>
 </body>
 </html>
