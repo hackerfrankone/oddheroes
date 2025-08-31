@@ -30,46 +30,43 @@
   <div id="status">Searching for opponent...</div>
   <div id="opponent-hero"></div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const hero = params.get('hero') || 'Unknown Hero';
-    console.log('Your selected hero:', hero);
+<script>
+const params = new URLSearchParams(window.location.search);
+const hero = params.get('hero') || 'Unknown Hero';
+const statusDiv = document.getElementById('status');
+const opponentDiv = document.getElementById('opponent-hero');
 
-    const statusDiv = document.getElementById('status');
-    const opponentDiv = document.getElementById('opponent-hero');
+// Connect to Worker WebSocket (root path)
+const socket = new WebSocket('wss://matchmaking.oddheroesonline.workers.dev/');
 
-    const wsUrl = 'wss://matchmaking.oddheroesonline.workers.dev/';
-    const socket = new WebSocket(wsUrl);
+socket.addEventListener('open', () => {
+  statusDiv.textContent = 'Connected! Searching for opponent...';
+  socket.send(JSON.stringify({ type: 'join', hero }));
+});
 
-    socket.addEventListener('open', () => {
-      console.log('Connected to matchmaking server');
-      socket.send(JSON.stringify({ type: 'join', hero }));
-    });
+socket.addEventListener('message', (event) => {
+  const data = JSON.parse(event.data);
 
-    socket.addEventListener('message', (event) => {
-      const data = JSON.parse(event.data);
+  if (data.type === 'status') {
+    statusDiv.textContent = data.message;
+  }
 
-      if (data.status === 'matched') {
-        statusDiv.textContent = 'Opponent Found!';
-        opponentDiv.textContent = `Redirecting to battle...`;
-        console.log('Matched! Game ID:', data.gameId);
+  if (data.type === 'match_found') {
+    statusDiv.textContent = 'Opponent Found!';
+    opponentDiv.textContent = `Opponent picked: ${data.opponentHero}`;
+    // Redirect to battle/game page if desired
+    // window.location.href = `game.html?hero=${encodeURIComponent(hero)}&opponent=${encodeURIComponent(data.opponentHero)}`;
+  }
+});
 
-        // Redirect to game.html with gameId
-        window.location.href = `game.html?gameId=${encodeURIComponent(data.gameId)}`;
-      } else if (data.status === 'waiting') {
-        statusDiv.textContent = 'Searching for opponent...';
-      }
-    });
+socket.addEventListener('close', () => {
+  statusDiv.textContent = 'Connection closed.';
+});
 
-    socket.addEventListener('close', () => {
-      statusDiv.textContent = 'Connection closed.';
-      console.log('Disconnected from server');
-    });
+socket.addEventListener('error', () => {
+  statusDiv.textContent = 'Error connecting to server.';
+});
+</script>
 
-    socket.addEventListener('error', (err) => {
-      statusDiv.textContent = 'Error connecting to server.';
-      console.error('WebSocket error:', err);
-    });
-  </script>
 </body>
 </html>
