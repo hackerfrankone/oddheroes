@@ -1,4 +1,3 @@
-// index.js (Cloudflare Worker)
 const queue = [];
 
 addEventListener('fetch', event => {
@@ -12,32 +11,25 @@ async function handleRequest(request) {
     'Access-Control-Allow-Headers': 'Content-Type'
   };
 
-  if (request.method === 'OPTIONS') {
-    return new Response(null, { status: 204, headers: corsHeaders });
-  }
+  if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders });
 
   if (request.method === 'POST') {
     try {
       const { hero } = await request.json();
+      const player = { hero, id: crypto.randomUUID() };
+      queue.push(player);
 
-      // Add player to queue
-      queue.push({ hero, id: crypto.randomUUID() });
-
-      // If 2+ players, match them
       if (queue.length >= 2) {
         const player1 = queue.shift();
         const player2 = queue.shift();
 
-        // Return match info
         return new Response(JSON.stringify({
           status: 'matched',
-          url: `https://yourdomain.com/game.html?player1=${encodeURIComponent(player1.hero)}&player2=${encodeURIComponent(player2.hero)}&gameId=${crypto.randomUUID()}`
+          url: `https://oddheroes.online/game.html?player1=${encodeURIComponent(player1.hero)}&player2=${encodeURIComponent(player2.hero)}&gameId=${crypto.randomUUID()}`
         }), { status: 200, headers: corsHeaders });
       }
 
-      // Still waiting
       return new Response(JSON.stringify({ status: 'waiting' }), { status: 200, headers: corsHeaders });
-
     } catch (err) {
       return new Response(JSON.stringify({ status: 'error', message: err.message }), { status: 500, headers: corsHeaders });
     }
