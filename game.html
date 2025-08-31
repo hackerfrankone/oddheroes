@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Odd Heroes Battle</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: 'Share Tech Mono', monospace;
+      text-align: center;
+      padding: 20px;
+    }
+    #battle-log {
+      border: 1px solid #0f0;
+      padding: 10px;
+      height: 200px;
+      overflow-y: auto;
+      background: #001100;
+      margin-bottom: 20px;
+    }
+    .btn {
+      margin: 10px;
+      padding: 10px 20px;
+      background: #0f0;
+      color: #000;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #00ff00;
+    }
+  </style>
+</head>
+<body>
+  <h1>Odd Heroes Battle</h1>
+  <div id="battle-log">Connecting to game...</div>
+  
+  <div>
+    <button class="btn" onclick="makeMove('attack')">Attack</button>
+    <button class="btn" onclick="makeMove('defend')">Defend</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameId = urlParams.get('gameId');
+
+    const log = (msg) => {
+      const logDiv = document.getElementById('battle-log');
+      logDiv.innerHTML += `<div>${msg}</div>`;
+      logDiv.scrollTop = logDiv.scrollHeight;
+    };
+
+    // Example WebSocket connection to Worker
+    const ws = new WebSocket(`wss://your-worker.workers.dev/game/${gameId}`);
+
+    ws.onopen = () => {
+      log("Connected to game: " + gameId);
+    };
+
+    ws.onmessage = (msg) => {
+      const data = JSON.parse(msg.data);
+      log("Server: " + data.message);
+    };
+
+    function makeMove(move) {
+      ws.send(JSON.stringify({ type: "move", move }));
+      log("You chose: " + move);
+    }
+  </script>
+</body>
+</html>
