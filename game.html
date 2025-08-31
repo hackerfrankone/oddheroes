@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Odd Heroes Battle</title>
   <style>
     body {
@@ -14,7 +14,7 @@
     #battle-log {
       border: 1px solid #0f0;
       padding: 10px;
-      height: 250px;
+      height: 200px;
       overflow-y: auto;
       background: #001100;
       margin-bottom: 20px;
@@ -28,15 +28,12 @@
       border-radius: 8px;
       cursor: pointer;
     }
-    .btn:hover {
-      background: #00ff00;
-    }
+    .btn:hover { background: #00ff00; }
   </style>
 </head>
 <body>
   <h1>Odd Heroes Battle</h1>
   <div id="battle-log">Connecting to game...</div>
-  
   <div>
     <button class="btn" onclick="makeMove('attack')">Attack</button>
     <button class="btn" onclick="makeMove('defend')">Defend</button>
@@ -45,49 +42,22 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const gameId = urlParams.get('gameId');
-    const hero = urlParams.get('hero') || 'Unknown Hero';
+    const logDiv = document.getElementById('battle-log');
 
-    const log = (msg) => {
-      const logDiv = document.getElementById('battle-log');
+    function log(msg) {
       logDiv.innerHTML += `<div>${msg}</div>`;
       logDiv.scrollTop = logDiv.scrollHeight;
-    };
-
-    if (!gameId) {
-      log('Error: Missing game ID.');
-      throw new Error('Missing game ID');
     }
 
-    // Connect to Worker WebSocket for this game
     const ws = new WebSocket(`wss://matchmaking.oddheroesonline.workers.dev/game/${gameId}`);
 
-    ws.onopen = () => {
-      log(`Connected to game: ${gameId}`);
-      ws.send(JSON.stringify({ type: 'join', hero }));
-    };
-
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-
-      if (data.type === 'battle_update') {
-        log(`Opponent: ${data.message}`);
-      } else if (data.type === 'system') {
-        log(`System: ${data.message}`);
-      } else if (data.type === 'your_turn') {
-        log('It’s your turn!');
-      } else {
-        log(`Server: ${data.message || JSON.stringify(data)}`);
-      }
-    };
-
-    ws.onclose = () => {
-      log('Connection closed.');
-    };
-
-    ws.onerror = (err) => {
-      log('WebSocket error.');
-      console.error(err);
-    };
+    ws.addEventListener('open', () => log('Connected to game!'));
+    ws.addEventListener('message', e => {
+      const data = JSON.parse(e.data);
+      log(`Server: ${data.message}`);
+    });
+    ws.addEventListener('close', () => log('Disconnected from server.'));
+    ws.addEventListener('error', e => log('WebSocket error.'));
 
     function makeMove(move) {
       ws.send(JSON.stringify({ type: 'move', move }));
