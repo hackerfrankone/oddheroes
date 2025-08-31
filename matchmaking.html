@@ -55,7 +55,7 @@
     const opponentDiv = document.getElementById('opponent-hero');
 
     // Connect to Cloudflare Worker WebSocket
-    const wsUrl = 'https://matchmaking.oddheroesonline.workers.dev/';
+    const wsUrl = 'wss://matchmaking.oddheroesonline.workers.dev/';
     const socket = new WebSocket(wsUrl);
 
     socket.addEventListener('open', () => {
