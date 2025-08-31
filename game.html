@@ -1,63 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Odd Heroes Battle</title>
-  <style>
-    body { background-color:#000; color:#0f0; font-family:'Share Tech Mono', monospace; text-align:center; padding:20px; }
-    #battle-log { border:1px solid #0f0; padding:10px; height:200px; overflow-y:auto; background:#001100; margin-bottom:20px; }
-    .btn { margin:10px; padding:10px 20px; background:#0f0; color:#000; font-weight:bold; border-radius:8px; cursor:pointer; }
-    .btn:hover { background:#00ff00; }
-  </style>
+<meta charset="UTF-8">
+<title>Odd Heroes - Battle</title>
+<style>
+  body { margin:0; padding:0; background:#000; color:#0f0; font-family:'Share Tech Mono', monospace; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; }
+  h1 { text-shadow:0 0 10px #0f0; font-size:2rem; margin-bottom:1rem; text-align:center; }
+  #battle-log { width:90%; max-width:600px; border:1px solid #0f0; padding:1rem; margin-top:1rem; min-height:200px; overflow:auto; }
+</style>
 </head>
 <body>
-  <h1>Odd Heroes Battle</h1>
-  <div id="battle-log">Connecting to game...</div>
-  <div>
-    <button class="btn" onclick="makeMove('attack')">Attack</button>
-    <button class="btn" onclick="makeMove('defend')">Defend</button>
-  </div>
+<h1>Odd Heroes Battle</h1>
+<div id="battle-log"></div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const gameId = params.get('gameId');
-    const playerId = params.get('playerId');
-    const hero = params.get('hero');
-    const logDiv = document.getElementById('battle-log');
+<script>
+const params = new URLSearchParams(window.location.search);
+const player1 = params.get('player1') || 'Unknown';
+const player2 = params.get('player2') || 'Unknown';
+const gameId = params.get('gameId') || crypto.randomUUID();
+const logDiv = document.getElementById('battle-log');
 
-    function log(msg) {
-      logDiv.innerHTML += `<div>${msg}</div>`;
-      logDiv.scrollTop = logDiv.scrollHeight;
-    }
-
-    // Connect to Worker WebSocket for this game
-    const ws = new WebSocket(`wss://matchmaking.oddheroesonline.workers.dev/game/${gameId}`);
-
-    ws.onopen = () => {
-      log(`Connected! You are playing: ${hero}`);
-      // Send join info
-      ws.send(JSON.stringify({ type: 'join', playerId, hero }));
-    };
-
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'opponent_joined') {
-        log(`Opponent joined: ${data.hero}`);
-      } else if (data.type === 'move') {
-        log(`Opponent did: ${data.move}`);
-      } else if (data.type === 'info') {
-        log(data.message);
-      }
-    };
-
-    ws.onclose = () => log('Connection closed.');
-
-    ws.onerror = (err) => log('WebSocket error: ' + err);
-
-    function makeMove(move) {
-      ws.send(JSON.stringify({ type: 'move', move }));
-      log(`You did: ${move}`);
-    }
-  </script>
+logDiv.innerHTML += `Game ID: ${gameId}<br>`;
+logDiv.innerHTML += `Player 1: ${player1}<br>`;
+logDiv.innerHTML += `Player 2: ${player2}<br>`;
+logDiv.innerHTML += `<br>Battle starting...<br>`;
+</script>
 </body>
 </html>
