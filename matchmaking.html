@@ -4,40 +4,40 @@
 <meta charset="UTF-8">
 <title>Odd Heroes - Matchmaking</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-  html, body {
-    margin: 0;
-    padding: 0;
-    background-color: #000;
-    color: #0f0;
-    font-family: 'Share Tech Mono', monospace;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    user-select: none;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: #0f0;
+  font-family: 'Share Tech Mono', monospace;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  user-select: none;
+}
 
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    text-shadow: 0 0 10px #0f0;
-    text-align: center;
-  }
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px #0f0;
+  text-align: center;
+}
 
-  #status {
-    font-size: 1.5rem;
-    margin: 1rem 0;
-    text-shadow: 0 0 10px #0f0;
-  }
+#status {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  text-shadow: 0 0 10px #0f0;
+}
 
-  #opponent-hero {
-    font-size: 1.2rem;
-    margin-top: 1rem;
-    text-shadow: 0 0 10px #0f0;
-  }
+#opponent-hero {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  text-shadow: 0 0 10px #0f0;
+}
 </style>
 </head>
 <body>
@@ -46,46 +46,54 @@
 <div id="opponent-hero"></div>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const hero = params.get('hero') || 'Unknown Hero';
-  console.log('Your selected hero:', hero);
+// Get selected hero from URL
+const params = new URLSearchParams(window.location.search);
+const hero = params.get('hero') || 'Unknown Hero';
 
-  const statusDiv = document.getElementById('status');
-  const opponentDiv = document.getElementById('opponent-hero');
+const statusDiv = document.getElementById('status');
+const opponentDiv = document.getElementById('opponent-hero');
 
-  const MATCHMAKING_URL = 'https://matchmaking.oddheroesonline.workers.dev/find-match';
+const WORKER_URL = 'https://matchmaking.oddheroesonline.workers.dev/find-match';
+let playerId = null;
 
-  let playerId = null;
-  let pollInterval = null;
+// Poll the Worker every 2 seconds
+async function joinQueue() {
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hero, playerId })
+    });
 
-  async function joinQueue() {
-    try {
-      const res = await fetch(MATCHMAKING_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ hero })
-      });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      const data = await res.json();
-      console.log('Queue response:', data);
-      playerId = data.playerId || playerId;
+    const data = await res.json();
+    console.log('Queue response:', data);
 
-      if (data.status === 'matched') {
-        statusDiv.textContent = 'Opponent Found!';
-        opponentDiv.textContent = `Opponent picked: ${data.p2Hero || 'Unknown'}`;
-        window.location.href = data.url;
-      } else {
-        statusDiv.textContent = 'Searching for opponent...';
-      }
-    } catch (err) {
-      statusDiv.textContent = 'Error connecting to server, retrying...';
-      console.error('Matchmaking error:', err);
+    playerId = data.playerId || playerId;
+
+    if (data.status === 'waiting') {
+      statusDiv.textContent = 'Searching for opponent...';
+      setTimeout(joinQueue, 2000); // poll again
+    } else if (data.status === 'matched') {
+      statusDiv.textContent = 'Opponent found!';
+      opponentDiv.textContent = `Your game ID: ${data.gameId}`;
+      // Redirect to game page
+      window.location.href = `game.html?gameId=${data.gameId}&hero=${encodeURIComponent(hero)}`;
+    } else {
+      statusDiv.textContent = 'Unknown status...';
+      setTimeout(joinQueue, 2000);
     }
-  }
 
-  // Poll matchmaking every 2 seconds
-  pollInterval = setInterval(joinQueue, 2000);
-  joinQueue();
+  } catch (err) {
+    console.error('Matchmaking error:', err);
+    statusDiv.textContent = 'Error connecting to server. Retrying...';
+    setTimeout(joinQueue, 3000);
+  }
+}
+
+// Start polling
+joinQueue();
 </script>
 </body>
 </html>
