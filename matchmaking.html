@@ -20,24 +20,9 @@
       user-select: none;
     }
 
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 10px #0f0;
-      text-align: center;
-    }
-
-    #status {
-      font-size: 1.5rem;
-      margin: 1rem 0;
-      text-shadow: 0 0 10px #0f0;
-    }
-
-    #opponent-hero {
-      font-size: 1.2rem;
-      margin-top: 1rem;
-      text-shadow: 0 0 10px #0f0;
-    }
+    h1 { font-size: 2rem; margin-bottom: 1rem; text-shadow: 0 0 10px #0f0; text-align: center; }
+    #status { font-size: 1.5rem; margin: 1rem 0; text-shadow: 0 0 10px #0f0; }
+    #opponent-hero { font-size: 1.2rem; margin-top: 1rem; text-shadow: 0 0 10px #0f0; }
   </style>
 </head>
 <body>
@@ -46,7 +31,6 @@
   <div id="opponent-hero"></div>
 
   <script>
-    // Get selected hero from URL
     const params = new URLSearchParams(window.location.search);
     const hero = params.get('hero') || 'Unknown Hero';
     console.log('Your selected hero:', hero);
@@ -54,25 +38,26 @@
     const statusDiv = document.getElementById('status');
     const opponentDiv = document.getElementById('opponent-hero');
 
-    // Connect to Cloudflare Worker WebSocket
     const wsUrl = 'wss://matchmaking.oddheroesonline.workers.dev/';
     const socket = new WebSocket(wsUrl);
 
     socket.addEventListener('open', () => {
       console.log('Connected to matchmaking server');
-      // Send initial data (hero selection)
       socket.send(JSON.stringify({ type: 'join', hero }));
     });
 
     socket.addEventListener('message', (event) => {
       const data = JSON.parse(event.data);
 
-      if (data.type === 'match_found') {
+      if (data.status === 'matched') {
         statusDiv.textContent = 'Opponent Found!';
-        opponentDiv.textContent = `Opponent picked: ${data.opponentHero}`;
-        console.log('Matched with opponent:', data.opponentHero);
-        // Here you could redirect to battle page
-        // window.location.href = `battle.html?hero=${encodeURIComponent(hero)}&opponent=${encodeURIComponent(data.opponentHero)}`;
+        opponentDiv.textContent = `Redirecting to battle...`;
+        console.log('Matched! Game ID:', data.gameId);
+
+        // Redirect to game.html with gameId
+        window.location.href = `game.html?gameId=${encodeURIComponent(data.gameId)}`;
+      } else if (data.status === 'waiting') {
+        statusDiv.textContent = 'Searching for opponent...';
       }
     });
 
