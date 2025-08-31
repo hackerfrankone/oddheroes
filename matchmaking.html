@@ -3,43 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <title>Odd Heroes Matchmaking</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      font-family: 'Share Tech Mono', monospace;
+      color: #0f0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h2 {
+      font-size: 2rem;
+      text-shadow: 0 0 10px #0f0;
+    }
+    #status {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #0f0;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-left: 10px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
   <h2>Matchmaking...</h2>
-  <div id="status">Searching for opponent...</div>
+  <div id="status">Searching for opponent... <span class="spinner"></span></div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const hero = params.get('hero');
     const statusDiv = document.getElementById('status');
+    const maxRetries = 10;
+    let retryCount = 0;
 
     async function joinQueue(hero) {
+      if (retryCount >= maxRetries) {
+        statusDiv.textContent = 'Failed to find a match. Please try again later.';
+        return;
+      }
+
       try {
-        const res = await fetch("https://matchmaking.oddheroesonline.workers.dev/find-match", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        const res = await fetch('https://matchmaking.oddheroesonline.workers.dev/find-match', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ hero })
         });
 
         const data = await res.json();
-        console.log("Queue response:", data);
+        console.log('Queue response:', data);
 
-        if (data.status === "matched" && data.url) {
-          // Redirect to actual game.html with proper URL
+        if (data.status === 'matched' && data.url) {
           window.location.href = data.url;
+        } else if (data.status === 'waiting') {
+          statusDiv.textContent = 'Searching for opponent...';
+          setTimeout(() => joinQueue(hero), 3000); // Increased polling interval
         } else {
-          statusDiv.textContent = "Searching for opponent...";
-          setTimeout(() => joinQueue(hero), 2000);
+          statusDiv.textContent = `Error: ${data.message || 'Unknown error'}. Retrying...`;
+          retryCount++;
+          setTimeout(() => joinQueue(hero), 3000);
         }
       } catch (err) {
-        console.error("Matchmaking error:", err);
-        statusDiv.textContent = "Error connecting to server. Retrying...";
+        console.error('Matchmaking error:', err);
+        statusDiv.textContent = 'Error connecting to server. Retrying...';
+        retryCount++;
         setTimeout(() => joinQueue(hero), 3000);
       }
     }
 
-    if (hero) joinQueue(hero);
-    else statusDiv.textContent = "No hero selected!";
+    if (hero) {
+      statusDiv.textContent = `Searching for opponent with ${hero}...`;
+      joinQueue(hero);
+    } else {
+      statusDiv.textContent = 'No hero selected! Please go back and select a hero.';
+    }
   </script>
 </body>
 </html>
