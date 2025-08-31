@@ -5,40 +5,45 @@
   <title>Odd Heroes - Matchmaking</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
     html, body {
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-      color: #0f0;
+      margin: 0; padding: 0;
+      background: #000; color: #0f0;
       font-family: 'Share Tech Mono', monospace;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
       height: 100vh;
       user-select: none;
     }
-
-    h1 { font-size: 2rem; margin-bottom: 1rem; text-shadow: 0 0 10px #0f0; text-align: center; }
-    #status { font-size: 1.5rem; margin: 1rem 0; text-shadow: 0 0 10px #0f0; }
-    #opponent-hero { font-size: 1.2rem; margin-top: 1rem; text-shadow: 0 0 10px #0f0; }
+    h1 { font-size: 2rem; margin-bottom: 1rem; text-shadow:0 0 10px #0f0; text-align:center; }
+    #status { font-size: 1.5rem; margin: 1rem 0; text-shadow:0 0 10px #0f0; }
+    #battle-log { font-size: 1.2rem; margin-top:1rem; text-shadow:0 0 10px #0f0; max-height: 200px; overflow-y: auto; width: 80%; }
+    .btn { margin:5px; padding:5px 10px; background:#0f0; color:#000; font-weight:bold; border-radius:5px; cursor:pointer; }
+    .btn:hover { background:#00ff00; }
   </style>
 </head>
 <body>
   <h1>Odd Heroes - Matchmaking</h1>
   <div id="status">Searching for opponent...</div>
-  <div id="opponent-hero"></div>
+  <div id="battle-log"></div>
+  <div id="controls" style="display:none;">
+    <button class="btn" onclick="sendMove('attack')">Attack</button>
+    <button class="btn" onclick="sendMove('defend')">Defend</button>
+  </div>
 
   <script>
+    const statusDiv = document.getElementById('status');
+    const battleLog = document.getElementById('battle-log');
+    const controlsDiv = document.getElementById('controls');
+
     const params = new URLSearchParams(window.location.search);
     const hero = params.get('hero') || 'Unknown Hero';
-    const statusDiv = document.getElementById('status');
-    const opponentDiv = document.getElementById('opponent-hero');
 
-    let playerId = null;
-    let gameId = null;
-    let interval = null;
+    let ws;
+
+    function log(msg) {
+      battleLog.innerHTML += `<div>${msg}</div>`;
+      battleLog.scrollTop = battleLog.scrollHeight;
+    }
 
     async function joinQueue() {
       try {
@@ -49,28 +54,51 @@
         });
         const data = await res.json();
 
-        if (data.status === 'matched') {
-          playerId = data.playerId;
-          gameId = data.gameId;
-          const opponentHero = data.opponentHero || 'Unknown';
-          statusDiv.textContent = 'Opponent Found!';
-          opponentDiv.textContent = `Opponent picked: ${opponentHero}`;
-          clearInterval(interval);
-
-          // Redirect to game page
-          window.location.href = `game.html?gameId=${gameId}&playerId=${playerId}&hero=${encodeURIComponent(hero)}`;
-        } else {
+        if (data.status === 'waiting') {
           statusDiv.textContent = 'Waiting for opponent...';
+          setTimeout(joinQueue, 2000); // retry every 2s
+        } else if (data.status === 'matched') {
+          statusDiv.textContent = 'Opponent found!';
+          log(`Opponent picked: ${data.opponentHero}`);
+          openGameWS(data.gameId);
         }
       } catch (err) {
-        console.error('Error connecting to server:', err);
         statusDiv.textContent = 'Error connecting to server.';
+        console.error('Error:', err);
+        setTimeout(joinQueue, 3000); // retry after error
       }
     }
 
-    // Start polling matchmaking every 2 seconds
-    interval = setInterval(joinQueue, 2000);
-    joinQueue(); // also call immediately
+    function openGameWS(gameId) {
+      ws = new WebSocket(`wss://matchmaking.oddheroesonline.workers.dev/game/${gameId}`);
+      ws.addEventListener('open', () => {
+        log('Connected to game server!');
+        controlsDiv.style.display = 'block';
+      });
+
+      ws.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        log(data.message);
+      });
+
+      ws.addEventListener('close', () => {
+        log('Connection closed.');
+        controlsDiv.style.display = 'none';
+      });
+
+      ws.addEventListener('error', (err) => {
+        log('WebSocket error.');
+        console.error(err);
+      });
+    }
+
+    function sendMove(move) {
+      if (!ws) return;
+      ws.send(JSON.stringify({ move }));
+      log(`You used: ${move}`);
+    }
+
+    joinQueue();
   </script>
 </body>
 </html>
