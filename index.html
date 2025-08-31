@@ -67,12 +67,11 @@
 
     .category-title.expanded::after {
       content: '▼';
-      transform: rotate(0deg);
     }
 
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(3, 1fr); /* Exactly 3 columns */
+      grid-template-columns: repeat(3, 1fr);
       gap: 15px;
       padding: 10px;
       background-color: #001100;
@@ -81,12 +80,12 @@
       max-height: 0;
       overflow: hidden;
       opacity: 0;
-      transition: max-height 0.3s ease, opacity 0.2s ease;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
       visibility: hidden;
     }
 
     .grid-container.expanded {
-      max-height: 500px; /* Adjust based on content height */
+      max-height: 500px;
       opacity: 1;
       visibility: visible;
     }
@@ -153,40 +152,14 @@
     }
 
     @media (max-width: 400px) {
-      h1 {
-        font-size: 2rem;
-      }
-
-      .category-title {
-        font-size: 1.5rem;
-        padding: 0.5rem 0.8rem;
-      }
-
-      .category-title::after {
-        font-size: 1.2rem;
-      }
-
-      .hero-tile {
-        font-size: 0.9rem;
-        min-height: 70px;
-      }
-
-      .hero-icon {
-        font-size: 1.5rem;
-      }
-
-      #selected-hero {
-        font-size: 1.2rem;
-      }
-
-      #start-button {
-        font-size: 1.1rem;
-        padding: 0.6rem 1.5rem;
-      }
-
-      .grid-container {
-        grid-template-columns: repeat(2, 1fr); /* Fallback to 2 columns on smaller screens */
-      }
+      h1 { font-size: 2rem; }
+      .category-title { font-size: 1.5rem; padding: 0.5rem 0.8rem; }
+      .category-title::after { font-size: 1.2rem; }
+      .hero-tile { font-size: 0.9rem; min-height: 70px; }
+      .hero-icon { font-size: 1.5rem; }
+      #selected-hero { font-size: 1.2rem; }
+      #start-button { font-size: 1.1rem; padding: 0.6rem 1.5rem; }
+      .grid-container { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -239,68 +212,46 @@
 
   <script>
     const categories = [
-      {
-        title: document.getElementById('legends-title'),
-        list: document.getElementById('legends-list')
-      },
-      {
-        title: document.getElementById('humans-title'),
-        list: document.getElementById('humans-list')
-      },
-      {
-        title: document.getElementById('creatures-title'),
-        list: document.getElementById('creatures-list')
-      },
-      {
-        title: document.getElementById('uniques-title'),
-        list: document.getElementById('uniques-list')
-      }
+      { title: document.getElementById('legends-title'), list: document.getElementById('legends-list') },
+      { title: document.getElementById('humans-title'), list: document.getElementById('humans-list') },
+      { title: document.getElementById('creatures-title'), list: document.getElementById('creatures-list') },
+      { title: document.getElementById('uniques-title'), list: document.getElementById('uniques-list') }
     ];
+
     const selectedHeroDiv = document.getElementById('selected-hero');
     const startButton = document.getElementById('start-button');
     let selectedHero = null;
 
-    // Ensure all categories are closed by default
-    categories.forEach(category => {
-      category.list.classList.remove('expanded');
-      category.title.classList.remove('expanded');
-    });
-
-    // Category toggle functionality
-    categories.forEach(category => {
-      category.title.addEventListener('click', () => {
-        const isExpanded = category.list.classList.contains('expanded');
-        // Collapse all categories
-        categories.forEach(c => {
-          c.list.classList.remove('expanded');
-          c.title.classList.remove('expanded');
-        });
-        // Toggle the clicked category
-        if (!isExpanded) {
-          category.list.classList.add('expanded');
-          category.title.classList.add('expanded');
+    // Toggle categories
+    categories.forEach(cat => {
+      cat.title.addEventListener('click', () => {
+        const expanded = cat.list.classList.contains('expanded');
+        categories.forEach(c => { c.list.classList.remove('expanded'); c.title.classList.remove('expanded'); });
+        if (!expanded) {
+          cat.list.classList.add('expanded');
+          cat.title.classList.add('expanded');
         }
       });
     });
 
-    // Hero selection functionality
-    categories.forEach(category => {
-      category.list.addEventListener('click', (e) => {
+    // Hero selection
+    categories.forEach(cat => {
+      cat.list.addEventListener('click', e => {
         const tile = e.target.closest('.hero-tile');
-        if (tile) {
-          // Remove 'selected' class from all tiles in all lists
-          categories.forEach(c => [...c.list.children].forEach(t => t.classList.remove('selected')));
-          tile.classList.add('selected');
-          selectedHero = tile.textContent.trim();
-          selectedHeroDiv.textContent = `You selected: ${selectedHero}`;
-          startButton.style.display = 'inline-block';
-        }
+        if (!tile) return;
+        categories.forEach(c => [...c.list.children].forEach(t => t.classList.remove('selected')));
+        tile.classList.add('selected');
+        selectedHero = tile.textContent.trim();
+        selectedHeroDiv.textContent = `You selected: ${selectedHero}`;
+        startButton.style.display = 'inline-block';
       });
     });
 
+    // Start button - redirect to matchmaking page
     startButton.addEventListener('click', () => {
-      alert(`Starting game with ${selectedHero}!`);
-      // Hook this up to your game logic later
+      if (!selectedHero) return;
+      // Pass selected hero via URL param
+      window.location.href = `matchmaking.html?hero=${encodeURIComponent(selectedHero)}`;
     });
   </script>
 </body>
