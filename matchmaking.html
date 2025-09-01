@@ -42,7 +42,7 @@
 </head>
 <body>
   <h2>Matchmaking...</h2>
-  <div id="status">Searching for opponent... <span class="spinner"></span></div>
+  <div id="status">Searching for opponent <span class="spinner"></span></div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
@@ -76,7 +76,7 @@
         if (data.status === 'matched' && data.url) {
           window.location.href = data.url;
         } else if (data.status === 'waiting') {
-          statusDiv.textContent = `Searching for opponent with ${hero}...`;
+          statusDiv.textContent = 'Searching for opponent';
           setTimeout(() => joinQueue(hero, sessionId), 3000);
         } else {
           statusDiv.textContent = `Error: ${data.message || 'Unknown error'}. Retrying...`;
@@ -98,7 +98,7 @@
     });
 
     if (hero && sessionId) {
-      statusDiv.textContent = `Searching for opponent with ${hero}...`;
+      statusDiv.textContent = 'Searching for opponent';
       joinQueue(hero, sessionId);
     } else {
       statusDiv.textContent = 'Missing hero or session ID! Please go back and select a hero.';
