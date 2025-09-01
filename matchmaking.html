@@ -59,7 +59,7 @@
         return;
       }
 
-      if (isPolling) return; // Prevent overlapping polls
+      if (isPolling) return;
       isPolling = true;
 
       try {
@@ -92,7 +92,6 @@
       }
     }
 
-    // Stop polling on page unload
     window.addEventListener('beforeunload', () => {
       isPolling = false;
     });
