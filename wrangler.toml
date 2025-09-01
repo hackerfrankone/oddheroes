@@ -8,4 +8,4 @@ bindings = [{ name = "MATCHMAKING_QUEUE", class_name = "MatchmakingQueue" }]
 
 [[migrations]]
 tag = "v1"
-new_classes = ["MatchmakingQueue"]
+new_sqlite_classes = ["MatchmakingQueue"]
