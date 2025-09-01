@@ -63,7 +63,6 @@
       isPolling = true;
 
       try {
-        // Replace with your actual Worker URL from Cloudflare dashboard if different
         const res = await fetch('https://matchmaking.oddheroesonline.workers.dev/find-match', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
