@@ -228,6 +228,7 @@
     const selectedHeroDiv = document.getElementById('selected-hero');
     const startButton = document.getElementById('start-button');
     let selectedHero = null;
+    const sessionId = crypto.randomUUID(); // Generate session ID once per page load
 
     // Disable start button by default
     startButton.disabled = true;
@@ -251,18 +252,18 @@
         if (!tile) return;
         categories.forEach(c => [...c.list.children].forEach(t => t.classList.remove('selected')));
         tile.classList.add('selected');
-        selectedHero = tile.textContent.trim();
+        // Extract only the hero name, excluding the emoji
+        selectedHero = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
         selectedHeroDiv.textContent = `You selected: ${selectedHero}`;
         startButton.style.display = 'inline-block';
-        startButton.disabled = false; // Enable button
+        startButton.disabled = false;
       });
     });
 
-    // Start button - redirect to matchmaking page
+    // Start button - redirect to matchmaking page with hero and sessionId
     startButton.addEventListener('click', () => {
       if (!selectedHero) return;
-      // Pass selected hero via URL param
-      window.location.href = `matchmaking.html?hero=${encodeURIComponent(selectedHero)}`;
+      window.location.href = `matchmaking.html?hero=${encodeURIComponent(selectedHero)}&sessionId=${encodeURIComponent(sessionId)}`;
     });
   </script>
 </body>
