@@ -63,7 +63,8 @@
       isPolling = true;
 
       try {
-        const res = await fetch('https://matchmaking.<your-account>.workers.dev/find-match', {
+        // Replace with your actual Worker URL from Cloudflare dashboard
+        const res = await fetch('https://matchmaking.oddheroesonline.workers.dev/find-match', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ hero, sessionId })
