@@ -10,8 +10,8 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const player1 = params.get('player1');
-    const player2 = params.get('player2');
+    const player1 = decodeURIComponent(params.get('player1'));
+    const player2 = decodeURIComponent(params.get('player2'));
     const gameId = params.get('gameId');
 
     document.getElementById('info').textContent =
