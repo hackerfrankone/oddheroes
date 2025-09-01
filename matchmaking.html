@@ -47,49 +47,61 @@
   <script>
     const params = new URLSearchParams(window.location.search);
     const hero = params.get('hero');
+    const sessionId = params.get('sessionId');
     const statusDiv = document.getElementById('status');
     const maxRetries = 10;
     let retryCount = 0;
+    let isPolling = false;
 
-    async function joinQueue(hero) {
+    async function joinQueue(hero, sessionId) {
       if (retryCount >= maxRetries) {
         statusDiv.textContent = 'Failed to find a match. Please try again later.';
         return;
       }
 
+      if (isPolling) return; // Prevent overlapping polls
+      isPolling = true;
+
       try {
         const res = await fetch('https://matchmaking.oddheroesonline.workers.dev/find-match', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ hero })
+          body: JSON.stringify({ hero, sessionId })
         });
 
         const data = await res.json();
         console.log('Queue response:', data);
+        isPolling = false;
 
         if (data.status === 'matched' && data.url) {
           window.location.href = data.url;
         } else if (data.status === 'waiting') {
-          statusDiv.textContent = 'Searching for opponent...';
-          setTimeout(() => joinQueue(hero), 3000); // Increased polling interval
+          statusDiv.textContent = `Searching for opponent with ${hero}...`;
+          setTimeout(() => joinQueue(hero, sessionId), 3000);
         } else {
           statusDiv.textContent = `Error: ${data.message || 'Unknown error'}. Retrying...`;
           retryCount++;
-          setTimeout(() => joinQueue(hero), 3000);
+          setTimeout(() => joinQueue(hero, sessionId), 3000);
         }
       } catch (err) {
         console.error('Matchmaking error:', err);
         statusDiv.textContent = 'Error connecting to server. Retrying...';
+        isPolling = false;
         retryCount++;
-        setTimeout(() => joinQueue(hero), 3000);
+        setTimeout(() => joinQueue(hero, sessionId), 3000);
       }
     }
 
-    if (hero) {
+    // Stop polling on page unload
+    window.addEventListener('beforeunload', () => {
+      isPolling = false;
+    });
+
+    if (hero && sessionId) {
       statusDiv.textContent = `Searching for opponent with ${hero}...`;
-      joinQueue(hero);
+      joinQueue(hero, sessionId);
     } else {
-      statusDiv.textContent = 'No hero selected! Please go back and select a hero.';
+      statusDiv.textContent = 'Missing hero or session ID! Please go back and select a hero.';
     }
   </script>
 </body>
