@@ -1,0 +1,6 @@
+name = "matchmaking"
+main = "index.js"
+compatibility_date = "2025-08-31"
+
+[durable_objects]
+bindings = [{ name = "MATCHMAKING_QUEUE", class_name = "MatchmakingQueue" }]
