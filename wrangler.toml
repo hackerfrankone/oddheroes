@@ -1,6 +1,7 @@
 name = "matchmaking"
-main = "index.js"
+account_id = "312be46039aca8bf23a26050451a3bda"
+main = "matchmaking.js"
 compatibility_date = "2025-08-31"
 
 [durable_objects]
-bindings = [{ name = "MATCHMAKING_QUEUE", class_name = "MatchmakingQueue" }] 
+bindings = [{ name = "MATCHMAKING_QUEUE", class_name = "MatchmakingQueue" }]
