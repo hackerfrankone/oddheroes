@@ -44,64 +44,66 @@
   <h2>Matchmaking...</h2>
   <div id="status">Searching for opponent <span class="spinner"></span></div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const hero = params.get('hero');
-    const sessionId = params.get('sessionId');
-    const statusDiv = document.getElementById('status');
-    const maxRetries = 10;
-    let retryCount = 0;
-    let isPolling = false;
+<script>
+const params = new URLSearchParams(window.location.search);
+const hero = params.get('hero');
+const sessionId = params.get('sessionId');
+const statusDiv = document.getElementById('status');
+const maxRetries = 10;
+let retryCount = 0;
+let isPolling = false;
 
-    async function joinQueue(hero, sessionId) {
-      if (retryCount >= maxRetries) {
-        statusDiv.textContent = 'Failed to find a match. Please try again later.';
-        return;
-      }
+async function joinQueue(hero, sessionId) {
+  if (retryCount >= maxRetries) {
+    statusDiv.textContent = 'Failed to find a match. Please try again later.';
+    return;
+  }
 
-      if (isPolling) return;
-      isPolling = true;
+  if (isPolling) return;
+  isPolling = true;
 
-      try {
-        const res = await fetch('https://matchmaking.oddheroesonline.workers.dev/find-match', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ hero, sessionId })
-        });
-
-        const data = await res.json();
-        console.log('Queue response:', data);
-        isPolling = false;
-
-        if (data.status === 'matched' && data.url) {
-          window.location.href = data.url;
-        } else if (data.status === 'waiting') {
-          statusDiv.textContent = 'Searching for opponent';
-          setTimeout(() => joinQueue(hero, sessionId), 3000);
-        } else {
-          statusDiv.textContent = `Error: ${data.message || 'Unknown error'}. Retrying...`;
-          retryCount++;
-          setTimeout(() => joinQueue(hero, sessionId), 3000);
-        }
-      } catch (err) {
-        console.error('Matchmaking error:', err);
-        statusDiv.textContent = 'Error connecting to server. Retrying...';
-        isPolling = false;
-        retryCount++;
-        setTimeout(() => joinQueue(hero, sessionId), 3000);
-      }
-    }
-
-    window.addEventListener('beforeunload', () => {
-      isPolling = false;
+  try {
+    const res = await fetch('https://matchmaking.oddheroesonline.workers.dev/find-match', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hero, sessionId })
     });
 
-    if (hero && sessionId) {
+    const data = await res.json();
+    console.log('Queue response:', data);
+    isPolling = false;
+
+    if (data.status === 'matched' && data.url) {
+      // Redirect automatically when match found
+      window.location.href = data.url;
+    } else if (data.status === 'waiting') {
       statusDiv.textContent = 'Searching for opponent';
-      joinQueue(hero, sessionId);
+      setTimeout(() => joinQueue(hero, sessionId), 3000);
     } else {
-      statusDiv.textContent = 'Missing hero or session ID! Please go back and select a hero.';
+      statusDiv.textContent = `Error: ${data.message || 'Unknown error'}. Retrying...`;
+      retryCount++;
+      setTimeout(() => joinQueue(hero, sessionId), 3000);
     }
-  </script>
+  } catch (err) {
+    console.error('Matchmaking error:', err);
+    statusDiv.textContent = 'Error connecting to server. Retrying...';
+    isPolling = false;
+    retryCount++;
+    setTimeout(() => joinQueue(hero, sessionId), 3000);
+  }
+}
+
+window.addEventListener('beforeunload', () => {
+  isPolling = false;
+});
+
+if (hero && sessionId) {
+  statusDiv.textContent = 'Searching for opponent';
+  joinQueue(hero, sessionId);
+} else {
+  statusDiv.textContent = 'Missing hero or session ID! Please go back and select a hero.';
+}
+</script>
+
 </body>
 </html>
