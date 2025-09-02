@@ -1,11 +1,12 @@
 name = "matchmaking"
 account_id = "312be46039aca8bf23a26050451a3bda"
-main = "matchmaking.js"
+main = "src/index.js"
 compatibility_date = "2025-08-31"
 
-[durable_objects]
-bindings = [{ name = "MATCHMAKING_QUEUE", class_name = "MatchmakingQueue" }]
+[[durable_objects.bindings]]
+name = "MATCHMAKING_QUEUE"
+class_name = "MatchmakingQueue"
 
 [[migrations]]
 tag = "v1"
-new_sqlite_classes = ["MatchmakingQueue"]
+new_classes = ["MatchmakingQueue"]
