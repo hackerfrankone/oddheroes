@@ -3,19 +3,162 @@
 <head>
   <meta charset="UTF-8">
   <title>Odd Heroes Battle</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      font-family: 'Share Tech Mono', monospace;
+      color: #0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    canvas {
+      border: 2px solid #0f0;
+      background-color: #001100;
+      box-shadow: 0 0 15px #0f0;
+    }
+    #turn-info {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      text-shadow: 0 0 10px #0f0;
+    }
+    #chat {
+      margin-top: 1rem;
+      width: 300px;
+      height: 100px;
+      background: #003300;
+      border: 1px solid #0f0;
+      padding: 0.5rem;
+      overflow-y: auto;
+    }
+  </style>
 </head>
 <body>
-  <h1>1v1 Battle</h1>
-  <div id="info"></div>
+  <h1>Odd Heroes Battle</h1>
+  <canvas id="game-canvas" width="800" height="400"></canvas>
+  <div id="turn-info">Loading game...</div>
+  <div id="chat"></div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const player1 = decodeURIComponent(params.get('player1'));
-    const player2 = decodeURIComponent(params.get('player2'));
-    const gameId = params.get('gameId');
+    const player1Hero = decodeURIComponent(params.get('player1'));
+    const player2Hero = decodeURIComponent(params.get('player2'));
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+    const tileSize = 50;
 
-    document.getElementById('info').textContent =
-      `Game ID: ${gameId} | Player 1: ${player1} vs Player 2: ${player2}`;
+    // Hero positions (initially unset, to be placed on squares)
+    let player1Pos = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }]; // 3 heroes for Player 1
+    let player2Pos = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }]; // 3 heroes for Player 2
+    let currentTurn = 'player1'; // Alternate turns
+    let myPlayer = Math.random() > 0.5 ? 'player1' : 'player2'; // For demo; assign based on session later
+    let moveCount = 0; // Track total moves for future use
+
+    // Hero icons (from index.html)
+    const heroIcons = {
+      'Big-Foot': '🦶',
+      'Dinosaur': '🥚',
+      'Dragon': '🐉',
+      'Ghost': '👻',
+      'Warrior': '🛡️',
+      'Wizard': '🧙‍♂️',
+      'Hunter': '🏹',
+      'Vampire': '🧛',
+      'Werewolf': '🐺',
+      'Merfolk': '🧜‍♂️',
+      'Fisherman': '🎣',
+      'Chameleon': '🦎',
+      'Mole': '🐹',
+      'Duck': '🦢',
+      'Germ': '🦠',
+      'Plants': '🌱',
+      'AI': '🤖',
+      'Tank': '🪖'
+    };
+
+    // Draw the scene with two lakes and 6 identical placement squares per player
+    function drawScene() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Entire arena as darker grass
+      ctx.fillStyle = '#006600'; // Darker green
+      ctx.fillRect(0, 0, 800, 400);
+
+      // Top lake
+      ctx.fillStyle = '#0000ff';
+      ctx.fillRect(250, 0, 300, 100);
+
+      // Bottom lake
+      ctx.fillStyle = '#0000ff';
+      ctx.fillRect(250, 300, 300, 100);
+
+      // Trees
+      ctx.fillStyle = '#228B22';
+      ctx.fillRect(50, 150, 30, 30); // Left tree top
+      ctx.fillStyle = '#8B4513';
+      ctx.fillRect(60, 180, 10, 50); // Left tree trunk
+      ctx.fillStyle = '#228B22';
+      ctx.fillRect(700, 150, 30, 30); // Right tree top
+      ctx.fillStyle = '#8B4513';
+      ctx.fillRect(710, 180, 10, 50); // Right tree trunk
+
+      // Player 1 placement squares (middle-left, 6 squares)
+      ctx.fillStyle = '#ff0000';
+      for (let i = 0; i < 6; i++) {
+        ctx.fillRect(100 + (i % 3) * 50, 150 + Math.floor(i / 3) * 50, 40, 40); // 3x2 grid
+      }
+
+      // Player 2 placement squares (middle-right, 6 squares, mirrored)
+      ctx.fillStyle = '#ff0000';
+      for (let i = 0; i < 6; i++) {
+        ctx.fillRect(660 - (i % 3) * 50, 150 + Math.floor(i / 3) * 50, 40, 40); // Mirrored 3x2 grid, starting at 660
+      }
+
+      // Draw heroes (initially unset, to be placed later)
+      ctx.font = '30px Arial';
+      ctx.fillStyle = '#0f0';
+      for (let i = 0; i < 3; i++) {
+        if (player1Pos[i].x !== 0 || player1Pos[i].y !== 0) {
+          ctx.fillText(heroIcons[player1Hero] || 'P1', player1Pos[i].x, player1Pos[i].y);
+        }
+        if (player2Pos[i].x !== 0 || player2Pos[i].y !== 0) {
+          ctx.fillText(heroIcons[player2Hero] || 'P2', player2Pos[i].x, player2Pos[i].y);
+        }
+      }
+    }
+
+    drawScene();
+
+    // Handle clicks for movement (avoiding both lakes)
+    canvas.addEventListener('click', (e) => {
+      if (currentTurn !== myPlayer) return; // Not your turn
+      const rect = canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+
+      // Define walkable areas (entire canvas except both lakes)
+      const isOnGrass = !( (clickX >= 250 && clickX <= 550 && clickY >= 0 && clickY <= 100) || // Top lake
+                          (clickX >= 250 && clickX <= 550 && clickY >= 300 && clickY <= 400) ); // Bottom lake
+
+      if (Math.abs(clickX - player1Pos[0].x) < 70 && Math.abs(clickY - player1Pos[0].y) < 70 && // Adjacent for demo
+          clickX >= 0 && clickX <= 800 && clickY >= 0 && clickY <= 400 && // Within bounds
+          isOnGrass) { // Not on lakes
+        if (myPlayer === 'player1') player1Pos[0] = { x: clickX, y: clickY };
+        else player2Pos[0] = { x: clickX, y: clickY };
+        drawScene();
+        currentTurn = currentTurn === 'player1' ? 'player2' : 'player1';
+        moveCount++; // Increment move count
+        document.getElementById('turn-info').textContent = `Turn: ${currentTurn === myPlayer ? 'Your turn' : 'Opponent\'s turn'} | Moves: ${moveCount}`;
+        // TODO: Add placement logic for all 3 heroes per player
+      }
+    });
+
+    // Initial turn info
+    document.getElementById('turn-info').textContent = `Turn: ${myPlayer === 'player1' ? 'Your turn' : 'Opponent\'s turn'} | Moves: ${moveCount}`;
   </script>
 </body>
 </html>
