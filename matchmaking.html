@@ -45,62 +45,16 @@
 <script>
 const params = new URLSearchParams(window.location.search);
 const hero = params.get('hero');
-const statusDiv = document.getElementById('status');
-const maxRetries = 30;
-let retryCount = 0;
-let isPolling = false;
 
-// Ensure each browser tab has a unique session ID
-let sessionId = sessionStorage.getItem('sessionId');
-if (!sessionId) {
-  sessionId = crypto.randomUUID();
-  sessionStorage.setItem('sessionId', sessionId);
-}
-
-async function joinQueue(hero, sessionId) {
-  if (retryCount >= maxRetries) {
-    statusDiv.textContent = 'Failed to find a match. Please try again later.';
-    return;
-  }
-
-  if (isPolling) return;
-  isPolling = true;
-
-  try {
-    const res = await fetch('https://cfmatchmaking.familyfishingfun2025.workers.dev/find-match', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ hero, sessionId })
-    });
-
-    const data = await res.json();
-    console.log('Queue response:', data);
-    isPolling = false;
-
-    if (data.status === 'matched' && data.url) {
-      window.location.href = data.url;
-    } else {
-      statusDiv.textContent = data.message || 'Searching for opponent';
-      retryCount++;
-      setTimeout(() => joinQueue(hero, sessionId), 3000);
-    }
-  } catch (err) {
-    console.error('Matchmaking error:', err);
-    statusDiv.textContent = 'Error connecting to server. Retrying...';
-    isPolling = false;
-    retryCount++;
-    setTimeout(() => joinQueue(hero, sessionId), 3000);
-  }
-}
-
-window.addEventListener('beforeunload', () => { isPolling = false; });
-
-if (hero && sessionId) {
-  joinQueue(hero, sessionId);
+if (!hero) {
+  document.getElementById('status').textContent = 'Please select a hero first.';
 } else {
-  statusDiv.textContent = 'Missing hero or session ID! Please go back and select a hero.';
+  // Keep showing spinner, no automatic redirect
+  document.getElementById('status').textContent = 'Searching for opponent ';
+  const spinner = document.createElement('span');
+  spinner.className = 'spinner';
+  document.getElementById('status').appendChild(spinner);
 }
 </script>
-
 </body>
 </html>
