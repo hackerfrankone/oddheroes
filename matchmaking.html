@@ -35,7 +35,9 @@
       animation: spin 1s linear infinite;
       margin-left: 10px;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -44,17 +46,63 @@
 
 <script>
 const params = new URLSearchParams(window.location.search);
-const hero = params.get('hero');
+const hero = params.get('hero') || 'UnknownHero';
+let sessionId = params.get('sessionId');
 
-if (!hero) {
-  document.getElementById('status').textContent = 'Please select a hero first.';
-} else {
-  // Keep showing spinner, no automatic redirect
-  document.getElementById('status').textContent = 'Searching for opponent ';
-  const spinner = document.createElement('span');
-  spinner.className = 'spinner';
-  document.getElementById('status').appendChild(spinner);
+if (!sessionId) {
+  sessionId = crypto.randomUUID(); // create unique session ID
+  const newUrl = new URL(window.location.href);
+  newUrl.searchParams.set('sessionId', sessionId);
+  window.history.replaceState({}, '', newUrl);
 }
+
+const statusDiv = document.getElementById('status');
+const maxRetries = 9999; // essentially keep polling
+let retryCount = 0;
+let isPolling = false;
+
+async function joinQueue(hero, sessionId) {
+  if (retryCount >= maxRetries) {
+    statusDiv.textContent = 'Failed to find a match. Please try again later.';
+    return;
+  }
+
+  if (isPolling) return;
+  isPolling = true;
+
+  try {
+    const res = await fetch('https://cfmatchmaking.familyfishingfun2025.workers.dev/find-match', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hero, sessionId })
+    });
+
+    const data = await res.json();
+    isPolling = false;
+
+    if (data.status === 'matched' && data.url) {
+      // Redirect automatically when match found
+      window.location.href = data.url;
+    } else {
+      statusDiv.textContent = 'Searching for opponent';
+      retryCount++;
+      setTimeout(() => joinQueue(hero, sessionId), 3000);
+    }
+  } catch (err) {
+    console.error('Matchmaking error:', err);
+    statusDiv.textContent = 'Error connecting to server. Retrying...';
+    isPolling = false;
+    retryCount++;
+    setTimeout(() => joinQueue(hero, sessionId), 3000);
+  }
+}
+
+window.addEventListener('beforeunload', () => {
+  isPolling = false;
+});
+
+statusDiv.textContent = 'Searching for opponent';
+joinQueue(hero, sessionId);
 </script>
 </body>
 </html>
