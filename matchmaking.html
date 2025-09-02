@@ -46,18 +46,10 @@
 
 <script>
 const params = new URLSearchParams(window.location.search);
-const hero = params.get('hero') || 'UnknownHero';
-let sessionId = params.get('sessionId');
-
-if (!sessionId) {
-  sessionId = crypto.randomUUID(); // create unique session ID
-  const newUrl = new URL(window.location.href);
-  newUrl.searchParams.set('sessionId', sessionId);
-  window.history.replaceState({}, '', newUrl);
-}
-
+const hero = params.get('hero');
+const sessionId = params.get('sessionId');
 const statusDiv = document.getElementById('status');
-const maxRetries = 9999; // essentially keep polling
+const maxRetries = 10;
 let retryCount = 0;
 let isPolling = false;
 
@@ -78,19 +70,23 @@ async function joinQueue(hero, sessionId) {
     });
 
     const data = await res.json();
+    console.log('Queue response:', data);
     isPolling = false;
 
     if (data.status === 'matched' && data.url) {
       // Redirect automatically when match found
       window.location.href = data.url;
+    } else if (data.status === 'waiting') {
+      statusDiv.innerHTML = 'Searching for opponent <span class="spinner"></span>';
+      setTimeout(() => joinQueue(hero, sessionId), 3000);
     } else {
-      statusDiv.textContent = 'Searching for opponent';
+      statusDiv.textContent = `Error: ${data.message || 'Unknown error'}. Retrying...`;
       retryCount++;
       setTimeout(() => joinQueue(hero, sessionId), 3000);
     }
   } catch (err) {
     console.error('Matchmaking error:', err);
-    statusDiv.textContent = 'Error connecting to server. Retrying...';
+    statusDiv.innerHTML = 'Error connecting to server. Retrying... <span class="spinner"></span>';
     isPolling = false;
     retryCount++;
     setTimeout(() => joinQueue(hero, sessionId), 3000);
@@ -101,8 +97,13 @@ window.addEventListener('beforeunload', () => {
   isPolling = false;
 });
 
-statusDiv.textContent = 'Searching for opponent';
-joinQueue(hero, sessionId);
+if (hero && sessionId) {
+  statusDiv.innerHTML = 'Searching for opponent <span class="spinner"></span>';
+  joinQueue(hero, sessionId);
+} else {
+  statusDiv.textContent = 'Missing hero or session ID! Please go back and select a hero.';
+}
 </script>
+
 </body>
 </html>
