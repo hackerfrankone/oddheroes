@@ -4,55 +4,71 @@
   <meta charset="UTF-8">
   <title>Odd Heroes Battle</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-      font-family: 'Share Tech Mono', monospace;
-      color: #0f0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
+    body { margin: 0; padding: 0; background-color: #000; font-family: 'Share Tech Mono', monospace; color: #0f0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
     canvas { border: 2px solid #0f0; background-color: #001100; box-shadow: 0 0 15px #0f0; }
     #turn-info { margin-top: 1rem; font-size: 1.2rem; text-shadow: 0 0 10px #0f0; }
+    #chat { margin-top: 1rem; width: 300px; height: 100px; background: #003300; border: 1px solid #0f0; padding: 0.5rem; overflow-y: auto; }
   </style>
 </head>
 <body>
   <h1>Odd Heroes Battle</h1>
   <canvas id="game-canvas" width="800" height="400"></canvas>
-  <div id="turn-info"></div>
+  <div id="turn-info">Loading game...</div>
+  <div id="chat"></div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const player1Hero = decodeURIComponent(params.get('player1'));
-    const player2Hero = decodeURIComponent(params.get('player2'));
-    const gameId = params.get('gameId');
+<script>
+const params = new URLSearchParams(window.location.search);
+const player1Hero = decodeURIComponent(params.get('player1'));
+const player2Hero = decodeURIComponent(params.get('player2'));
+const canvas = document.getElementById('game-canvas');
+const ctx = canvas.getContext('2d');
 
-    const canvas = document.getElementById('game-canvas');
-    const ctx = canvas.getContext('2d');
-    const heroIcons = {
-      'Big-Foot':'🦶','Dinosaur':'🥚','Dragon':'🐉','Ghost':'👻','Warrior':'🛡️','Wizard':'🧙‍♂️',
-      'Hunter':'🏹','Vampire':'🧛','Werewolf':'🐺','Merfolk':'🧜‍♂️','Fisherman':'🎣','Chameleon':'🦎',
-      'Mole':'🐹','Duck':'🦢','Germ':'🦠','Plants':'🌱','AI':'🤖','Tank':'🪖'
-    };
+const heroIcons = {
+  'Big-Foot': '🦶','Dinosaur': '🥚','Dragon': '🐉','Ghost': '👻','Warrior': '🛡️','Wizard': '🧙‍♂️','Hunter': '🏹','Vampire': '🧛','Werewolf': '🐺','Merfolk': '🧜‍♂️','Fisherman': '🎣','Chameleon': '🦎','Mole': '🐹','Duck': '🦢','Germ': '🦠','Plants': '🌱','AI': '🤖','Tank': '🪖'
+};
 
-    function drawScene() {
-      ctx.clearRect(0,0,800,400);
-      ctx.fillStyle='#006600'; ctx.fillRect(0,0,800,400);
-      ctx.fillStyle='#0000ff'; ctx.fillRect(250,0,300,100); ctx.fillRect(250,300,300,100);
-      ctx.fillStyle='#ff0000'; for(let i=0;i<6;i++) ctx.fillRect(100+(i%3)*50,150+Math.floor(i/3)*50,40,40);
-      for(let i=0;i<6;i++) ctx.fillRect(660-(i%3)*50,150+Math.floor(i/3)*50,40,40);
+let player1Pos = [{x:0,y:0},{x:0,y:0},{x:0,y:0}];
+let player2Pos = [{x:0,y:0},{x:0,y:0},{x:0,y:0}];
+let currentTurn = 'player1';
+let myPlayer = Math.random() > 0.5 ? 'player1' : 'player2';
+let moveCount = 0;
 
-      ctx.font='30px Arial'; ctx.fillStyle='#0f0';
-      ctx.fillText(heroIcons[player1Hero]||'P1',120,180);
-      ctx.fillText(heroIcons[player2Hero]||'P2',620,180);
-    }
+function drawScene() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='#006600'; ctx.fillRect(0,0,800,400);
+  ctx.fillStyle='#0000ff'; ctx.fillRect(250,0,300,100); ctx.fillRect(250,300,300,100);
+  ctx.fillStyle='#228B22'; ctx.fillRect(50,150,30,30);
+  ctx.fillStyle='#8B4513'; ctx.fillRect(60,180,10,50);
+  ctx.fillStyle='#228B22'; ctx.fillRect(700,150,30,30);
+  ctx.fillStyle='#8B4513'; ctx.fillRect(710,180,10,50);
 
+  ctx.fillStyle='#ff0000';
+  for(let i=0;i<6;i++){ctx.fillRect(100+(i%3)*50,150+Math.floor(i/3)*50,40,40);}
+  for(let i=0;i<6;i++){ctx.fillRect(660-(i%3)*50,150+Math.floor(i/3)*50,40,40);}
+
+  ctx.font='30px Arial'; ctx.fillStyle='#0f0';
+  for(let i=0;i<3;i++){
+    if(player1Pos[i].x||player1Pos[i].y) ctx.fillText(heroIcons[player1Hero]||'P1',player1Pos[i].x,player1Pos[i].y);
+    if(player2Pos[i].x||player2Pos[i].y) ctx.fillText(heroIcons[player2Hero]||'P2',player2Pos[i].x,player2Pos[i].y);
+  }
+}
+drawScene();
+canvas.addEventListener('click',e=>{
+  if(currentTurn!==myPlayer) return;
+  const rect=canvas.getBoundingClientRect();
+  const clickX=e.clientX-rect.left;
+  const clickY=e.clientY-rect.top;
+  const isOnGrass=!((clickX>=250&&clickX<=550&&clickY>=0&&clickY<=100)||(clickX>=250&&clickX<=550&&clickY>=300&&clickY<=400));
+  if(clickX>=0&&clickX<=800&&clickY>=0&&clickY<=400&&isOnGrass){
+    if(myPlayer==='player1') player1Pos[0]={x:clickX,y:clickY};
+    else player2Pos[0]={x:clickX,y:clickY};
     drawScene();
-    document.getElementById('turn-info').textContent = `Game ID: ${gameId} | Player 1: ${player1Hero}, Player 2: ${player2Hero}`;
-  </script>
+    currentTurn=currentTurn==='player1'?'player2':'player1';
+    moveCount++;
+    document.getElementById('turn-info').textContent=`Turn: ${currentTurn===myPlayer?'Your turn':'Opponent\'s turn'} | Moves: ${moveCount}`;
+  }
+});
+document.getElementById('turn-info').textContent=`Turn: ${myPlayer==='player1'?'Your turn':'Opponent\'s turn'} | Moves: ${moveCount}`;
+</script>
 </body>
 </html>
