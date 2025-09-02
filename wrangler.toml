@@ -1,4 +1,4 @@
-name = "matchmaking"
+name = "cfmatchmaking"
 account_id = "312be46039aca8bf23a26050451a3bda"
 main = "src/index.js"
 compatibility_date = "2025-08-31"
