@@ -16,15 +16,8 @@
       align-items: center;
       min-height: 100vh;
     }
-    h2 {
-      font-size: 2rem;
-      text-shadow: 0 0 10px #0f0;
-    }
-    #status {
-      font-size: 1.2rem;
-      margin-top: 1rem;
-      text-align: center;
-    }
+    h2 { font-size: 2rem; text-shadow: 0 0 10px #0f0; }
+    #status { font-size: 1.2rem; margin-top: 1rem; text-align: center; }
     .spinner {
       display: inline-block;
       width: 20px;
@@ -35,75 +28,57 @@
       animation: spin 1s linear infinite;
       margin-left: 10px;
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
   <h2>Matchmaking...</h2>
   <div id="status">Searching for opponent <span class="spinner"></span></div>
 
-<script>
-const params = new URLSearchParams(window.location.search);
-const hero = params.get('hero');
-const sessionId = params.get('sessionId');
-const statusDiv = document.getElementById('status');
-const maxRetries = 10;
-let retryCount = 0;
-let isPolling = false;
+  <script>
+    // ✅ Update to your deployed worker URL
+    const WORKER_URL = 'https://cfmatchmaking.familyfishingfun2025.workers.dev/find-match';
 
-async function joinQueue(hero, sessionId) {
-  if (retryCount >= maxRetries) {
-    statusDiv.textContent = 'Failed to find a match. Please try again later.';
-    return;
-  }
+    const params = new URLSearchParams(window.location.search);
+    const hero = params.get('hero');
+    const sessionId = params.get('sessionId') || crypto.randomUUID();
+    const statusDiv = document.getElementById('status');
+    let retryCount = 0, maxRetries = 20, isPolling = false;
 
-  if (isPolling) return;
-  isPolling = true;
+    async function joinQueue() {
+      if (retryCount >= maxRetries) {
+        statusDiv.textContent = 'Failed to find a match. Please try again later.';
+        return;
+      }
+      if (isPolling) return;
+      isPolling = true;
+      try {
+        const res = await fetch(WORKER_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ hero, sessionId })
+        });
+        const data = await res.json();
+        isPolling = false;
 
-  try {
-    const res = await fetch('https://matchmaking.oddheroesonline.workers.dev/find-match', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ hero, sessionId })
-    });
-
-    const data = await res.json();
-    console.log('Queue response:', data);
-    isPolling = false;
-
-    if (data.status === 'matched' && data.url) {
-      // Redirect automatically when match found
-      window.location.href = data.url;
-    } else if (data.status === 'waiting') {
-      statusDiv.textContent = 'Searching for opponent';
-      setTimeout(() => joinQueue(hero, sessionId), 3000);
-    } else {
-      statusDiv.textContent = `Error: ${data.message || 'Unknown error'}. Retrying...`;
-      retryCount++;
-      setTimeout(() => joinQueue(hero, sessionId), 3000);
+        if (data.status === 'matched' && data.url) {
+          statusDiv.textContent = 'Match found! Redirecting...';
+          window.location.href = data.url;
+        } else {
+          retryCount++;
+          statusDiv.textContent = 'Waiting for opponent...';
+          setTimeout(joinQueue, 3000);
+        }
+      } catch (err) {
+        console.error('Matchmaking error:', err);
+        isPolling = false;
+        retryCount++;
+        setTimeout(joinQueue, 3000);
+      }
     }
-  } catch (err) {
-    console.error('Matchmaking error:', err);
-    statusDiv.textContent = 'Error connecting to server. Retrying...';
-    isPolling = false;
-    retryCount++;
-    setTimeout(() => joinQueue(hero, sessionId), 3000);
-  }
-}
 
-window.addEventListener('beforeunload', () => {
-  isPolling = false;
-});
-
-if (hero && sessionId) {
-  statusDiv.textContent = 'Searching for opponent';
-  joinQueue(hero, sessionId);
-} else {
-  statusDiv.textContent = 'Missing hero or session ID! Please go back and select a hero.';
-}
-</script>
-
+    if (hero) joinQueue();
+    else statusDiv.textContent = 'Missing hero! Go back and select one.';
+  </script>
 </body>
 </html>
