@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
   <meta charset="UTF-8" />
   <title>Odd Heroes</title>
   <link rel="icon" type="image/png" href="oddheroes/images/OHO.png" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
     html, body {
       margin: 0;
       padding: 0;
@@ -21,20 +20,17 @@
       min-height: 100vh;
       user-select: none;
     }
-
     h1 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
       text-shadow: 0 0 10px #0f0;
       text-align: center;
     }
-
     .category-container {
       width: 90%;
       max-width: 500px;
       margin-bottom: 1rem;
     }
-
     .category-title {
       font-size: 1.8rem;
       margin: 0.5rem 0;
@@ -53,23 +49,19 @@
       position: relative;
       overflow: hidden;
     }
-
     .category-title:hover {
       box-shadow: 0 0 20px #0f0, 0 0 30px #0f0;
       background: linear-gradient(to bottom, #005500, #003300);
     }
-
     .category-title::after {
       content: '▶';
       font-size: 1.5rem;
       text-shadow: 0 0 5px #0f0;
       transition: transform 0.3s ease;
     }
-
     .category-title.expanded::after {
       content: '▼';
     }
-
     .grid-container {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -83,14 +75,15 @@
       opacity: 0;
       transition: max-height 0.3s ease, opacity 0.3s ease;
       visibility: hidden;
+      max-width: 460px;
+      width: 100%;
+      box-sizing: border-box;
     }
-
     .grid-container.expanded {
       max-height: 500px;
       opacity: 1;
       visibility: visible;
     }
-
     .hero-tile {
       background-color: #003300;
       border: 2px solid #0f0;
@@ -105,33 +98,52 @@
       align-items: center;
       padding: 0.5rem;
       min-height: 80px;
+      position: relative;
     }
-
     .hero-tile:hover {
       background-color: #005500;
       box-shadow: 0 0 15px #0f0, 0 0 30px #0f0;
     }
-
     .hero-tile.selected {
       background-color: #00ff00;
       color: #000;
       box-shadow: 0 0 25px #00ff00, 0 0 40px #00ff00;
       font-weight: bold;
     }
-
+    .hero-tile.selected .hero-points {
+      color: #0f0;
+      border: 1px solid #000;
+      background-color: #000;
+    }
     .hero-icon {
       font-size: 1.8rem;
       margin-bottom: 0.3rem;
+      position: relative;
     }
-
-    #selected-hero {
-      margin-top: 1.5rem;
+    .hero-points {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      font-size: 0.8rem;
+      background-color: #000;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #0f0;
+      color: #0f0;
+    }
+    #hero-points {
+      margin-top: 1rem;
       font-size: 1.5rem;
+      text-shadow: 0 0 10px #0f0;
+      text-align: center;
+    }
+    #selected-heroes {
+      margin-top: 0.5rem;
+      font-size: 1.3rem;
       text-shadow: 0 0 10px #0f0;
       min-height: 2rem;
       text-align: center;
     }
-
     #start-button {
       margin: 1.5rem 0;
       padding: 0.8rem 2rem;
@@ -146,78 +158,72 @@
       display: none;
       transition: background-color 0.3s ease;
     }
-
     #start-button:hover {
       background-color: #00ff00;
       box-shadow: 0 0 20px #00ff00;
     }
-
     #start-button:disabled {
       background-color: #555;
       cursor: not-allowed;
       box-shadow: none;
     }
-
     @media (max-width: 400px) {
       h1 { font-size: 2rem; }
       .category-title { font-size: 1.5rem; padding: 0.5rem 0.8rem; }
       .category-title::after { font-size: 1.2rem; }
       .hero-tile { font-size: 0.9rem; min-height: 70px; }
       .hero-icon { font-size: 1.5rem; }
-      #selected-hero { font-size: 1.2rem; }
+      .hero-points { font-size: 0.7rem; padding: 1px 4px; }
+      .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
+      #hero-points { font-size: 1.3rem; }
+      #selected-heroes { font-size: 1.1rem; }
       #start-button { font-size: 1.1rem; padding: 0.6rem 1.5rem; }
-      .grid-container { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
-  <h1>Pick A Odd Hero</h1>
-
+  <h1>Pick Your Odd Heroes</h1>
+  <div id="hero-points">Hero Points: 10</div>
   <div class="category-container">
     <div class="category-title" id="legends-title">Legends</div>
     <div class="grid-container" id="legends-list">
-      <div class="hero-tile"><div class="hero-icon">🦶</div>Big-Foot</div>
-      <div class="hero-tile"><div class="hero-icon">🥚</div>Dinosaur</div>
-      <div class="hero-tile"><div class="hero-icon">🐉</div>Dragon</div>
-      <div class="hero-tile"><div class="hero-icon">👻</div>Ghost</div>
+      <div class="hero-tile" data-points="5"><div class="hero-icon">🦶<span class="hero-points">5</span></div>Big-Foot</div>
+      <div class="hero-tile" data-points="5"><div class="hero-icon">🥚<span class="hero-points">5</span></div>Dinosaur</div>
+      <div class="hero-tile" data-points="5"><div class="hero-icon">🐉<span class="hero-points">5</span></div>Dragon</div>
+      <div class="hero-tile" data-points="5"><div class="hero-icon">👻<span class="hero-points">5</span></div>Ghost</div>
     </div>
   </div>
-
   <div class="category-container">
     <div class="category-title" id="humans-title">Humans</div>
     <div class="grid-container" id="humans-list">
-      <div class="hero-tile"><div class="hero-icon">🛡️</div>Warrior</div>
-      <div class="hero-tile"><div class="hero-icon">🧙‍♂️</div>Wizard</div>
-      <div class="hero-tile"><div class="hero-icon">🏹</div>Hunter</div>
-      <div class="hero-tile"><div class="hero-icon">🧛</div>Vampire</div>
-      <div class="hero-tile"><div class="hero-icon">🐺</div>Werewolf</div>
-      <div class="hero-tile"><div class="hero-icon">🧜‍♂️</div>Merfolk</div>
-      <div class="hero-tile"><div class="hero-icon">🎣</div>Fisherman</div>
+      <div class="hero-tile" data-points="3"><div class="hero-icon">🛡️<span class="hero-points">3</span></div>Warrior</div>
+      <div class="hero-tile" data-points="3"><div class="hero-icon">🧙‍♂️<span class="hero-points">3</span></div>Wizard</div>
+      <div class="hero-tile" data-points="3"><div class="hero-icon">🏹<span class="hero-points">3</span></div>Hunter</div>
+      <div class="hero-tile" data-points="3"><div class="hero-icon">🧛<span class="hero-points">3</span></div>Vampire</div>
+      <div class="hero-tile" data-points="3"><div class="hero-icon">🐺<span class="hero-points">3</span></div>Werewolf</div>
+      <div class="hero-tile" data-points="3"><div class="hero-icon">🧜‍♂️<span class="hero-points">3</span></div>Merfolk</div>
+      <div class="hero-tile" data-points="3"><div class="hero-icon">🎣<span class="hero-points">3</span></div>Fisherman</div>
     </div>
   </div>
-
   <div class="category-container">
     <div class="category-title" id="creatures-title">Creatures</div>
     <div class="grid-container" id="creatures-list">
-      <div class="hero-tile"><div class="hero-icon">🦎</div>Chameleon</div>
-      <div class="hero-tile"><div class="hero-icon">🐹</div>Mole</div>
-      <div class="hero-tile"><div class="hero-icon">🦢</div>Duck</div>
+      <div class="hero-tile" data-points="2"><div class="hero-icon">🦎<span class="hero-points">2</span></div>Chameleon</div>
+      <div class="hero-tile" data-points="2"><div class="hero-icon">🐹<span class="hero-points">2</span></div>Mole</div>
+      <div class="hero-tile" data-points="2"><div class="hero-icon">🦢<span class="hero-points">2</span></div>Duck</div>
     </div>
   </div>
-
   <div class="category-container">
     <div class="category-title" id="uniques-title">Uniques</div>
     <div class="grid-container" id="uniques-list">
-      <div class="hero-tile"><div class="hero-icon">🦠</div>Germ</div>
-      <div class="hero-tile"><div class="hero-icon">🌱</div>Plants</div>
-      <div class="hero-tile"><div class="hero-icon">🤖</div>AI</div>
-      <div class="hero-tile"><div class="hero-icon">🪖</div>Tank</div>
+      <div class="hero-tile" data-points="1"><div class="hero-icon">🦠<span class="hero-points">1</span></div>Germ</div>
+      <div class="hero-tile" data-points="1"><div class="hero-icon">🌱<span class="hero-points">1</span></div>Plants</div>
+      <div class="hero-tile" data-points="1"><div class="hero-icon">🤖<span class="hero-points">1</span></div>AI</div>
+      <div class="hero-tile" data-points="1"><div class="hero-icon">🪖<span class="hero-points">1</span></div>Tank</div>
     </div>
   </div>
-
-  <div id="selected-hero"></div>
+  <div id="selected-heroes"></div>
   <button id="start-button">Start Game</button>
-
   <script>
     const categories = [
       { title: document.getElementById('legends-title'), list: document.getElementById('legends-list') },
@@ -225,11 +231,12 @@
       { title: document.getElementById('creatures-title'), list: document.getElementById('creatures-list') },
       { title: document.getElementById('uniques-title'), list: document.getElementById('uniques-list') }
     ];
-
-    const selectedHeroDiv = document.getElementById('selected-hero');
+    const heroPointsDiv = document.getElementById('hero-points');
+    const selectedHeroesDiv = document.getElementById('selected-heroes');
     const startButton = document.getElementById('start-button');
-    let selectedHero = null;
-    const sessionId = crypto.randomUUID(); // Generate session ID once per page load
+    let totalPoints = 10;
+    let selectedHeroes = [];
+    const sessionId = crypto.randomUUID();
 
     // Disable start button by default
     startButton.disabled = true;
@@ -238,7 +245,10 @@
     categories.forEach(cat => {
       cat.title.addEventListener('click', () => {
         const expanded = cat.list.classList.contains('expanded');
-        categories.forEach(c => { c.list.classList.remove('expanded'); c.title.classList.remove('expanded'); });
+        categories.forEach(c => {
+          c.list.classList.remove('expanded');
+          c.title.classList.remove('expanded');
+        });
         if (!expanded) {
           cat.list.classList.add('expanded');
           cat.title.classList.add('expanded');
@@ -251,20 +261,40 @@
       cat.list.addEventListener('click', e => {
         const tile = e.target.closest('.hero-tile');
         if (!tile) return;
-        categories.forEach(c => [...c.list.children].forEach(t => t.classList.remove('selected')));
-        tile.classList.add('selected');
-        // Extract only the hero name, excluding the emoji
-        selectedHero = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
-        selectedHeroDiv.textContent = `You selected: ${selectedHero}`;
-        startButton.style.display = 'inline-block';
-        startButton.disabled = false;
+        const points = parseInt(tile.getAttribute('data-points'));
+        const heroName = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
+        
+        if (tile.classList.contains('selected')) {
+          // Deselect hero
+          tile.classList.remove('selected');
+          selectedHeroes = selectedHeroes.filter(h => h.name !== heroName);
+          totalPoints += points;
+        } else {
+          // Check if selecting this hero exceeds points
+          if (totalPoints - points >= 0) {
+            tile.classList.add('selected');
+            selectedHeroes.push({ name: heroName, points });
+            totalPoints -= points;
+          }
+        }
+
+        // Update UI
+        heroPointsDiv.textContent = `Hero Points: ${totalPoints}`;
+        selectedHeroesDiv.textContent = selectedHeroes.length
+          ? `Selected: ${selectedHeroes.map(h => h.name).join(', ')}`
+          : '';
+        
+        // Enable start button if points are spent and not exceeded
+        startButton.style.display = selectedHeroes.length ? 'inline-block' : 'none';
+        startButton.disabled = totalPoints < 0 || selectedHeroes.length === 0;
       });
     });
 
-    // Start button - redirect to matchmaking page with hero and sessionId
+    // Start button - redirect with selected heroes and sessionId
     startButton.addEventListener('click', () => {
-      if (!selectedHero) return;
-      window.location.href = `matchmaking.html?hero=${encodeURIComponent(selectedHero)}&sessionId=${encodeURIComponent(sessionId)}`;
+      if (selectedHeroes.length === 0 || totalPoints < 0) return;
+      const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => h.name)));
+      window.location.href = `matchmaking.html?heroes=${heroesQuery}&sessionId=${encodeURIComponent(sessionId)}`;
     });
   </script>
 </body>
