@@ -178,7 +178,7 @@
       border-radius: 8px;
       padding: 1rem;
       cursor: pointer;
-      width: 40%;
+      width: 30%;
       transition: background-color 0.3s ease;
     }
     .option:hover {
@@ -188,6 +188,13 @@
       font-size: 2rem;
       display: block;
       margin-bottom: 0.5rem;
+    }
+    .single-option {
+      width: 60%;
+      margin: 0 auto;
+    }
+    .generic-option {
+      width: 40%;
     }
     @media (max-width: 400px) {
       h1 { font-size: 2rem; }
@@ -199,7 +206,9 @@
       .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
       #start-button { font-size: 1.1rem; padding: 0.6rem 1.5rem; }
       .modal-content h2 { font-size: 1.3rem; }
-      .option { padding: 0.8rem; width: 45%; }
+      .option { padding: 0.8rem; width: 30%; }
+      .single-option { width: 70%; }
+      .generic-option { width: 45%; }
       .option .icon { font-size: 1.5rem; }
     }
   </style>
@@ -274,7 +283,7 @@
       <div class="options">
         <div class="option left" data-choice="bow">
           <span class="icon">🏹</span>
-          Bow with Arrows<br>Increased Range
+          Bow & Arrows<br>Increased Range
         </div>
         <div class="option right" data-choice="sword-shield">
           <span class="icon">🗡️🛡️</span>
@@ -283,96 +292,871 @@
       </div>
     </div>
   </div>
-  <script>
-    const categories = [
-      { title: document.getElementById('legends-title'), list: document.getElementById('legends-list'), selected: null, display: document.querySelector('#legends-title .selected-hero') },
-      { title: document.getElementById('humans-title'), list: document.getElementById('humans-list'), selected: null, display: document.querySelector('#humans-title .selected-hero') },
-      { title: document.getElementById('creatures-title'), list: document.getElementById('creatures-list'), selected: null, display: document.querySelector('#creatures-title .selected-hero') },
-      { title: document.getElementById('uniques-title'), list: document.getElementById('uniques-list'), selected: null, display: document.querySelector('#uniques-title .selected-hero') }
-    ];
-    const startButton = document.getElementById('start-button');
-    let selectedHeroes = [];
-    const sessionId = crypto.randomUUID();
+  <div id="warrior-modal" class="modal">
+    <div class="modal-content">
+      <h2>Choose Warrior's Weapon</h2>
+      <div class="options">
+        <div class="option left" data-choice="sword-shield">
+          <span class="icon">🗡️🛡️</span>
+          Sword & Shield<br>Increased Atk & Def
+        </div>
+        <div class="option right" data-choice="long-sword">
+          <span class="icon">🗡️</span>
+          2-Handed Long Sword<br>High Damage
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="lizard-modal" class="modal">
+    <div class="modal-content">
+      <h2>Choose Lizard's Ability</h2>
+      <div class="options">
+        <div class="option left" data-choice="camouflage">
+          <span class="icon">🦎</span>
+          Bite & Camouflage
+        </div>
+        <div class="option right" data-choice="runner">
+          <span class="icon">🦎</span>
+          Bite & Runner<br>Can run across water, lava, acid & heroes
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="worm-modal" class="modal">
+    <div class="modal-content">
+      <h2>Choose Worm's Ability</h2>
+      <div class="options">
+        <div class="option single-option" data-choice="scout-food">
+          <span class="icon">🪱</span>
+          UnderGround Scout & Friendly Food Source<br>+30 HP, Kills Hero
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="helicopter-modal" class="modal">
+    <div class="modal-content">
+      <h2>Choose Helicopter's Mode</h2>
+      <div class="options">
+        <div class="option left" data-choice="offensive">
+          <span class="icon">🚁</span>
+          Offensive<br>Machine Gun & Missles 
+        </div>
+        <div class="option right" data-choice="defensive">
+          <span class="icon">🚁</span>
+          Defensive<br>Transport & Medic
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="generic-modal" class="modal">
+    <div class="modal-content">
+      <h2 id="generic-modal-title">Choose Ability</h2>
+      <div class="options" id="generic-modal-options">
+        <!-- Options will be dynamically populated -->
+      </div>
+    </div>
+  </div>
+<script>
+  const categories = [
+    { title: document.getElementById('legends-title'), list: document.getElementById('legends-list'), selected: null, display: document.querySelector('#legends-title .selected-hero') },
+    { title: document.getElementById('humans-title'), list: document.getElementById('humans-list'), selected: null, display: document.querySelector('#humans-title .selected-hero') },
+    { title: document.getElementById('creatures-title'), list: document.getElementById('creatures-list'), selected: null, display: document.querySelector('#creatures-title .selected-hero') },
+    { title: document.getElementById('uniques-title'), list: document.getElementById('uniques-list'), selected: null, display: document.querySelector('#uniques-title .selected-hero') }
+  ];
+  const startButton = document.getElementById('start-button');
+  let selectedHeroes = [];
+  const sessionId = crypto.randomUUID();
 
-    // Disable start button by default
-    startButton.disabled = true;
+  // Disable start button by default
+  startButton.disabled = true;
 
-    // Toggle categories
-    categories.forEach(cat => {
-      cat.title.addEventListener('click', () => {
-        const expanded = cat.list.classList.contains('expanded');
-        categories.forEach(c => {
-          c.list.classList.remove('expanded');
-          c.title.classList.remove('expanded');
+  // Toggle categories
+  categories.forEach(cat => {
+    cat.title.addEventListener('click', () => {
+      const expanded = cat.list.classList.contains('expanded');
+      categories.forEach(c => {
+        c.list.classList.remove('expanded');
+        c.title.classList.remove('expanded');
+      });
+      if (!expanded) {
+        cat.list.classList.add('expanded');
+        cat.title.classList.add('expanded');
+      }
+    });
+  });
+
+  // Hero selection
+  categories.forEach(cat => {
+    cat.list.addEventListener('click', e => {
+      const tile = e.target.closest('.hero-tile');
+      if (!tile) return;
+      const heroName = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
+      const heroIcon = tile.querySelector('.hero-icon').textContent;
+
+      // If a hero is already selected in this category, deselect it
+      if (cat.selected) {
+        const selectedTile = cat.list.querySelector('.selected');
+        if (selectedTile) selectedTile.classList.remove('selected');
+      }
+
+      // Select new hero
+      tile.classList.add('selected');
+      cat.selected = { name: heroName, icon: heroIcon, ability: null };
+      cat.display.textContent = `${heroIcon} ${heroName}`;
+      selectedHeroes = categories.map(c => c.selected).filter(h => h);
+
+      // Handle specific modals
+      if (cat.title.id === 'legends-title' && heroName === 'Medusa') {
+        const modal = document.getElementById('medusa-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'bow' ? 'Bow' : 'Sword & Shield'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
         });
-        if (!expanded) {
-          cat.list.classList.add('expanded');
-          cat.title.classList.add('expanded');
-        }
-      });
+      }
+      else if (cat.title.id === 'humans-title' && heroName === 'Warrior') {
+        const modal = document.getElementById('warrior-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'sword-shield' ? 'Sword & Shield' : 'Long Sword'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Lizard') {
+        const modal = document.getElementById('lizard-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'camouflage' ? 'Camouflage' : 'Runner'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'uniques-title' && heroName === 'Worm') {
+        const modal = document.getElementById('worm-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (Scout & Food)`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'uniques-title' && heroName === 'Helicopter') {
+        const modal = document.getElementById('helicopter-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice.charAt(0).toUpperCase() + choice.slice(1)})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'legends-title' && heroName === 'Fairy') {
+        const modal = document.getElementById('fairy-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'powder-flight' ? 'Powder & Flight' : 'Immunity & Flight'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'legends-title' && heroName === 'Minotaur') {
+        const modal = document.getElementById('minotaur-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'sword-shield' ? 'Sword & Shield' : 'Bow & Arrows'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'legends-title' && heroName === 'Phoenix') {
+        const modal = document.getElementById('phoenix-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'fireball-flight' ? 'Fire-ball & Flight' : 'Re-birth & Flight'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'legends-title' && heroName === 'Big-Foot') {
+        const modal = document.getElementById('big-foot-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'offensive' ? 'Offensive' : 'Defensive'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'legends-title' && heroName === 'Dinosaur') {
+        const modal = document.getElementById('dinosaur-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 't-rex' ? 'T-Rex' : choice === 'raptor' ? 'Raptor' : choice === 'triceratops' ? 'Triceratops' : choice === 'teradatoyol' ? 'Teradatoyol' : choice === 'spinosaures' ? 'Spinosaures' : 'Dilophosauras'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'legends-title' && heroName === 'Dragon') {
+        const modal = document.getElementById('dragon-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'blue-dragon' ? 'Blue Dragon' : choice === 'red-dragon' ? 'Red Dragon' : choice === 'purple-dragon' ? 'Purple Dragon' : 'Silver Dragon'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'legends-title' && heroName === 'Ghost') {
+        const modal = document.getElementById('ghost-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (Invisibility & Fear)`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'legends-title' && heroName === 'Merfolk') {
+        const modal = document.getElementById('merfolk-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'regenerate-storm' ? 'Regenerate & Storm' : 'Wave Crash & Trickster'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'humans-title' && heroName === 'Miner') {
+        const modal = document.getElementById('miner-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'dig' ? 'Dig' : 'place-holder'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'humans-title' && heroName === 'Alchemist') {
+        const modal = document.getElementById('alchemist-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'hp-potions' ? 'HP Potions' : 'Stamina Potions'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'humans-title' && heroName === 'Wizard') {
+        const modal = document.getElementById('wizard-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'fire-ice' ? 'Fire & Ice' : 'Illusions & TP'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'humans-title' && heroName === 'Hunter') {
+        const modal = document.getElementById('hunter-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'pet-panther' ? 'Pet Panther' : 'Crossbow'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'humans-title' && heroName === 'Vampire') {
+        const modal = document.getElementById('vampire-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'heal-attack' ? 'Heal Attack' : 'place-holder'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'humans-title' && heroName === 'Werewolf') {
+        const modal = document.getElementById('werewolf-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'bite-howl' ? 'Bite & Howl' : 'place-holder'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'humans-title' && heroName === 'Fisherman') {
+        const modal = document.getElementById('fisherman-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'kayak-pole' ? 'Kayak & Pole' : 'Pole & place-holder'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Chicken') {
+        const modal = document.getElementById('chicken-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Shark') {
+        const modal = document.getElementById('shark-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Dog') {
+        const modal = document.getElementById('dog-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Falcon') {
+        const modal = document.getElementById('falcon-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Frog') {
+        const modal = document.getElementById('frog-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Turtle') {
+        const modal = document.getElementById('turtle-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Lobster') {
+        const modal = document.getElementById('lobster-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Bear') {
+        const modal = document.getElementById('bear-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Tiger') {
+        const modal = document.getElementById('tiger-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Raccoon') {
+        const modal = document.getElementById('raccoon-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Boar') {
+        const modal = document.getElementById('boar-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Mole') {
+        const modal = document.getElementById('mole-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'creatures-title' && heroName === 'Duck') {
+        const modal = document.getElementById('duck-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'uniques-title' && heroName === 'Mosquito Swarm') {
+        const modal = document.getElementById('mosquito-swarm-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'uniques-title' && heroName === 'Tick') {
+        const modal = document.getElementById('tick-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'uniques-title' && heroName === 'Leech') {
+        const modal = document.getElementById('leech-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'uniques-title' && heroName === 'Submarine') {
+        const modal = document.getElementById('submarine-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'uniques-title' && heroName === 'Germ') {
+        const modal = document.getElementById('germ-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'uniques-title' && heroName === 'Plants') {
+        const modal = document.getElementById('plants-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'uniques-title' && heroName === 'AI') {
+        const modal = document.getElementById('ai-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+      else if (cat.title.id === 'uniques-title' && heroName === 'Tank') {
+        const modal = document.getElementById('tank-modal');
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'ability1' ? 'Ability 1' : 'Ability 2'})`;
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+      }
+
+      // Enable start button if one hero is selected from each category
+      startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+      startButton.disabled = selectedHeroes.length !== categories.length;
     });
+  });
 
-    // Hero selection
-    categories.forEach(cat => {
-      cat.list.addEventListener('click', e => {
-        const tile = e.target.closest('.hero-tile');
-        if (!tile) return;
-        const heroName = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
-        const heroIcon = tile.querySelector('.hero-icon').textContent;
-
-        // If a hero is already selected in this category, deselect it
-        if (cat.selected) {
-          const selectedTile = cat.list.querySelector('.selected');
-          if (selectedTile) selectedTile.classList.remove('selected');
-        }
-
-        // Select new hero
-        tile.classList.add('selected');
-        cat.selected = { name: heroName, icon: heroIcon, weapon: null };
-        cat.display.textContent = `${heroIcon} ${heroName}`;
-        selectedHeroes = categories.map(c => c.selected).filter(h => h);
-
-        // Check for Medusa-specific modal
-        if (cat.title.id === 'legends-title' && heroName === 'Medusa') {
-          const modal = document.getElementById('medusa-modal');
-          modal.style.display = 'flex'; // Show modal
-
-          // Add one-time listeners for choices
-          const options = modal.querySelectorAll('.option');
-          options.forEach(opt => {
-            opt.addEventListener('click', function handleChoice() {
-              const choice = this.getAttribute('data-choice');
-              cat.selected.weapon = choice; // Store choice
-              cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'bow' ? 'Bow' : 'Sword & Shield'})`; // Update display
-              modal.style.display = 'none'; // Hide modal
-              // Close the category
-              cat.list.classList.remove('expanded');
-              cat.title.classList.remove('expanded');
-              // Clean up listeners
-              options.forEach(o => o.removeEventListener('click', handleChoice));
-              // Update start button
-              startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
-              startButton.disabled = selectedHeroes.length !== categories.length;
-            }, { once: true });
-          });
-        } else {
-          // For non-Medusa, close immediately
-          cat.list.classList.remove('expanded');
-          cat.title.classList.remove('expanded');
-        }
-
-        // Enable start button if one hero is selected from each category
-        startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
-        startButton.disabled = selectedHeroes.length !== categories.length;
-      });
-    });
-
-    // Start button - redirect with selected heroes and sessionId
-    startButton.addEventListener('click', () => {
-      if (selectedHeroes.length !== categories.length) return;
-      const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => ({ name: h.name, weapon: h.weapon }))));
-      window.location.href = `matchmaking.html?heroes=${heroesQuery}&sessionId=${encodeURIComponent(sessionId)}`;
-    });
-  </script>
+  // Start button - redirect with selected heroes and sessionId
+  startButton.addEventListener('click', () => {
+    if (selectedHeroes.length !== categories.length) return;
+    const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => ({ name: h.name, ability: h.ability }))));
+    window.location.href = `matchmaking.html?heroes=${heroesQuery}&sessionId=${encodeURIComponent(sessionId)}`;
+  });
+</script>
 </body>
 </html>
