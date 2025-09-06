@@ -1,3 +1,4 @@
+console.log('index.js loaded');
 const heroData = [
   {
     category: 'Legends',
@@ -65,3 +66,4 @@ const heroData = [
     ]
   }
 ];
+console.log('heroData:', heroData);
