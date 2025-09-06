@@ -268,6 +268,10 @@
         cat.display.textContent = `${heroIcon} ${heroName}`;
         selectedHeroes = categories.map(c => c.selected).filter(h => h);
 
+        // Close the category
+        cat.list.classList.remove('expanded');
+        cat.title.classList.remove('expanded');
+
         // Enable start button if one hero is selected from each category
         startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
         startButton.disabled = selectedHeroes.length !== categories.length;
