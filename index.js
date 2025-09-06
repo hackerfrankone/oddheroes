@@ -1,7 +1,7 @@
 console.log('index.js loaded');
 const heroData = [
   {
-    category: 'Legends',
+    category: 'Legends', 
     id: 'legends',
     heroes: [
       { name: 'Fairy', icon: '🧚‍♀️', abilities: [{ choice: 'powder-flight', label: 'Powder & Flight', description: '' }, { choice: 'immunity-flight', label: 'Immunity & Flight', description: '' }] },
@@ -9,20 +9,8 @@ const heroData = [
       { name: 'Medusa', icon: '🐍', abilities: [{ choice: 'bow', label: 'Bow & Arrows', description: 'Increased Range' }, { choice: 'sword-shield', label: 'Sword & Shield', description: 'Increased Atk & Def' }] },
       { name: 'Phoenix', icon: '🔥', abilities: [{ choice: 'fireball-flight', label: 'Fire-ball & Flight', description: '' }, { choice: 'rebirth-flight', label: 'Re-birth & Flight', description: '' }] },
       { name: 'Big-Foot', icon: '🦶', abilities: [{ choice: 'offensive', label: 'Offensive', description: '' }, { choice: 'defensive', label: 'Defensive', description: '' }] },
-      { name: 'Dinosaur', icon: '🥚', abilities: [
-        { choice: 't-rex', label: 'T-Rex', description: '' },
-        { choice: 'raptor', label: 'Raptor', description: '' },
-        { choice: 'triceratops', label: 'Triceratops', description: '' },
-        { choice: 'teradatoyol', label: 'Teradatoyol', description: '' },
-        { choice: 'spinosaures', label: 'Spinosaures', description: '' },
-        { choice: 'dilophosauras', label: 'Dilophosauras', description: '' }
-      ] },
-      { name: 'Dragon', icon: '🐉', abilities: [
-        { choice: 'blue-dragon', label: 'Blue Dragon', description: '' },
-        { choice: 'red-dragon', label: 'Red Dragon', description: '' },
-        { choice: 'purple-dragon', label: 'Purple Dragon', description: '' },
-        { choice: 'silver-dragon', label: 'Silver Dragon', description: '' }
-      ] },
+      { name: 'Dinosaur', icon: '🥚', abilities: [{ choice: 't-rex', label: 'T-Rex', description: '' }, { choice: 'raptor', label: 'Raptor', description: '' }, { choice: 'triceratops', label: 'Triceratops', description: '' }, { choice: 'teradatoyol', label: 'Teradatoyol', description: '' }, { choice: 'spinosaures', label: 'Spinosaures', description: '' }, { choice: 'dilophosauras', label: 'Dilophosauras', description: '' }] },
+      { name: 'Dragon', icon: '🐉', abilities: [{ choice: 'blue-dragon', label: 'Blue Dragon', description: '' }, { choice: 'red-dragon', label: 'Red Dragon', description: '' }, { choice: 'purple-dragon', label: 'Purple Dragon', description: '' }, { choice: 'silver-dragon', label: 'Silver Dragon', description: '' }] },
       { name: 'Ghost', icon: '👻', abilities: [{ choice: 'invisibility-fear', label: 'Invisibility & Fear', description: '' }] },
       { name: 'Merfolk', icon: '🧜‍♂️', abilities: [{ choice: 'regenerate-storm', label: 'Regenerate & Storm', description: '' }, { choice: 'wavecrash-trickster', label: 'Wave Crash & Trickster', description: '' }] }
     ]
@@ -68,10 +56,10 @@ const heroData = [
       { name: 'Worm', icon: '🪱', abilities: [{ choice: 'scout-food', label: 'UnderGround Scout & Friendly Food Source', description: '+30 HP, Kills Hero' }] },
       { name: 'Mosquito Swarm', icon: '🦟', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
       { name: 'Tick', icon: '🕷️', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
-      { name: 'Leech', icon: '🐛', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'activity2', label: 'Ability 2', description: 'place-holder' }] },
-      { name: 'Helicopter', icon: '🚁', abilities: [{ choice: 'offensive', label: 'Offensive', description: 'Machine Gun & Missiles' }, { choice: 'defensive', label: 'Defensive', description: 'Transport & Medic' }] },
+      { name: 'Leech', icon: '🐛', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
+      { name: 'Helicopter', icon: '🚁', abilities: [{ choice: 'offensive', label: 'Offensive', description: 'Machine Gun & Missles' }, { choice: 'defensive', label: 'Defensive', description: 'Transport & Medic' }] },
       { name: 'Submarine', icon: '🚤', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
-      { name: 'Germ', icon: '🦠', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Activity 2', description: 'place-holder' }] },
+      { name: 'Germ', icon: '🦠', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
       { name: 'Plants', icon: '🌱', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
       { name: 'AI', icon: '🤖', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
       { name: 'Tank', icon: '🪖', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] }
@@ -79,4 +67,3 @@ const heroData = [
   }
 ];
 console.log('heroData:', heroData);
-export { heroData };
