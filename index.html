@@ -216,13 +216,14 @@
   <button id="start-button">Start Game</button>
   <div id="modals"></div>
   <script src="index.js"></script>
+  <script src="abilities.js"></script>
   <script>
-    // Error handling for heroData
-    if (typeof heroData === 'undefined') {
-      console.error('Error: heroData is not defined. Ensure index.js is loaded correctly.');
+    // Error handling for heroData and abilityEffects
+    if (typeof heroData === 'undefined' || typeof abilityEffects === 'undefined') {
+      console.error('Error: heroData or abilityEffects is not defined. Ensure index.js and abilities.js are loaded correctly.');
       const errorMessage = document.createElement('div');
       errorMessage.style.color = '#f00';
-      errorMessage.textContent = 'Error loading hero data. Please check if index.js is correctly included.';
+      errorMessage.textContent = 'Error loading hero data or abilities. Please check if index.js and abilities.js are correctly included.';
       document.body.appendChild(errorMessage);
     } else {
       // Dynamically generate categories and hero tiles
@@ -333,6 +334,13 @@
               cat.selected.ability = choice;
               const ability = hero.abilities.find(a => a.choice === choice);
               cat.display.textContent = `${heroIcon} ${heroName} (${ability.label})`;
+              // Preview ability effect (for testing)
+              if (abilityEffects[choice]) {
+                const result = abilityEffects[choice].execute({ name: heroName });
+                console.log(`Preview: ${result.message}`);
+              } else {
+                console.warn(`No effect defined for ability: ${choice}`);
+              }
               modal.style.display = 'none';
               cat.list.classList.remove('expanded');
               cat.title.classList.remove('expanded');
