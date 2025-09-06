@@ -62,9 +62,14 @@
     .category-title.expanded::after {
       content: '▼';
     }
+    .selected-hero {
+      font-size: 1.2rem;
+      margin-right: 1rem;
+      text-shadow: 0 0 5px #0f0;
+    }
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 15px;
       padding: 10px;
       background-color: #001100;
@@ -110,39 +115,10 @@
       box-shadow: 0 0 25px #00ff00, 0 0 40px #00ff00;
       font-weight: bold;
     }
-    .hero-tile.selected .hero-points {
-      color: #0f0;
-      border: 1px solid #000;
-      background-color: #000;
-    }
     .hero-icon {
       font-size: 1.8rem;
       margin-bottom: 0.3rem;
       position: relative;
-    }
-    .hero-points {
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      font-size: 0.8rem;
-      background-color: #000;
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid #0f0;
-      color: #0f0;
-    }
-    #hero-points {
-      margin-top: 1rem;
-      font-size: 1.5rem;
-      text-shadow: 0 0 10px #0f0;
-      text-align: center;
-    }
-    #selected-heroes {
-      margin-top: 0.5rem;
-      font-size: 1.3rem;
-      text-shadow: 0 0 10px #0f0;
-      min-height: 2rem;
-      text-align: center;
     }
     #start-button {
       margin: 1.5rem 0;
@@ -171,70 +147,86 @@
       h1 { font-size: 2rem; }
       .category-title { font-size: 1.5rem; padding: 0.5rem 0.8rem; }
       .category-title::after { font-size: 1.2rem; }
+      .selected-hero { font-size: 1rem; }
       .hero-tile { font-size: 0.9rem; min-height: 70px; }
       .hero-icon { font-size: 1.5rem; }
-      .hero-points { font-size: 0.7rem; padding: 1px 4px; }
       .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
-      #hero-points { font-size: 1.3rem; }
-      #selected-heroes { font-size: 1.1rem; }
       #start-button { font-size: 1.1rem; padding: 0.6rem 1.5rem; }
     }
   </style>
 </head>
 <body>
   <h1>Pick Your Odd Heroes</h1>
-  <div id="hero-points">Hero Points: 10</div>
   <div class="category-container">
-    <div class="category-title" id="legends-title">Legends</div>
+    <div class="category-title" id="legends-title"><span class="selected-hero"></span>Legends</div>
     <div class="grid-container" id="legends-list">
-      <div class="hero-tile" data-points="5"><div class="hero-icon">🦶<span class="hero-points">5</span></div>Big-Foot</div>
-      <div class="hero-tile" data-points="5"><div class="hero-icon">🥚<span class="hero-points">5</span></div>Dinosaur</div>
-      <div class="hero-tile" data-points="5"><div class="hero-icon">🐉<span class="hero-points">5</span></div>Dragon</div>
-      <div class="hero-tile" data-points="5"><div class="hero-icon">👻<span class="hero-points">5</span></div>Ghost</div>
+      <div class="hero-tile"><div class="hero-icon">🧚‍♀️</div>Fairy</div>
+      <div class="hero-tile"><div class="hero-icon">🐂</div>Minotaur</div>
+      <div class="hero-tile"><div class="hero-icon">🐍</div>Medusa</div>
+      <div class="hero-tile"><div class="hero-icon">🔥</div>Phoenix</div>
+      <div class="hero-tile"><div class="hero-icon">🦶</div>Big-Foot</div>
+      <div class="hero-tile"><div class="hero-icon">🥚</div>Dinosaur</div>
+      <div class="hero-tile"><div class="hero-icon">🐉</div>Dragon</div>
+      <div class="hero-tile"><div class="hero-icon">👻</div>Ghost</div>
+      <div class="hero-tile"><div class="hero-icon">🧜‍♂️</div>Merfolk</div>
     </div>
   </div>
   <div class="category-container">
-    <div class="category-title" id="humans-title">Humans</div>
+    <div class="category-title" id="humans-title"><span class="selected-hero"></span>Humans</div>
     <div class="grid-container" id="humans-list">
-      <div class="hero-tile" data-points="3"><div class="hero-icon">🛡️<span class="hero-points">3</span></div>Warrior</div>
-      <div class="hero-tile" data-points="3"><div class="hero-icon">🧙‍♂️<span class="hero-points">3</span></div>Wizard</div>
-      <div class="hero-tile" data-points="3"><div class="hero-icon">🏹<span class="hero-points">3</span></div>Hunter</div>
-      <div class="hero-tile" data-points="3"><div class="hero-icon">🧛<span class="hero-points">3</span></div>Vampire</div>
-      <div class="hero-tile" data-points="3"><div class="hero-icon">🐺<span class="hero-points">3</span></div>Werewolf</div>
-      <div class="hero-tile" data-points="3"><div class="hero-icon">🧜‍♂️<span class="hero-points">3</span></div>Merfolk</div>
-      <div class="hero-tile" data-points="3"><div class="hero-icon">🎣<span class="hero-points">3</span></div>Fisherman</div>
+      <div class="hero-tile"><div class="hero-icon">⛏️</div>Miner</div>
+      <div class="hero-tile"><div class="hero-icon">⚗️</div>Alchemist</div>
+      <div class="hero-tile"><div class="hero-icon">🛡️</div>Warrior</div>
+      <div class="hero-tile"><div class="hero-icon">🧙‍♂️</div>Wizard</div>
+      <div class="hero-tile"><div class="hero-icon">🏹</div>Hunter</div>
+      <div class="hero-tile"><div class="hero-icon">🧛</div>Vampire</div>
+      <div class="hero-tile"><div class="hero-icon">🐺</div>Werewolf</div>
+      <div class="hero-tile"><div class="hero-icon">🎣</div>Fisherman</div>
     </div>
   </div>
   <div class="category-container">
-    <div class="category-title" id="creatures-title">Creatures</div>
+    <div class="category-title" id="creatures-title"><span class="selected-hero"></span>Creatures</div>
     <div class="grid-container" id="creatures-list">
-      <div class="hero-tile" data-points="2"><div class="hero-icon">🦎<span class="hero-points">2</span></div>Lizard</div>
-      <div class="hero-tile" data-points="2"><div class="hero-icon">🐹<span class="hero-points">2</span></div>Mole</div>
-      <div class="hero-tile" data-points="2"><div class="hero-icon">🦢<span class="hero-points">2</span></div>Duck</div>
+      <div class="hero-tile"><div class="hero-icon">🐔</div>Chicken</div>
+      <div class="hero-tile"><div class="hero-icon">🦈</div>Shark</div>
+      <div class="hero-tile"><div class="hero-icon">🐶</div>Dog</div>
+      <div class="hero-tile"><div class="hero-icon">🦅</div>Falcon</div>
+      <div class="hero-tile"><div class="hero-icon">🐸</div>Frog</div>
+      <div class="hero-tile"><div class="hero-icon">🐢</div>Turtle</div>
+      <div class="hero-tile"><div class="hero-icon">🦞</div>Lobster</div>
+      <div class="hero-tile"><div class="hero-icon">🐻</div>Bear</div>
+      <div class="hero-tile"><div class="hero-icon">🐅</div>Tiger</div>
+      <div class="hero-tile"><div class="hero-icon">🦝</div>Raccoon</div>
+      <div class="hero-tile"><div class="hero-icon">🐗</div>Boar</div>
+      <div class="hero-tile"><div class="hero-icon">🦎</div>Lizard</div>
+      <div class="hero-tile"><div class="hero-icon">🐹</div>Mole</div>
+      <div class="hero-tile"><div class="hero-icon">🦢</div>Duck</div>
     </div>
   </div>
   <div class="category-container">
-    <div class="category-title" id="uniques-title">Uniques</div>
+    <div class="category-title" id="uniques-title"><span class="selected-hero"></span>Uniques</div>
     <div class="grid-container" id="uniques-list">
-      <div class="hero-tile" data-points="1"><div class="hero-icon">🦠<span class="hero-points">1</span></div>Germ</div>
-      <div class="hero-tile" data-points="1"><div class="hero-icon">🌱<span class="hero-points">1</span></div>Plants</div>
-      <div class="hero-tile" data-points="1"><div class="hero-icon">🤖<span class="hero-points">1</span></div>AI</div>
-      <div class="hero-tile" data-points="1"><div class="hero-icon">🪖<span class="hero-points">1</span></div>Tank</div>
+      <div class="hero-tile"><div class="hero-icon">🪱</div>Worm</div>
+      <div class="hero-tile"><div class="hero-icon">🦟</div>Mosquito Swarm</div>
+      <div class="hero-tile"><div class="hero-icon">🕷️</div>Tick</div>
+      <div class="hero-tile"><div class="hero-icon">🐛</div>Leech</div>
+      <div class="hero-tile"><div class="hero-icon">🚁</div>Helicopter</div>
+      <div class="hero-tile"><div class="hero-icon">🚤</div>Submarine</div>
+      <div class="hero-tile"><div class="hero-icon">🦠</div>Germ</div>
+      <div class="hero-tile"><div class="hero-icon">🌱</div>Plants</div>
+      <div class="hero-tile"><div class="hero-icon">🤖</div>AI</div>
+      <div class="hero-tile"><div class="hero-icon">🪖</div>Tank</div>
     </div>
   </div>
-  <div id="selected-heroes"></div>
   <button id="start-button">Start Game</button>
   <script>
     const categories = [
-      { title: document.getElementById('legends-title'), list: document.getElementById('legends-list') },
-      { title: document.getElementById('humans-title'), list: document.getElementById('humans-list') },
-      { title: document.getElementById('creatures-title'), list: document.getElementById('creatures-list') },
-      { title: document.getElementById('uniques-title'), list: document.getElementById('uniques-list') }
+      { title: document.getElementById('legends-title'), list: document.getElementById('legends-list'), selected: null, display: document.querySelector('#legends-title .selected-hero') },
+      { title: document.getElementById('humans-title'), list: document.getElementById('humans-list'), selected: null, display: document.querySelector('#humans-title .selected-hero') },
+      { title: document.getElementById('creatures-title'), list: document.getElementById('creatures-list'), selected: null, display: document.querySelector('#creatures-title .selected-hero') },
+      { title: document.getElementById('uniques-title'), list: document.getElementById('uniques-list'), selected: null, display: document.querySelector('#uniques-title .selected-hero') }
     ];
-    const heroPointsDiv = document.getElementById('hero-points');
-    const selectedHeroesDiv = document.getElementById('selected-heroes');
     const startButton = document.getElementById('start-button');
-    let totalPoints = 10;
     let selectedHeroes = [];
     const sessionId = crypto.randomUUID();
 
@@ -261,38 +253,30 @@
       cat.list.addEventListener('click', e => {
         const tile = e.target.closest('.hero-tile');
         if (!tile) return;
-        const points = parseInt(tile.getAttribute('data-points'));
         const heroName = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
-        
-        if (tile.classList.contains('selected')) {
-          // Deselect hero
-          tile.classList.remove('selected');
-          selectedHeroes = selectedHeroes.filter(h => h.name !== heroName);
-          totalPoints += points;
-        } else {
-          // Check if selecting this hero exceeds points
-          if (totalPoints - points >= 0) {
-            tile.classList.add('selected');
-            selectedHeroes.push({ name: heroName, points });
-            totalPoints -= points;
-          }
+        const heroIcon = tile.querySelector('.hero-icon').textContent;
+
+        // If a hero is already selected in this category, deselect it
+        if (cat.selected) {
+          const selectedTile = cat.list.querySelector('.selected');
+          if (selectedTile) selectedTile.classList.remove('selected');
         }
 
-        // Update UI
-        heroPointsDiv.textContent = `Hero Points: ${totalPoints}`;
-        selectedHeroesDiv.textContent = selectedHeroes.length
-          ? `Selected: ${selectedHeroes.map(h => h.name).join(', ')}`
-          : '';
-        
-        // Enable start button if points are spent and not exceeded
-        startButton.style.display = selectedHeroes.length ? 'inline-block' : 'none';
-        startButton.disabled = totalPoints < 0 || selectedHeroes.length === 0;
+        // Select new hero
+        tile.classList.add('selected');
+        cat.selected = { name: heroName, icon: heroIcon };
+        cat.display.textContent = `${heroIcon} ${heroName}`;
+        selectedHeroes = categories.map(c => c.selected).filter(h => h);
+
+        // Enable start button if one hero is selected from each category
+        startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+        startButton.disabled = selectedHeroes.length !== categories.length;
       });
     });
 
     // Start button - redirect with selected heroes and sessionId
     startButton.addEventListener('click', () => {
-      if (selectedHeroes.length === 0 || totalPoints < 0) return;
+      if (selectedHeroes.length !== categories.length) return;
       const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => h.name)));
       window.location.href = `matchmaking.html?heroes=${heroesQuery}&sessionId=${encodeURIComponent(sessionId)}`;
     });
