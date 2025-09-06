@@ -143,6 +143,52 @@
       cursor: not-allowed;
       box-shadow: none;
     }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background-color: #001100;
+      border: 2px solid #0f0;
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 0 20px #0f0;
+    }
+    .modal-content h2 {
+      font-size: 1.5rem;
+      text-shadow: 0 0 10px #0f0;
+    }
+    .options {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 1rem;
+    }
+    .option {
+      background-color: #003300;
+      border: 2px solid #0f0;
+      border-radius: 8px;
+      padding: 1rem;
+      cursor: pointer;
+      width: 40%;
+      transition: background-color 0.3s ease;
+    }
+    .option:hover {
+      background-color: #005500;
+    }
+    .option .icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
     @media (max-width: 400px) {
       h1 { font-size: 2rem; }
       .category-title { font-size: 1.5rem; padding: 0.5rem 0.8rem; }
@@ -152,6 +198,9 @@
       .hero-icon { font-size: 1.5rem; }
       .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
       #start-button { font-size: 1.1rem; padding: 0.6rem 1.5rem; }
+      .modal-content h2 { font-size: 1.3rem; }
+      .option { padding: 0.8rem; width: 45%; }
+      .option .icon { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -219,6 +268,21 @@
     </div>
   </div>
   <button id="start-button">Start Game</button>
+  <div id="medusa-modal" class="modal">
+    <div class="modal-content">
+      <h2>Choose Medusa's Weapon</h2>
+      <div class="options">
+        <div class="option left" data-choice="bow">
+          <span class="icon">🏹</span>
+          Bow with Arrows<br>Increased Range
+        </div>
+        <div class="option right" data-choice="sword-shield">
+          <span class="icon">🗡️🛡️</span>
+          Sword & Shield<br>Increased Atk & Def
+        </div>
+      </div>
+    </div>
+  </div>
   <script>
     const categories = [
       { title: document.getElementById('legends-title'), list: document.getElementById('legends-list'), selected: null, display: document.querySelector('#legends-title .selected-hero') },
@@ -264,13 +328,38 @@
 
         // Select new hero
         tile.classList.add('selected');
-        cat.selected = { name: heroName, icon: heroIcon };
+        cat.selected = { name: heroName, icon: heroIcon, weapon: null };
         cat.display.textContent = `${heroIcon} ${heroName}`;
         selectedHeroes = categories.map(c => c.selected).filter(h => h);
 
-        // Close the category
-        cat.list.classList.remove('expanded');
-        cat.title.classList.remove('expanded');
+        // Check for Medusa-specific modal
+        if (cat.title.id === 'legends-title' && heroName === 'Medusa') {
+          const modal = document.getElementById('medusa-modal');
+          modal.style.display = 'flex'; // Show modal
+
+          // Add one-time listeners for choices
+          const options = modal.querySelectorAll('.option');
+          options.forEach(opt => {
+            opt.addEventListener('click', function handleChoice() {
+              const choice = this.getAttribute('data-choice');
+              cat.selected.weapon = choice; // Store choice
+              cat.display.textContent = `${heroIcon} ${heroName} (${choice === 'bow' ? 'Bow' : 'Sword & Shield'})`; // Update display
+              modal.style.display = 'none'; // Hide modal
+              // Close the category
+              cat.list.classList.remove('expanded');
+              cat.title.classList.remove('expanded');
+              // Clean up listeners
+              options.forEach(o => o.removeEventListener('click', handleChoice));
+              // Update start button
+              startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+              startButton.disabled = selectedHeroes.length !== categories.length;
+            }, { once: true });
+          });
+        } else {
+          // For non-Medusa, close immediately
+          cat.list.classList.remove('expanded');
+          cat.title.classList.remove('expanded');
+        }
 
         // Enable start button if one hero is selected from each category
         startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
@@ -281,7 +370,7 @@
     // Start button - redirect with selected heroes and sessionId
     startButton.addEventListener('click', () => {
       if (selectedHeroes.length !== categories.length) return;
-      const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => h.name)));
+      const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => ({ name: h.name, weapon: h.weapon }))));
       window.location.href = `matchmaking.html?heroes=${heroesQuery}&sessionId=${encodeURIComponent(sessionId)}`;
     });
   </script>
