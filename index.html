@@ -215,144 +215,164 @@
   <div id="categories"></div>
   <button id="start-button">Start Game</button>
   <div id="modals"></div>
-  <script src="index.js"></script>
-  <script>
-    // Error handling for heroData
+  <script type="module" src="index.js"></script>
+  <script type="module" src="abilities.js"></script>
+  <script type="module">
+    import { heroData } from './index.js';
+    import { abilityEffects } from './abilities.js';
+
+    // Error handling for heroData and abilityEffects
     if (typeof heroData === 'undefined') {
       console.error('Error: heroData is not defined. Ensure index.js is loaded correctly.');
       const errorMessage = document.createElement('div');
       errorMessage.style.color = '#f00';
       errorMessage.textContent = 'Error loading hero data. Please check if index.js is correctly included.';
       document.body.appendChild(errorMessage);
-    } else {
-      // Dynamically generate categories and hero tiles
-      const categoriesContainer = document.getElementById('categories');
-      const modalsContainer = document.getElementById('modals');
-      const categories = heroData.map(cat => ({
-        title: null,
-        list: null,
-        selected: null,
-        display: null,
-        id: cat.id
-      }));
-
-      heroData.forEach((cat, index) => {
-        // Create category container
-        const categoryContainer = document.createElement('div');
-        categoryContainer.className = 'category-container';
-        // Create category title
-        const categoryTitle = document.createElement('div');
-        categoryTitle.className = 'category-title';
-        categoryTitle.id = `${cat.id}-title`;
-        categoryTitle.innerHTML = `<span class="selected-hero"></span>${cat.category}`;
-        // Create grid container
-        const gridContainer = document.createElement('div');
-        gridContainer.className = 'grid-container';
-        gridContainer.id = `${cat.id}-list`;
-        // Populate hero tiles
-        cat.heroes.forEach(hero => {
-          const heroTile = document.createElement('div');
-          heroTile.className = 'hero-tile';
-          heroTile.innerHTML = `<div class="hero-icon">${hero.icon}</div>${hero.name}`;
-          gridContainer.appendChild(heroTile);
-        });
-        categoryContainer.appendChild(categoryTitle);
-        categoryContainer.appendChild(gridContainer);
-        categoriesContainer.appendChild(categoryContainer);
-        // Update categories array
-        categories[index].title = categoryTitle;
-        categories[index].list = gridContainer;
-        categories[index].display = categoryTitle.querySelector('.selected-hero');
-        // Create modal for each hero
-        cat.heroes.forEach(hero => {
-          const modal = document.createElement('div');
-          modal.id = `${hero.name.toLowerCase().replace(/\s+/g, '-')}-modal`;
-          modal.className = 'modal';
-          const modalContent = document.createElement('div');
-          modalContent.className = 'modal-content';
-          modalContent.innerHTML = `<h2>Choose ${hero.name}'s Ability</h2><div class="options"></div>`;
-          const optionsContainer = modalContent.querySelector('.options');
-          hero.abilities.forEach((ability, idx) => {
-            const option = document.createElement('div');
-            option.className = `option ${hero.abilities.length === 1 ? 'single-option' : 'generic-option'}`;
-            option.setAttribute('data-choice', ability.choice);
-            option.innerHTML = `<span class="icon">${hero.icon}</span>${ability.label}${ability.description ? '<br>' + ability.description : ''}`;
-            optionsContainer.appendChild(option);
-          });
-          modal.appendChild(modalContent);
-          modalsContainer.appendChild(modal);
-        });
-      });
-
-      const startButton = document.getElementById('start-button');
-      let selectedHeroes = [];
-      const sessionId = crypto.randomUUID();
-      // Disable start button by default
-      startButton.disabled = true;
-      // Toggle categories
-      categories.forEach(cat => {
-        cat.title.addEventListener('click', () => {
-          const expanded = cat.list.classList.contains('expanded');
-          categories.forEach(c => {
-            c.list.classList.remove('expanded');
-            c.title.classList.remove('expanded');
-          });
-          if (!expanded) {
-            cat.list.classList.add('expanded');
-            cat.title.classList.add('expanded');
-          }
-        });
-      });
-      // Hero selection
-      categories.forEach(cat => {
-        cat.list.addEventListener('click', e => {
-          const tile = e.target.closest('.hero-tile');
-          if (!tile) return;
-          const heroName = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
-          const heroIcon = tile.querySelector('.hero-icon').textContent;
-          // If a hero is already selected in this category, deselect it
-          if (cat.selected) {
-            const selectedTile = cat.list.querySelector('.selected');
-            if (selectedTile) selectedTile.classList.remove('selected');
-          }
-          // Select new hero
-          tile.classList.add('selected');
-          cat.selected = { name: heroName, icon: heroIcon, ability: null };
-          cat.display.textContent = `${heroIcon} ${heroName}`;
-          selectedHeroes = categories.map(c => c.selected).filter(h => h);
-          // Find hero data
-          const heroCat = heroData.find(c => c.id === cat.id);
-          const hero = heroCat.heroes.find(h => h.name === heroName);
-          // Show modal
-          const modal = document.getElementById(`${heroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
-          modal.style.display = 'flex';
-          const options = modal.querySelectorAll('.option');
-          options.forEach(opt => {
-            opt.addEventListener('click', function handleChoice() {
-              const choice = this.getAttribute('data-choice');
-              cat.selected.ability = choice;
-              const ability = hero.abilities.find(a => a.choice === choice);
-              cat.display.textContent = `${heroIcon} ${heroName} (${ability.label})`;
-              modal.style.display = 'none';
-              cat.list.classList.remove('expanded');
-              cat.title.classList.remove('expanded');
-              options.forEach(o => o.removeEventListener('click', handleChoice));
-              startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
-              startButton.disabled = selectedHeroes.length !== categories.length;
-            }, { once: true });
-          });
-          // Enable start button if one hero is selected from each category
-          startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
-          startButton.disabled = selectedHeroes.length !== categories.length;
-        });
-      });
-      // Start button - redirect with selected heroes and sessionId
-      startButton.addEventListener('click', () => {
-        if (selectedHeroes.length !== categories.length) return;
-        const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => ({ name: h.name, ability: h.ability }))));
-        window.location.href = `matchmaking.html?heroes=${heroesQuery}&sessionId=${encodeURIComponent(sessionId)}`;
-      });
+      throw new Error('heroData undefined');
     }
+    if (typeof abilityEffects === 'undefined') {
+      console.error('Error: abilityEffects is not defined. Ensure abilities.js is loaded correctly.');
+      const errorMessage = document.createElement('div');
+      errorMessage.style.color = '#f00';
+      errorMessage.textContent = 'Error loading abilities. Please check if abilities.js is correctly included.';
+      document.body.appendChild(errorMessage);
+      throw new Error('abilityEffects undefined');
+    }
+
+    // Dynamically generate categories and hero tiles
+    const categoriesContainer = document.getElementById('categories');
+    const modalsContainer = document.getElementById('modals');
+    const categories = heroData.map(cat => ({
+      title: null,
+      list: null,
+      selected: null,
+      display: null,
+      id: cat.id
+    }));
+
+    heroData.forEach((cat, index) => {
+      // Create category container
+      const categoryContainer = document.createElement('div');
+      categoryContainer.className = 'category-container';
+      // Create category title
+      const categoryTitle = document.createElement('div');
+      categoryTitle.className = 'category-title';
+      categoryTitle.id = `${cat.id}-title`;
+      categoryTitle.innerHTML = `<span class="selected-hero"></span>${cat.category}`;
+      // Create grid container
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'grid-container';
+      gridContainer.id = `${cat.id}-list`;
+      // Populate hero tiles
+      cat.heroes.forEach(hero => {
+        const heroTile = document.createElement('div');
+        heroTile.className = 'hero-tile';
+        heroTile.innerHTML = `<div class="hero-icon">${hero.icon}</div>${hero.name}`;
+        gridContainer.appendChild(heroTile);
+      });
+      categoryContainer.appendChild(categoryTitle);
+      categoryContainer.appendChild(gridContainer);
+      categoriesContainer.appendChild(categoryContainer);
+      // Update categories array
+      categories[index].title = categoryTitle;
+      categories[index].list = gridContainer;
+      categories[index].display = categoryTitle.querySelector('.selected-hero');
+      // Create modal for each hero
+      cat.heroes.forEach(hero => {
+        const modal = document.createElement('div');
+        modal.id = `${hero.name.toLowerCase().replace(/\s+/g, '-')}-modal`;
+        modal.className = 'modal';
+        const modalContent = document.createElement('div');
+        modalContent.className = 'modal-content';
+        modalContent.innerHTML = `<h2>Choose ${hero.name}'s Ability</h2><div class="options"></div>`;
+        const optionsContainer = modalContent.querySelector('.options');
+        hero.abilities.forEach((ability, idx) => {
+          const option = document.createElement('div');
+          option.className = `option ${hero.abilities.length === 1 ? 'single-option' : 'generic-option'}`;
+          option.setAttribute('data-choice', ability.choice);
+          option.innerHTML = `<span class="icon">${hero.icon}</span>${ability.label}${ability.description ? '<br>' + ability.description : ''}`;
+          optionsContainer.appendChild(option);
+        });
+        modal.appendChild(modalContent);
+        modalsContainer.appendChild(modal);
+      });
+    });
+
+    const startButton = document.getElementById('start-button');
+    let selectedHeroes = [];
+    const sessionId = crypto.randomUUID();
+    // Disable start button by default
+    startButton.disabled = true;
+    // Toggle categories
+    categories.forEach(cat => {
+      cat.title.addEventListener('click', () => {
+        const expanded = cat.list.classList.contains('expanded');
+        categories.forEach(c => {
+          c.list.classList.remove('expanded');
+          c.title.classList.remove('expanded');
+        });
+        if (!expanded) {
+          cat.list.classList.add('expanded');
+          cat.title.classList.add('expanded');
+        }
+      });
+    });
+    // Hero selection
+    categories.forEach(cat => {
+      cat.list.addEventListener('click', e => {
+        const tile = e.target.closest('.hero-tile');
+        if (!tile) return;
+        const heroName = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
+        const heroIcon = tile.querySelector('.hero-icon').textContent;
+        // If a hero is already selected in this category, deselect it
+        if (cat.selected) {
+          const selectedTile = cat.list.querySelector('.selected');
+          if (selectedTile) selectedTile.classList.remove('selected');
+        }
+        // Select new hero
+        tile.classList.add('selected');
+        cat.selected = { name: heroName, icon: heroIcon, ability: null };
+        cat.display.textContent = `${heroIcon} ${heroName}`;
+        selectedHeroes = categories.map(c => c.selected).filter(h => h);
+        // Find hero data
+        const heroCat = heroData.find(c => c.id === cat.id);
+        const hero = heroCat.heroes.find(h => h.name === heroName);
+        // Show modal
+        const modal = document.getElementById(`${heroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
+        modal.style.display = 'flex';
+        const options = modal.querySelectorAll('.option');
+        options.forEach(opt => {
+          opt.addEventListener('click', function handleChoice() {
+            const choice = this.getAttribute('data-choice');
+            cat.selected.ability = choice;
+            const ability = hero.abilities.find(a => a.choice === choice);
+            cat.display.textContent = `${heroIcon} ${heroName} (${ability.label})`;
+            // Preview ability effect (for testing)
+            if (abilityEffects[choice]) {
+              const result = abilityEffects[choice].execute({ name: heroName });
+              console.log(`Preview: ${result.message}`);
+            } else {
+              console.warn(`No effect defined for ability: ${choice}`);
+            }
+            modal.style.display = 'none';
+            cat.list.classList.remove('expanded');
+            cat.title.classList.remove('expanded');
+            options.forEach(o => o.removeEventListener('click', handleChoice));
+            startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+            startButton.disabled = selectedHeroes.length !== categories.length;
+          }, { once: true });
+        });
+        // Enable start button if one hero is selected from each category
+        startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
+        startButton.disabled = selectedHeroes.length !== categories.length;
+      });
+    });
+    // Start button - redirect with selected heroes and sessionId
+    startButton.addEventListener('click', () => {
+      if (selectedHeroes.length !== categories.length) return;
+      const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => ({ name: h.name, ability: h.ability }))));
+      window.location.href = `matchmaking.html?heroes=${heroesQuery}&sessionId=${encodeURIComponent(sessionId)}`;
+    });
   </script>
 </body>
 </html>
