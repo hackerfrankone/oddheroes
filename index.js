@@ -1,10 +1,10 @@
-console.log('index.js loaded');
+console.log('heroes-list.js loaded');
 const heroData = [
   {
     category: 'Legends',
     id: 'legends',
     heroes: [
-      { name: 'Fairy', icon: '🧚‍♀️', abilities: [{ choice: 'powder-flight', label: 'Powder & Flight', description: '' }, { choice: 'immunity-flight', label: 'Immunity & Flight', description: '' }] },
+      { name: 'Fairy', icon: '<img src="images/hero-icons/fairy.png" alt="Fairy" class="hero-icon-img">', abilities: [{ choice: 'powder-flight', label: 'Powder & Flight', description: '' }, { choice: 'immunity-flight', label: 'Immunity & Flight', description: '' }] },
       { name: 'Minotaur', icon: '🐂', abilities: [{ choice: 'sword-shield', label: 'Sword & Shield', description: '' }, { choice: 'bow-arrows', label: 'Bow & Arrows', description: '' }] },
       { name: 'Medusa', icon: '🐍', abilities: [{ choice: 'bow', label: 'Bow & Arrows', description: 'Increased Range' }, { choice: 'sword-shield', label: 'Sword & Shield', description: 'Increased Atk & Def' }] },
       { name: 'Phoenix', icon: '🔥', abilities: [{ choice: 'fireball-flight', label: 'Fire-ball & Flight', description: '' }, { choice: 'rebirth-flight', label: 'Re-birth & Flight', description: '' }] },
@@ -54,7 +54,7 @@ const heroData = [
       { name: 'Lobster', icon: '🦞', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
       { name: 'Bear', icon: '🐻', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
       { name: 'Tiger', icon: '🐅', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
-      { name: 'Raccoon', icon: '🦝', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Activity 2', description: 'place-holder' }] },
+      { name: 'Raccoon', icon: '🦝', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
       { name: 'Boar', icon: '🐗', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
       { name: 'Lizard', icon: '🦎', abilities: [{ choice: 'camouflage', label: 'Bite & Camouflage', description: '' }, { choice: 'runner', label: 'Bite & Runner', description: 'Can run across water, lava, acid & heroes' }] },
       { name: 'Mole', icon: '🐹', abilities: [{ choice: 'ability1', label: 'Ability 1', description: 'place-holder' }, { choice: 'ability2', label: 'Ability 2', description: 'place-holder' }] },
