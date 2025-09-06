@@ -1,7 +1,7 @@
 console.log('index.js loaded');
 const heroData = [
   {
-    category: 'Legends',
+    category: 'Legends', 
     id: 'legends',
     heroes: [
       { name: 'Fairy', icon: '🧚‍♀️', abilities: [{ choice: 'powder-flight', label: 'Powder & Flight', description: '' }, { choice: 'immunity-flight', label: 'Immunity & Flight', description: '' }] },
