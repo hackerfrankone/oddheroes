@@ -1,7 +1,7 @@
 window.HoneyBadgerData = {
   category: 'Creatures',
   id: 'creatures',
-  name: 'Honey-Badger',
+  name: 'HoneyBadger',
   icon: '🦡',
   abilities: [
     { choice: 'ability1', label: 'place-holder', description: 'place-holder' },
