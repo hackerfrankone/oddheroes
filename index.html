@@ -276,7 +276,7 @@
     heroNames.forEach(heroName => {
       const hero = window[`${heroName.replace(/\s+/g, '')}Data`];
       if (!hero) {
-        console.error(`Error: Data for ${heroName} not found. Check if heroes/${hero.category.toLowerCase()}/${heroName.toLowerCase().replace(/\s+/g, '-')}/GUI.js is loaded.`);
+        console.error(`Error: Data for ${heroName} not found. Check if heroes/${hero?.category?.toLowerCase() || 'unknown'}/${heroName.toLowerCase().replace(/\s+/g, '-')}/GUI.js is loaded.`);
         return;
       }
       const catId = hero.id;
