@@ -219,19 +219,64 @@
   <div id="selected-heroes"></div>
   <button id="start-button">Start Game</button>
   <div id="modals"></div>
+  <!-- Load all hero GUI files -->
+  <script src="heroes/fairy/GUI.js"></script>
+  <script src="heroes/medusa/GUI.js"></script>
+  <script src="heroes/phoenix/GUI.js"></script>
+  <script src="heroes/big-foot/GUI.js"></script>
+  <script src="heroes/dinosaur/GUI.js"></script>
+  <script src="heroes/dragon/GUI.js"></script>
+  <script src="heroes/ghost/GUI.js"></script>
+  <script src="heroes/centaur/GUI.js"></script>
+  <script src="heroes/miner/GUI.js"></script>
+  <script src="heroes/alchemist/GUI.js"></script>
+  <script src="heroes/warrior/GUI.js"></script>
+  <script src="heroes/wizard/GUI.js"></script>
+  <script src="heroes/hunter/GUI.js"></script>
+  <script src="heroes/vampire/GUI.js"></script>
+  <script src="heroes/werewolf/GUI.js"></script>
+  <script src="heroes/fisherman/GUI.js"></script>
+  <script src="heroes/merfolk/GUI.js"></script>
+  <script src="heroes/chicken/GUI.js"></script>
+  <script src="heroes/shark/GUI.js"></script>
+  <script src="heroes/dog/GUI.js"></script>
+  <script src="heroes/falcon/GUI.js"></script>
   <script src="heroes/frog/GUI.js"></script>
-  <!-- Add <script> tags for other hero GUI files, e.g., <script src="heroes/dragon/GUI.js"></script> -->
+  <script src="heroes/turtle/GUI.js"></script>
+  <script src="heroes/lobster/GUI.js"></script>
+  <script src="heroes/bear/GUI.js"></script>
+  <script src="heroes/tiger/GUI.js"></script>
+  <script src="heroes/raccoon/GUI.js"></script>
+  <script src="heroes/boar/GUI.js"></script>
+  <script src="heroes/lizard/GUI.js"></script>
+  <script src="heroes/mole/GUI.js"></script>
+  <script src="heroes/duck/GUI.js"></script>
+  <script src="heroes/worm/GUI.js"></script>
+  <script src="heroes/mosquito-swarm/GUI.js"></script>
+  <script src="heroes/tick/GUI.js"></script>
+  <script src="heroes/leech/GUI.js"></script>
+  <script src="heroes/helicopter/GUI.js"></script>
+  <script src="heroes/submarine/GUI.js"></script>
+  <script src="heroes/germ/GUI.js"></script>
+  <script src="heroes/plants/GUI.js"></script>
+  <script src="heroes/ai/GUI.js"></script>
+  <script src="heroes/tank/GUI.js"></script>
   <script>
-    // List of expected hero names (update as you add heroes)
-    const heroNames = ['Frog']; // Add other heroes: 'Dragon', 'Medusa', etc.
-    
+    // List of all hero names
+    const heroNames = [
+      'Fairy', 'Medusa', 'Phoenix', 'Big-Foot', 'Dinosaur', 'Dragon', 'Ghost', 'Centaur',
+      'Miner', 'Alchemist', 'Warrior', 'Wizard', 'Hunter', 'Vampire', 'Werewolf', 'Fisherman', 'Merfolk',
+      'Chicken', 'Shark', 'Dog', 'Falcon', 'Frog', 'Turtle', 'Lobster', 'Bear', 'Tiger', 'Raccoon', 'Boar', 'Lizard', 'Mole', 'Duck',
+      'Worm', 'Mosquito Swarm', 'Tick', 'Leech', 'Helicopter', 'Submarine', 'Germ', 'Plants', 'AI', 'Tank'
+    ];
+
     // Aggregate hero data from individual GUI files
     const heroData = [];
     const categoriesMap = {};
     heroNames.forEach(heroName => {
-      const hero = window[`${heroName}Data`];
+      const hero = window[`${heroName.replace(/\s+/g, '')}Data`];
       if (!hero) {
-        console.error(`Error: Data for ${heroName} not found. Check if heroes/${heroName}/GUI.js is loaded.`);
+        console.error(`Error: Data for ${heroName} not found. Check if heroes/${heroName.toLowerCase().replace(/\s+/g, '-')}/GUI.js is loaded.`);
         return;
       }
       const catId = hero.id;
@@ -250,7 +295,7 @@
       });
     });
 
-    // Sort categories for consistent display (e.g., Legends, Humans, Creatures, Uniques)
+    // Sort categories for consistent display
     heroData.sort((a, b) => a.category.localeCompare(b.category));
 
     // Error handling if no heroes are loaded
