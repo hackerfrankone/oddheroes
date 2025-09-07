@@ -1,4 +1,4 @@
-console.log('index.js loaded');
+console.log('hero-list.js loaded');
 const heroData = [
   {
     category: 'Legends',
