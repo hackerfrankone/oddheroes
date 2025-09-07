@@ -69,7 +69,7 @@
     }
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 15px;
       padding: 10px;
       background-color: #001100;
@@ -120,11 +120,12 @@
       margin-bottom: 0.3rem;
       position: relative;
     }
-    .hero-icon-img {
-      width: 1.8rem;
-      height: 1.8rem;
-      object-fit: contain;
-      vertical-align: middle;
+    #selected-heroes {
+      margin-top: 0.5rem;
+      font-size: 1.3rem;
+      text-shadow: 0 0 10px #0f0;
+      min-height: 2rem;
+      text-align: center;
     }
     #start-button {
       margin: 1.5rem 0;
@@ -139,15 +140,6 @@
       box-shadow: 0 0 10px #0f0;
       display: none;
       transition: background-color 0.3s ease;
-    }
-    #start-button:hover {
-      background-color: #00ff00;
-      box-shadow: 0 0 20px #00ff00;
-    }
-    #start-button:disabled {
-      background-color: #555;
-      cursor: not-allowed;
-      box-shadow: none;
     }
     .modal {
       display: none;
@@ -168,11 +160,13 @@
       padding: 1rem;
       text-align: center;
       box-shadow: 0 0 20px #0f0;
-      width: 300px;
+      max-width: 400px;
+      width: 90%;
     }
     .modal-content h2 {
       font-size: 1.5rem;
       text-shadow: 0 0 10px #0f0;
+      margin-bottom: 1rem;
     }
     .options {
       display: flex;
@@ -187,7 +181,7 @@
       border-radius: 8px;
       padding: 1rem;
       cursor: pointer;
-      width: 30%;
+      width: 45%;
       transition: background-color 0.3s ease;
       box-sizing: border-box;
     }
@@ -197,94 +191,11 @@
     .option .icon {
       font-size: 2rem;
       display: block;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.5rem;
     }
     .single-option {
       width: 60%;
       margin: 0 auto;
-    }
-    #stat-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 1001; /* Above other modals */
-    }
-    #stat-modal-content {
-      background-color: #001100;
-      border: 2px solid #0f0;
-      border-radius: 10px;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 0 20px #0f0;
-      width: 300px;
-    }
-    #stat-modal-content h2 {
-      font-size: 1.5rem;
-      text-shadow: 0 0 10px #0f0;
-      margin-bottom: 1rem;
-    }
-    .stat-row {
-      margin: 0.5rem 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .stat-label {
-      font-size: 1.2rem;
-      width: 80px;
-    }
-    .stat-slider {
-      flex-grow: 1;
-      margin: 0 10px;
-      -webkit-appearance: none;
-      width: 100%;
-      height: 10px;
-      background: #003300;
-      outline: none;
-      opacity: 0.7;
-      -webkit-transition: .2s;
-      transition: opacity .2s;
-    }
-    .stat-slider:hover {
-      opacity: 1;
-    }
-    .stat-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 15px;
-      height: 15px;
-      background: #0f0;
-      cursor: pointer;
-    }
-    .stat-slider::-moz-range-thumb {
-      width: 15px;
-      height: 15px;
-      background: #0f0;
-      cursor: pointer;
-    }
-    #total-points {
-      font-size: 1.2rem;
-      margin-top: 1rem;
-      color: #0f0;
-    }
-    #confirm-stats {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      font-size: 1.1rem;
-      background-color: #0f0;
-      border: none;
-      border-radius: 5px;
-      color: #000;
-      cursor: pointer;
-    }
-    #confirm-stats:hover {
-      background-color: #00ff00;
     }
     @media (max-width: 400px) {
       h1 { font-size: 2rem; }
@@ -293,51 +204,38 @@
       .selected-hero { font-size: 1rem; }
       .hero-tile { font-size: 0.9rem; min-height: 70px; }
       .hero-icon { font-size: 1.5rem; }
-      .hero-icon-img { width: 1.5rem; height: 1.5rem; }
       .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
-      .option { width: 45%; }
-      .single-option { width: 70%; }
+      #selected-heroes { font-size: 1.1rem; }
+      #start-button { font-size: 1.1rem; padding: 0.6rem 1.5rem; }
+      .option { width: 80%; }
+      .single-option { width: 90%; }
       .option .icon { font-size: 1.5rem; }
-      #stat-modal-content { width: 250px; }
-      .stat-label { font-size: 1rem; }
-      .stat-slider { height: 8px; }
-      #total-points { font-size: 1rem; }
-      #confirm-stats { font-size: 1rem; padding: 0.4rem 0.8rem; }
     }
   </style>
 </head>
 <body>
   <h1>Pick Your Odd Heroes</h1>
   <div id="categories"></div>
+  <div id="selected-heroes"></div>
   <button id="start-button">Start Game</button>
   <div id="modals"></div>
-  <div id="stat-modal" class="modal">
-    <div id="stat-modal-content">
-      <h2>Adjust Stats</h2>
-      <div class="stat-row"><span class="stat-label">HP:</span><input type="range" min="0" max="100" value="0" class="stat-slider" id="hp-slider"><span id="hp-value">0</span></div>
-      <div class="stat-row"><span class="stat-label">Stamina:</span><input type="range" min="0" max="100" value="0" class="stat-slider" id="stamina-slider"><span id="stamina-value">0</span></div>
-      <div class="stat-row"><span class="stat-label">Attack:</span><input type="range" min="0" max="100" value="0" class="stat-slider" id="attack-slider"><span id="attack-value">0</span></div>
-      <div class="stat-row"><span class="stat-label">Defense:</span><input type="range" min="0" max="100" value="0" class="stat-slider" id="defense-slider"><span id="defense-value">0</span></div>
-      <div class="stat-row"><span class="stat-label">Speed:</span><input type="range" min="0" max="100" value="0" class="stat-slider" id="speed-slider"><span id="speed-value">0</span></div>
-      <div id="total-points">Total Points: 0/100</div>
-      <button id="confirm-stats">Confirm Stats</button>
-    </div>
-  </div>
-  <script src="heroes-list.js"></script>
-  <script src="abilities.js"></script>
+  <script src="hero-list.js"></script>
   <script>
-    // Error handling for heroData and abilityEffects
-    if (typeof heroData === 'undefined' || typeof abilityEffects === 'undefined') {
-      console.error('Error: heroData or abilityEffects is not defined. Ensure heroes-list.js and abilities.js are loaded correctly.');
+    // Error handling for heroData
+    if (typeof heroData === 'undefined') {
+      console.error('Error: heroData is not defined. Ensure hero-list.js is loaded correctly.');
       const errorMessage = document.createElement('div');
       errorMessage.style.color = '#f00';
-      errorMessage.textContent = 'Error loading hero data or abilities. Please check if heroes-list.js and abilities.js are correctly included.';
+      errorMessage.textContent = 'Error loading hero data. Please check if hero-list.js is correctly included.';
       document.body.appendChild(errorMessage);
     } else {
       // Dynamically generate categories and hero tiles
       const categoriesContainer = document.getElementById('categories');
       const modalsContainer = document.getElementById('modals');
-      const statModal = document.getElementById('stat-modal');
+      const selectedHeroesDiv = document.getElementById('selected-heroes');
+      const startButton = document.getElementById('start-button');
+      let selectedHeroes = [];
+      const sessionId = crypto.randomUUID();
       const categories = heroData.map(cat => ({
         title: null,
         list: null,
@@ -345,6 +243,9 @@
         display: null,
         id: cat.id
       }));
+
+      // Disable start button by default
+      startButton.disabled = true;
 
       heroData.forEach((cat, index) => {
         // Create category container
@@ -382,9 +283,9 @@
           modalContent.className = 'modal-content';
           modalContent.innerHTML = `<h2>Choose ${hero.name}'s Ability</h2><div class="options"></div>`;
           const optionsContainer = modalContent.querySelector('.options');
-          hero.abilities.forEach((ability, idx) => {
+          hero.abilities.forEach(ability => {
             const option = document.createElement('div');
-            option.className = `option ${hero.abilities.length === 1 ? 'single-option' : 'generic-option'}`;
+            option.className = `option ${hero.abilities.length === 1 ? 'single-option' : ''}`;
             option.setAttribute('data-choice', ability.choice);
             option.innerHTML = `<span class="icon">${hero.icon}</span>${ability.label}${ability.description ? '<br>' + ability.description : ''}`;
             optionsContainer.appendChild(option);
@@ -392,48 +293,6 @@
           modal.appendChild(modalContent);
           modalsContainer.appendChild(modal);
         });
-      });
-
-      const startButton = document.getElementById('start-button');
-      let selectedHeroes = [];
-      const sessionId = crypto.randomUUID();
-      // Disable start button by default
-      startButton.disabled = true;
-
-      // Stat modal elements
-      const hpSlider = document.getElementById('hp-slider');
-      const staminaSlider = document.getElementById('stamina-slider');
-      const attackSlider = document.getElementById('attack-slider');
-      const defenseSlider = document.getElementById('defense-slider');
-      const speedSlider = document.getElementById('speed-slider');
-      const hpValue = document.getElementById('hp-value');
-      const staminaValue = document.getElementById('stamina-value');
-      const attackValue = document.getElementById('attack-value');
-      const defenseValue = document.getElementById('defense-value');
-      const speedValue = document.getElementById('speed-value');
-      const totalPoints = document.getElementById('total-points');
-      const confirmStats = document.getElementById('confirm-stats');
-
-      // Update total points and values
-      function updateStats() {
-        const hp = parseInt(hpSlider.value);
-        const stamina = parseInt(staminaSlider.value);
-        const attack = parseInt(attackSlider.value);
-        const defense = parseInt(defenseSlider.value);
-        const speed = parseInt(speedSlider.value);
-        const total = hp + stamina + attack + defense + speed;
-        hpValue.textContent = hp;
-        staminaValue.textContent = stamina;
-        attackValue.textContent = attack;
-        defenseValue.textContent = defense;
-        speedValue.textContent = speed;
-        totalPoints.textContent = `Total Points: ${total}/100`;
-        confirmStats.disabled = total !== 100;
-      }
-
-      // Sync sliders
-      [hpSlider, staminaSlider, attackSlider, defenseSlider, speedSlider].forEach(slider => {
-        slider.addEventListener('input', updateStats);
       });
 
       // Toggle categories
@@ -451,23 +310,35 @@
         });
       });
 
-      // Hero and ability selection
+      // Hero selection
       categories.forEach(cat => {
         cat.list.addEventListener('click', e => {
           const tile = e.target.closest('.hero-tile');
           if (!tile) return;
           const heroName = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
           const heroIcon = tile.querySelector('.hero-icon').textContent;
+
+          // If a hero is already selected in this category, deselect it
           if (cat.selected) {
             const selectedTile = cat.list.querySelector('.selected');
             if (selectedTile) selectedTile.classList.remove('selected');
+            // Hide previous modal
+            const prevHeroName = cat.selected.name;
+            const prevModal = document.getElementById(`${prevHeroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
+            prevModal.style.display = 'none';
           }
+
+          // Select new hero
           tile.classList.add('selected');
           cat.selected = { name: heroName, icon: heroIcon, ability: null };
           cat.display.textContent = `${heroIcon} ${heroName}`;
           selectedHeroes = categories.map(c => c.selected).filter(h => h);
+
+          // Find hero data
           const heroCat = heroData.find(c => c.id === cat.id);
           const hero = heroCat.heroes.find(h => h.name === heroName);
+
+          // Show modal
           const modal = document.getElementById(`${heroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
           modal.style.display = 'flex';
           const options = modal.querySelectorAll('.option');
@@ -477,61 +348,35 @@
               cat.selected.ability = choice;
               const ability = hero.abilities.find(a => a.choice === choice);
               cat.display.textContent = `${heroIcon} ${heroName} (${ability.label})`;
-              if (abilityEffects[choice]) {
-                const result = abilityEffects[choice].execute({ name: heroName });
-                console.log(`Preview: ${result.message}`);
-              } else {
-                console.warn(`No effect defined for ability: ${choice}`);
-              }
               modal.style.display = 'none';
               cat.list.classList.remove('expanded');
               cat.title.classList.remove('expanded');
               options.forEach(o => o.removeEventListener('click', handleChoice));
-
-              // Show stat adjustment modal
-              statModal.style.display = 'flex';
-              // Reset sliders to 0
-              hpSlider.value = 0;
-              staminaSlider.value = 0;
-              attackSlider.value = 0;
-              defenseSlider.value = 0;
-              speedSlider.value = 0;
-              updateStats();
+              // Update selected heroes display with <br> tags
+              selectedHeroes = categories.map(c => c.selected).filter(h => h);
+              selectedHeroesDiv.innerHTML = selectedHeroes.length
+                ? `Selected:<br>${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join('<br>')}`
+                : '';
+              // Enable start button if one hero is selected from each category with an ability
+              startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
+              startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
             }, { once: true });
           });
-          startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
-          startButton.disabled = selectedHeroes.length !== categories.length;
-        });
-      });
 
-      // Confirm stats and proceed
-      confirmStats.addEventListener('click', () => {
-        const hp = parseInt(hpSlider.value);
-        const stamina = parseInt(staminaSlider.value);
-        const attack = parseInt(attackSlider.value);
-        const defense = parseInt(defenseSlider.value);
-        const speed = parseInt(speedSlider.value);
-        if (hp + stamina + attack + defense + speed === 100) {
-          statModal.style.display = 'none';
-          startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
-          startButton.disabled = selectedHeroes.length !== categories.length;
-          // Optionally store stats with the selected hero (e.g., in cat.selected.stats)
-          const currentCat = categories.find(c => c.selected && c.selected.ability);
-          if (currentCat) {
-            currentCat.selected.stats = { hp, stamina, attack, defense, speed };
-            console.log(`${currentCat.selected.name} stats:`, { hp, stamina, attack, defense, speed });
-          }
-        }
+          // Update selected heroes display with <br> tags
+          selectedHeroesDiv.innerHTML = selectedHeroes.length
+            ? `Selected:<br>${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join('<br>')}`
+            : '';
+          // Enable start button if one hero is selected from each category with an ability
+          startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
+          startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
+        });
       });
 
       // Start button - redirect with selected heroes and sessionId
       startButton.addEventListener('click', () => {
-        if (selectedHeroes.length !== categories.length) return;
-        const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => ({
-          name: h.name,
-          ability: h.ability,
-          stats: h.stats || { hp: 0, stamina: 0, attack: 0, defense: 0, speed: 0 }
-        }))));
+        if (selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability)) return;
+        const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => ({ name: h.name, ability: h.ability }))));
         window.location.href = `matchmaking.html?heroes=${heroesQuery}&sessionId=${encodeURIComponent(sessionId)}`;
       });
     }
