@@ -1,5 +1,5 @@
-console.log('index.js loaded');
 const heroData = [
+console.log('index.js loaded');
   {
     category: 'Legends', 
     id: 'legends',
