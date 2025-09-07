@@ -20,8 +20,8 @@ const heroData = [
     id: 'humans',
     heroes: [
       { name: 'Miner', icon: '⛏️', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
-      { name: 'Alchemist', icon: '⚗️', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
-      { name: 'Warrior', icon: '🛡️', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
+      { name: 'Alchemist', icon: '🧪', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
+      { name: 'Warrior', icon: '🛡🗡️', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
       { name: 'Wizard', icon: '🧙‍♂️', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
       { name: 'Hunter', icon: '🏹', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
       { name: 'Vampire', icon: '🧛', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
