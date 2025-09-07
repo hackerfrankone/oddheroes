@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"> 
+  <meta charset="UTF-8">
   <title>Odd Heroes Matchmaking</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share_Tech_Mono&display=swap');
     body {
       margin: 0;
       padding: 0;
@@ -25,6 +26,12 @@
       margin-top: 1rem;
       text-align: center;
     }
+    #selected-heroes {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      text-align: center;
+      text-shadow: 0 0 5px #0f0;
+    }
     .spinner {
       display: inline-block;
       width: 20px;
@@ -42,68 +49,119 @@
 </head>
 <body>
   <h2>Matchmaking...</h2>
+  <div id="selected-heroes"></div>
   <div id="status">Searching for opponent <span class="spinner"></span></div>
+  <!-- Load all hero abilities files -->
+  <script src="heroes/legends/fairy/abilities.js"></script>
+  <script src="heroes/legends/medusa/abilities.js"></script>
+  <script src="heroes/legends/phoenix/abilities.js"></script>
+  <script src="heroes/legends/big-foot/abilities.js"></script>
+  <script src="heroes/legends/dinosaur/abilities.js"></script>
+  <script src="heroes/legends/dragon/abilities.js"></script>
+  <script src="heroes/legends/ghost/abilities.js"></script>
+  <script src="heroes/legends/centaur/abilities.js"></script>
+  <script src="heroes/legends/merfolk/abilities.js"></script>
+  <script src="heroes/humans/miner/abilities.js"></script>
+  <script src="heroes/humans/alchemist/abilities.js"></script>
+  <script src="heroes/humans/warrior/abilities.js"></script>
+  <script src="heroes/humans/wizard/abilities.js"></script>
+  <script src="heroes/humans/hunter/abilities.js"></script>
+  <script src="heroes/humans/vampire/abilities.js"></script>
+  <script src="heroes/humans/werewolf/abilities.js"></script>
+  <script src="heroes/humans/fisherman/abilities.js"></script>
+  <script src="heroes/humans/ninja/abilities.js"></script>
+  <script src="heroes/humans/samurai/abilities.js"></script>
+  <script src="heroes/humans/spartan/abilities.js"></script>
+  <script src="heroes/creatures/chicken/abilities.js"></script>
+  <script src="heroes/creatures/shark/abilities.js"></script>
+  <script src="heroes/creatures/dog/abilities.js"></script>
+  <script src="heroes/creatures/falcon/abilities.js"></script>
+  <script src="heroes/creatures/frog/abilities.js"></script>
+  <script src="heroes/creatures/turtle/abilities.js"></script>
+  <script src="heroes/creatures/lobster/abilities.js"></script>
+  <script src="heroes/creatures/bear/abilities.js"></script>
+  <script src="heroes/creatures/tiger/abilities.js"></script>
+  <script src="heroes/creatures/raccoon/abilities.js"></script>
+  <script src="heroes/creatures/boar/abilities.js"></script>
+  <script src="heroes/creatures/lizard/abilities.js"></script>
+  <script src="heroes/creatures/mole/abilities.js"></script>
+  <script src="heroes/creatures/duck/abilities.js"></script>
+  <script src="heroes/creatures/rat/abilities.js"></script>
+  <script src="heroes/creatures/honey-badger/abilities.js"></script>
+  <script src="heroes/uniques/worm/abilities.js"></script>
+  <script src="heroes/uniques/mosquito-swarm/abilities.js"></script>
+  <script src="heroes/uniques/tick/abilities.js"></script>
+  <script src="heroes/uniques/leech/abilities.js"></script>
+  <script src="heroes/uniques/helicopter/abilities.js"></script>
+  <script src="heroes/uniques/submarine/abilities.js"></script>
+  <script src="heroes/uniques/germ/abilities.js"></script>
+  <script src="heroes/uniques/living-tree/abilities.js"></script>
+  <script src="ability.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const heroesParam = params.get('heroes');
+    const sessionId = params.get('sessionId');
+    const statusDiv = document.getElementById('status');
+    const selectedHeroesDiv = document.getElementById('selected-heroes');
+    const maxRetries = 10;
+    let retryCount = 0;
+    let isPolling = false;
 
-<script>
-const params = new URLSearchParams(window.location.search);
-const hero = params.get('hero');
-const sessionId = params.get('sessionId');
-const statusDiv = document.getElementById('status');
-const maxRetries = 10;
-let retryCount = 0;
-let isPolling = false;
+    // Parse heroes from query string
+    let heroes = [];
+    try {
+      heroes = JSON.parse(decodeURIComponent(heroesParam));
+      selectedHeroesDiv.innerHTML = `Selected Heroes:<br>${heroes.map(h => `${h.name} (${h.ability})`).join('<br>')}`;
+    } catch (err) {
+      console.error('Error parsing heroes:', err);
+      selectedHeroesDiv.textContent = 'In-Progress';
+    }
 
-async function joinQueue(hero, sessionId) {
-  if (retryCount >= maxRetries) {
-    statusDiv.textContent = 'Failed to find a match. Please try again later.';
-    return;
-  }
+    async function joinQueue(heroes, sessionId) {
+      if (retryCount >= maxRetries) {
+        statusDiv.textContent = 'Failed to find a match. Please try again later.';
+        return;
+      }
+      if (isPolling) return;
+      isPolling = true;
+      try {
+        const res = await fetch('https://cfmatchmaking.familyfishingfun2025.workers.dev/find-match', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ heroes, sessionId })
+        });
+        const data = await res.json();
+        console.log('Queue response:', data);
+        isPolling = false;
+        if (data.status === 'matched' && data.url) {
+          window.location.href = data.url;
+        } else if (data.status === 'waiting') {
+          statusDiv.innerHTML = 'Searching for opponent <span class="spinner"></span>';
+          setTimeout(() => joinQueue(heroes, sessionId), 3000);
+        } else {
+          statusDiv.textContent = `Error: ${data.message || 'Unknown error'}. Retrying...`;
+          retryCount++;
+          setTimeout(() => joinQueue(heroes, sessionId), 3000);
+        }
+      } catch (err) {
+        console.error('Matchmaking error:', err);
+        statusDiv.innerHTML = 'Error connecting to server. Retrying... <span class="spinner"></span>';
+        isPolling = false;
+        retryCount++;
+        setTimeout(() => joinQueue(heroes, sessionId), 3000);
+      }
+    }
 
-  if (isPolling) return;
-  isPolling = true;
-
-  try {
-    const res = await fetch('https://cfmatchmaking.familyfishingfun2025.workers.dev/find-match', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ hero, sessionId })
+    window.addEventListener('beforeunload', () => {
+      isPolling = false;
     });
 
-    const data = await res.json();
-    console.log('Queue response:', data);
-    isPolling = false;
-
-    if (data.status === 'matched' && data.url) {
-      // Redirect automatically when match found
-      window.location.href = data.url;
-    } else if (data.status === 'waiting') {
+    if (heroesParam && sessionId) {
       statusDiv.innerHTML = 'Searching for opponent <span class="spinner"></span>';
-      setTimeout(() => joinQueue(hero, sessionId), 3000);
+      joinQueue(heroes, sessionId);
     } else {
-      statusDiv.textContent = `Error: ${data.message || 'Unknown error'}. Retrying...`;
-      retryCount++;
-      setTimeout(() => joinQueue(hero, sessionId), 3000);
+      statusDiv.textContent = 'In-progress';
     }
-  } catch (err) {
-    console.error('Matchmaking error:', err);
-    statusDiv.innerHTML = 'Error connecting to server. Retrying... <span class="spinner"></span>';
-    isPolling = false;
-    retryCount++;
-    setTimeout(() => joinQueue(hero, sessionId), 3000);
-  }
-}
-
-window.addEventListener('beforeunload', () => {
-  isPolling = false;
-});
-
-if (hero && sessionId) {
-  statusDiv.innerHTML = 'Searching for opponent <span class="spinner"></span>';
-  joinQueue(hero, sessionId);
-} else {
-  statusDiv.textContent = 'In-progress...';
-}
-</script>
-
+  </script>
 </body>
 </html>
