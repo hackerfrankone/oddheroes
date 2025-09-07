@@ -5,7 +5,7 @@
   <title>Odd Heroes</title>
   <link rel="icon" type="image/png" href="oddheroes/images/OHO.png" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Share_Tech_Mono&display=swap');
     html, body {
       margin: 0;
       padding: 0;
@@ -239,6 +239,7 @@
   <script src="heroes/humans/fisherman/GUI.js"></script>
   <script src="heroes/humans/ninja/GUI.js"></script>
   <script src="heroes/humans/samurai/GUI.js"></script>
+  <script src="heroes/humans/spartan/GUI.js"></script>
   <script src="heroes/creatures/chicken/GUI.js"></script>
   <script src="heroes/creatures/shark/GUI.js"></script>
   <script src="heroes/creatures/dog/GUI.js"></script>
@@ -268,8 +269,8 @@
   <script>
     // List of all hero names
     const heroNames = [
-      'Fairy', 'Medusa', 'Phoenix', 'BigFoot', 'Dinosaur', 'Dragon', 'Ghost', 'Centaur',
-      'Miner', 'Alchemist', 'Warrior', 'Wizard', 'Hunter', 'Vampire', 'Werewolf', 'Fisherman', 'Merfolk', 'Ninja', 'Samurai',
+      'Fairy', 'Medusa', 'Phoenix', 'Big-Foot', 'Dinosaur', 'Dragon', 'Ghost', 'Centaur', 'Merfolk',
+      'Miner', 'Alchemist', 'Warrior', 'Wizard', 'Hunter', 'Vampire', 'Werewolf', 'Fisherman', 'Ninja', 'Samurai', 'Spartan',
       'Chicken', 'Shark', 'Dog', 'Falcon', 'Frog', 'Turtle', 'Lobster', 'Bear', 'Tiger', 'Raccoon', 'Boar', 'Lizard', 'Mole', 'Duck', 'Rat', 'Mongoose',
       'Worm', 'Mosquito Swarm', 'Tick', 'Leech', 'Helicopter', 'Submarine', 'Germ', 'Plants', 'AI', 'Tank'
     ];
@@ -297,6 +298,11 @@
         icon: hero.icon,
         abilities: hero.abilities
       });
+    });
+
+    // Sort heroes alphabetically within each category
+    heroData.forEach(category => {
+      category.heroes.sort((a, b) => a.name.localeCompare(b.name));
     });
 
     // Define custom category order
