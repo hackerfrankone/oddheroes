@@ -263,19 +263,17 @@
   <script src="heroes/uniques/helicopter/GUI.js"></script>
   <script src="heroes/uniques/submarine/GUI.js"></script>
   <script src="heroes/uniques/germ/GUI.js"></script>
-  <script src="heroes/uniques/plants/GUI.js"></script>
-  <script src="heroes/uniques/ai/GUI.js"></script>
-  <script src="heroes/uniques/tank/GUI.js"></script>
+  <script src="heroes/uniques/living-tree/GUI.js"></script>
   <script>
-    // List of all hero names
+    // Hero-list
     const heroNames = [
-      'Fairy', 'Medusa', 'Phoenix', 'BigFoot', 'Dinosaur', 'Dragon', 'Ghost', 'Centaur', 'Merfolk',
-      'Miner', 'Alchemist', 'Warrior', 'Wizard', 'Hunter', 'Vampire', 'Werewolf', 'Fisherman', 'Ninja', 'Samurai', 'Spartan',
-      'Chicken', 'Shark', 'Dog', 'Falcon', 'Frog', 'Turtle', 'Lobster', 'Bear', 'Tiger', 'Raccoon', 'Boar', 'Lizard', 'Mole', 'Duck', 'Rat', 'HoneyBadger',
-      'Worm', 'Mosquito Swarm', 'Tick', 'Leech', 'Helicopter', 'Submarine', 'Germ', 'Plants', 'AI', 'Tank'
+      'BigFoot', 'Centaur', 'Dinosaur', 'Dragon', 'Fairy', 'Ghost', 'Medusa', 'Merfolk', 'Phoenix',
+      'Alchemist', 'Fisherman', 'Hunter', 'Miner', 'Ninja', 'Samurai', 'Spartan', 'Vampire', 'Warrior', 'Wizard',
+      'Bear', 'Boar', 'Chicken', 'Dog', 'Duck', 'Falcon', 'Frog', 'Honey-Badger', 'Lizard', 'Mole', 'Raccoon', 'Rat', 'Shark', 'Tiger', 'Turtle',
+      'Germ', 'Helicopter', 'Leech', 'LivingTree', 'Mosquito Swarm', 'Submarine', 'Tick', 'Worm'
     ];
 
-    // Aggregate hero data from individual GUI files
+    // pull from directory hero GUIs
     const heroData = [];
     const categoriesMap = {};
     heroNames.forEach(heroName => {
@@ -300,7 +298,7 @@
       });
     });
 
-    // Sort heroes alphabetically within each category
+    // Sort in order
     heroData.forEach(category => {
       category.heroes.sort((a, b) => a.name.localeCompare(b.name));
     });
