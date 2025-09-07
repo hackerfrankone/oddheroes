@@ -1,6 +1,6 @@
 window.MerfolkData = {
-  category: 'Humans',
-  id: 'humans',
+  category: 'legends',
+  id: 'legends',
   name: 'Merfolk',
   icon: '🧜‍♂️',
   abilities: [
