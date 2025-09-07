@@ -69,7 +69,7 @@
     }
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 15px;
       padding: 10px;
       background-color: #001100;
@@ -120,6 +120,13 @@
       margin-bottom: 0.3rem;
       position: relative;
     }
+    #selected-heroes {
+      margin-top: 0.5rem;
+      font-size: 1.3rem;
+      text-shadow: 0 0 10px #0f0;
+      min-height: 2rem;
+      text-align: center;
+    }
     #start-button {
       margin: 1.5rem 0;
       padding: 0.8rem 2rem;
@@ -133,15 +140,6 @@
       box-shadow: 0 0 10px #0f0;
       display: none;
       transition: background-color 0.3s ease;
-    }
-    #start-button:hover {
-      background-color: #00ff00;
-      box-shadow: 0 0 20px #00ff00;
-    }
-    #start-button:disabled {
-      background-color: #555;
-      cursor: not-allowed;
-      box-shadow: none;
     }
     .modal {
       display: none;
@@ -162,10 +160,13 @@
       padding: 1rem;
       text-align: center;
       box-shadow: 0 0 20px #0f0;
+      max-width: 400px;
+      width: 90%;
     }
     .modal-content h2 {
       font-size: 1.5rem;
       text-shadow: 0 0 10px #0f0;
+      margin-bottom: 1rem;
     }
     .options {
       display: flex;
@@ -180,7 +181,7 @@
       border-radius: 8px;
       padding: 1rem;
       cursor: pointer;
-      width: 30%;
+      width: 45%;
       transition: background-color 0.3s ease;
       box-sizing: border-box;
     }
@@ -204,8 +205,10 @@
       .hero-tile { font-size: 0.9rem; min-height: 70px; }
       .hero-icon { font-size: 1.5rem; }
       .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
-      .option { width: 45%; }
-      .single-option { width: 70%; }
+      #selected-heroes { font-size: 1.1rem; }
+      #start-button { font-size: 1.1rem; padding: 0.6rem 1.5rem; }
+      .option { width: 80%; }
+      .single-option { width: 90%; }
       .option .icon { font-size: 1.5rem; }
     }
   </style>
@@ -213,6 +216,7 @@
 <body>
   <h1>Pick Your Odd Heroes</h1>
   <div id="categories"></div>
+  <div id="selected-heroes"></div>
   <button id="start-button">Start Game</button>
   <div id="modals"></div>
   <script src="index.js"></script>
@@ -228,6 +232,10 @@
       // Dynamically generate categories and hero tiles
       const categoriesContainer = document.getElementById('categories');
       const modalsContainer = document.getElementById('modals');
+      const selectedHeroesDiv = document.getElementById('selected-heroes');
+      const startButton = document.getElementById('start-button');
+      let selectedHeroes = [];
+      const sessionId = crypto.randomUUID();
       const categories = heroData.map(cat => ({
         title: null,
         list: null,
@@ -235,6 +243,9 @@
         display: null,
         id: cat.id
       }));
+
+      // Disable start button by default
+      startButton.disabled = true;
 
       heroData.forEach((cat, index) => {
         // Create category container
@@ -272,9 +283,9 @@
           modalContent.className = 'modal-content';
           modalContent.innerHTML = `<h2>Choose ${hero.name}'s Ability</h2><div class="options"></div>`;
           const optionsContainer = modalContent.querySelector('.options');
-          hero.abilities.forEach((ability, idx) => {
+          hero.abilities.forEach(ability => {
             const option = document.createElement('div');
-            option.className = `option ${hero.abilities.length === 1 ? 'single-option' : 'generic-option'}`;
+            option.className = `option ${hero.abilities.length === 1 ? 'single-option' : ''}`;
             option.setAttribute('data-choice', ability.choice);
             option.innerHTML = `<span class="icon">${hero.icon}</span>${ability.label}${ability.description ? '<br>' + ability.description : ''}`;
             optionsContainer.appendChild(option);
@@ -284,11 +295,6 @@
         });
       });
 
-      const startButton = document.getElementById('start-button');
-      let selectedHeroes = [];
-      const sessionId = crypto.randomUUID();
-      // Disable start button by default
-      startButton.disabled = true;
       // Toggle categories
       categories.forEach(cat => {
         cat.title.addEventListener('click', () => {
@@ -303,6 +309,7 @@
           }
         });
       });
+
       // Hero selection
       categories.forEach(cat => {
         cat.list.addEventListener('click', e => {
@@ -310,19 +317,27 @@
           if (!tile) return;
           const heroName = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
           const heroIcon = tile.querySelector('.hero-icon').textContent;
+
           // If a hero is already selected in this category, deselect it
           if (cat.selected) {
             const selectedTile = cat.list.querySelector('.selected');
             if (selectedTile) selectedTile.classList.remove('selected');
+            // Hide previous modal
+            const prevHeroName = cat.selected.name;
+            const prevModal = document.getElementById(`${prevHeroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
+            prevModal.style.display = 'none';
           }
+
           // Select new hero
           tile.classList.add('selected');
           cat.selected = { name: heroName, icon: heroIcon, ability: null };
           cat.display.textContent = `${heroIcon} ${heroName}`;
           selectedHeroes = categories.map(c => c.selected).filter(h => h);
+
           // Find hero data
           const heroCat = heroData.find(c => c.id === cat.id);
           const hero = heroCat.heroes.find(h => h.name === heroName);
+
           // Show modal
           const modal = document.getElementById(`${heroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
           modal.style.display = 'flex';
@@ -337,18 +352,30 @@
               cat.list.classList.remove('expanded');
               cat.title.classList.remove('expanded');
               options.forEach(o => o.removeEventListener('click', handleChoice));
-              startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
-              startButton.disabled = selectedHeroes.length !== categories.length;
+              // Update selected heroes display
+              selectedHeroes = categories.map(c => c.selected).filter(h => h);
+              selectedHeroesDiv.textContent = selectedHeroes.length
+                ? `Selected: ${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join(', ')}`
+                : '';
+              // Enable start button if one hero is selected from each category with an ability
+              startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
+              startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
             }, { once: true });
           });
-          // Enable start button if one hero is selected from each category
-          startButton.style.display = selectedHeroes.length === categories.length ? 'inline-block' : 'none';
-          startButton.disabled = selectedHeroes.length !== categories.length;
+
+          // Update selected heroes display
+          selectedHeroesDiv.textContent = selectedHeroes.length
+            ? `Selected: ${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join(', ')}`
+            : '';
+          // Enable start button if one hero is selected from each category with an ability
+          startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
+          startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
         });
       });
+
       // Start button - redirect with selected heroes and sessionId
       startButton.addEventListener('click', () => {
-        if (selectedHeroes.length !== categories.length) return;
+        if (selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability)) return;
         const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => ({ name: h.name, ability: h.ability }))));
         window.location.href = `matchmaking.html?heroes=${heroesQuery}&sessionId=${encodeURIComponent(sessionId)}`;
       });
