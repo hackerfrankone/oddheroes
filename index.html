@@ -251,6 +251,8 @@
   <script src="heroes/creatures/lizard/GUI.js"></script>
   <script src="heroes/creatures/mole/GUI.js"></script>
   <script src="heroes/creatures/duck/GUI.js"></script>
+  <script src="heroes/creatures/rat/GUI.js"></script>
+  <script src="heroes/creatures/mongoose/GUI.js"></script>
   <script src="heroes/uniques/worm/GUI.js"></script>
   <script src="heroes/uniques/mosquito-swarm/GUI.js"></script>
   <script src="heroes/uniques/tick/GUI.js"></script>
@@ -264,9 +266,9 @@
   <script>
     // List of all hero names
     const heroNames = [
-      'Fairy', 'Medusa', 'Phoenix', 'BigFoot', 'Dinosaur', 'Dragon', 'Ghost', 'Centaur',
+      'Fairy', 'Medusa', 'Phoenix', 'Big-Foot', 'Dinosaur', 'Dragon', 'Ghost', 'Centaur',
       'Miner', 'Alchemist', 'Warrior', 'Wizard', 'Hunter', 'Vampire', 'Werewolf', 'Fisherman', 'Merfolk',
-      'Chicken', 'Shark', 'Dog', 'Falcon', 'Frog', 'Turtle', 'Lobster', 'Bear', 'Tiger', 'Raccoon', 'Boar', 'Lizard', 'Mole', 'Duck',
+      'Chicken', 'Shark', 'Dog', 'Falcon', 'Frog', 'Turtle', 'Lobster', 'Bear', 'Tiger', 'Raccoon', 'Boar', 'Lizard', 'Mole', 'Duck', 'Rat', 'Mongoose',
       'Worm', 'Mosquito Swarm', 'Tick', 'Leech', 'Helicopter', 'Submarine', 'Germ', 'Plants', 'AI', 'Tank'
     ];
 
@@ -424,8 +426,8 @@
               const ability = hero.abilities.find(a => a.choice === choice);
               cat.display.textContent = `${heroIcon} ${heroName} (${ability.label})`;
               modal.style.display = 'none';
-              cat.list.className = 'grid-container';
-              cat.title.className = 'category-title';
+              cat.list.classList.remove('expanded');
+              cat.title.classList.remove('expanded');
               options.forEach(o => o.removeEventListener('click', handleChoice));
               // Update selected heroes display with <br> tags
               selectedHeroes = categories.map(c => c.selected).filter(h => h);
