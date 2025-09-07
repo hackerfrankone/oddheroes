@@ -1,4 +1,4 @@
-window.MosquitoSwarmData = {
+window.MosquitoSwarmData = { 
   category: 'Uniques',
   id: 'uniques',
   name: 'Mosquito Swarm',
