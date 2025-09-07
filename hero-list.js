@@ -11,7 +11,8 @@ const heroData = [
       { name: 'Big-Foot', icon: '🦶', abilities: [{ choice: 'offensive', label: 'Offensive', description: 'High damage melee attacks' }, { choice: 'defensive', label: 'Defensive', description: 'Increased health and armor' }] },
       { name: 'Dinosaur', icon: '🥚', abilities: [{ choice: 't-rex', label: 'T-Rex', description: 'Powerful bite attack' }, { choice: 'raptor', label: 'Raptor', description: 'Fast and agile strikes' }, { choice: 'triceratops', label: 'Triceratops', description: 'High defense and charge attack' }, { choice: 'pterodactyl', label: 'Pterodactyl', description: 'Flying and dive attacks' }, { choice: 'spinosaurus', label: 'Spinosaurus', description: 'Aquatic and land attacks' }, { choice: 'dilophosaurus', label: 'Dilophosaurus', description: 'Venomous spit attack' }] },
       { name: 'Dragon', icon: '🐉', abilities: [{ choice: 'blue-dragon', label: 'Blue Dragon', description: 'Ice breath and flight' }, { choice: 'red-dragon', label: 'Red Dragon', description: 'Fire breath and flight' }, { choice: 'purple-dragon', label: 'Purple Dragon', description: 'Poison breath and flight' }, { choice: 'silver-dragon', label: 'Silver Dragon', description: 'Lightning breath and flight' }] },
-      { name: 'Ghost', icon: '👻', abilities: [{ choice: 'invisibility-fear', label: 'Invisibility & Fear', description: 'Becomes invisible and causes fear' }] }
+      { name: 'Ghost', icon: '👻', abilities: [{ choice: 'invisibility-fear', label: 'Invisibility & Fear', description: 'Becomes invisible and causes fear' }] },
+      { name: 'Centaur', icon: '🐎', abilities: [{ choice: 'charge-archery', label: 'Charge & Archery', description: 'Swift charge with bow attack' }, { choice: 'spear-gallop', label: 'Spear & Gallop', description: 'Spear thrust with high mobility' }] }
     ]
   },
   {
