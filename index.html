@@ -219,14 +219,14 @@
   <div id="selected-heroes"></div>
   <button id="start-button">Start Game</button>
   <div id="modals"></div>
-  <script src="index.js"></script>
+  <script src="hero-list.js"></script>
   <script>
     // Error handling for heroData
     if (typeof heroData === 'undefined') {
-      console.error('Error: heroData is not defined. Ensure index.js is loaded correctly.');
+      console.error('Error: heroData is not defined. Ensure hero-list.js is loaded correctly.');
       const errorMessage = document.createElement('div');
       errorMessage.style.color = '#f00';
-      errorMessage.textContent = 'Error loading hero data. Please check if index.js is correctly included.';
+      errorMessage.textContent = 'Error loading hero data. Please check if hero-list.js is correctly included.';
       document.body.appendChild(errorMessage);
     } else {
       // Dynamically generate categories and hero tiles
