@@ -1,5 +1,5 @@
 window.TankData = {
-  category: 'Uniques',
+  category: 'Uniques', 
   id: 'uniques',
   name: 'Tank',
   icon: '🚜',
