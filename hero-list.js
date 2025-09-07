@@ -5,7 +5,6 @@ const heroData = [
     id: 'legends',
     heroes: [
       { name: 'Fairy', icon: '🧚‍♀️', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
-      { name: 'Minotaur', icon: '🐂', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
       { name: 'Medusa', icon: '🐍', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
       { name: 'Phoenix', icon: '🔥', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
       { name: 'Big-Foot', icon: '🦶', abilities: [{ choice: 'ability1', label: 'place-holder', description: 'place-holder' }, { choice: 'ability2', label: 'place-holder', description: 'place-holder' }] },
