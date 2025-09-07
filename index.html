@@ -295,8 +295,10 @@
       });
     });
 
-    // Sort categories for consistent display
-    heroData.sort((a, b) => a.category.localeCompare(b.category));
+    // Define custom category order
+    const categoryOrder = ['Legends', 'Creatures', 'Humans', 'Uniques'];
+    // Sort heroData to enforce custom category order
+    heroData.sort((a, b) => categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category));
 
     // Error handling if no heroes are loaded
     if (heroData.length === 0) {
@@ -422,8 +424,8 @@
               const ability = hero.abilities.find(a => a.choice === choice);
               cat.display.textContent = `${heroIcon} ${heroName} (${ability.label})`;
               modal.style.display = 'none';
-              cat.list.classList.remove('expanded');
-              cat.title.classList.remove('expanded');
+              cat.list.className = 'grid-container';
+              cat.title.className = 'category-title';
               options.forEach(o => o.removeEventListener('click', handleChoice));
               // Update selected heroes display with <br> tags
               selectedHeroes = categories.map(c => c.selected).filter(h => h);
