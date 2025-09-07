@@ -1,5 +1,5 @@
 window.AlchemistData = {
-  category: 'Humans',
+  category: 'Humans', 
   id: 'humans',
   name: 'Alchemist',
   icon: '🧪',
