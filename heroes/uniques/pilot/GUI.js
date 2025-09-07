@@ -1,6 +1,6 @@
 window.PilotData = {
   category: 'Humans',
-  id: 'humans',
+  id: 'uniques',
   name: 'Pilot',
   icon: '🪖',
   abilities: [
