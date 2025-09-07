@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
   <meta charset="UTF-8" />
   <title>Odd Heroes</title>
   <link rel="icon" type="image/png" href="oddheroes/images/OHO.png" />
@@ -352,10 +352,10 @@
               cat.list.classList.remove('expanded');
               cat.title.classList.remove('expanded');
               options.forEach(o => o.removeEventListener('click', handleChoice));
-              // Update selected heroes display
+              // Update selected heroes display with <br> tags
               selectedHeroes = categories.map(c => c.selected).filter(h => h);
-              selectedHeroesDiv.textContent = selectedHeroes.length
-                ? `Selected: ${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join(', ')}`
+              selectedHeroesDiv.innerHTML = selectedHeroes.length
+                ? `Selected:<br>${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join('<br>')}`
                 : '';
               // Enable start button if one hero is selected from each category with an ability
               startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
@@ -363,9 +363,9 @@
             }, { once: true });
           });
 
-          // Update selected heroes display
-          selectedHeroesDiv.textContent = selectedHeroes.length
-            ? `Selected: ${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join(', ')}`
+          // Update selected heroes display with <br> tags
+          selectedHeroesDiv.innerHTML = selectedHeroes.length
+            ? `Selected:<br>${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join('<br>')}`
             : '';
           // Enable start button if one hero is selected from each category with an ability
           startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
