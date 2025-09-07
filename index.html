@@ -28,7 +28,7 @@
     }
     .category-container {
       width: 90%;
-      max-width: 500px;
+      max-width: 600px;
       margin-bottom: 1rem;
     }
     .category-title {
@@ -69,7 +69,7 @@
     }
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 15px;
       padding: 10px;
       background-color: #001100;
@@ -80,7 +80,7 @@
       opacity: 0;
       transition: max-height 0.3s ease, opacity 0.3s ease;
       visibility: hidden;
-      max-width: 460px;
+      max-width: 600px;
       width: 100%;
       box-sizing: border-box;
     }
@@ -204,7 +204,7 @@
       .selected-hero { font-size: 1rem; }
       .hero-tile { font-size: 0.9rem; min-height: 70px; }
       .hero-icon { font-size: 1.5rem; }
-      .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
+      .grid-container { grid-template-columns: repeat(3, 1fr); max-width: 100%; }
       #selected-heroes { font-size: 1.1rem; }
       #start-button { font-size: 1.1rem; padding: 0.6rem 1.5rem; }
       .option { width: 80%; }
@@ -243,10 +243,8 @@
         display: null,
         id: cat.id
       }));
-
       // Disable start button by default
       startButton.disabled = true;
-
       heroData.forEach((cat, index) => {
         // Create category container
         const categoryContainer = document.createElement('div');
@@ -294,7 +292,6 @@
           modalsContainer.appendChild(modal);
         });
       });
-
       // Toggle categories
       categories.forEach(cat => {
         cat.title.addEventListener('click', () => {
@@ -309,7 +306,6 @@
           }
         });
       });
-
       // Hero selection
       categories.forEach(cat => {
         cat.list.addEventListener('click', e => {
@@ -317,7 +313,6 @@
           if (!tile) return;
           const heroName = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
           const heroIcon = tile.querySelector('.hero-icon').textContent;
-
           // If a hero is already selected in this category, deselect it
           if (cat.selected) {
             const selectedTile = cat.list.querySelector('.selected');
@@ -327,17 +322,14 @@
             const prevModal = document.getElementById(`${prevHeroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
             prevModal.style.display = 'none';
           }
-
           // Select new hero
           tile.classList.add('selected');
           cat.selected = { name: heroName, icon: heroIcon, ability: null };
           cat.display.textContent = `${heroIcon} ${heroName}`;
           selectedHeroes = categories.map(c => c.selected).filter(h => h);
-
           // Find hero data
           const heroCat = heroData.find(c => c.id === cat.id);
           const hero = heroCat.heroes.find(h => h.name === heroName);
-
           // Show modal
           const modal = document.getElementById(`${heroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
           modal.style.display = 'flex';
@@ -362,7 +354,6 @@
               startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
             }, { once: true });
           });
-
           // Update selected heroes display with <br> tags
           selectedHeroesDiv.innerHTML = selectedHeroes.length
             ? `Selected:<br>${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join('<br>')}`
@@ -372,7 +363,6 @@
           startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
         });
       });
-
       // Start button - redirect with selected heroes and sessionId
       startButton.addEventListener('click', () => {
         if (selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability)) return;
