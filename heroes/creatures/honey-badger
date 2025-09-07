@@ -1,7 +1,7 @@
-window.MongooseData = {
+window.honey-badger = {
   category: 'Creatures',
   id: 'creatures',
-  name: 'Mongoose',
+  name: 'honey-badger',
   icon: '🦡',
   abilities: [
     { choice: 'ability1', label: 'place-holder', description: 'place-holder' },
