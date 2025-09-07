@@ -220,47 +220,47 @@
   <button id="start-button">Start Game</button>
   <div id="modals"></div>
   <!-- Load all hero GUI files -->
-  <script src="heroes/fairy/GUI.js"></script>
-  <script src="heroes/medusa/GUI.js"></script>
-  <script src="heroes/phoenix/GUI.js"></script>
-  <script src="heroes/big-foot/GUI.js"></script>
-  <script src="heroes/dinosaur/GUI.js"></script>
-  <script src="heroes/dragon/GUI.js"></script>
-  <script src="heroes/ghost/GUI.js"></script>
-  <script src="heroes/centaur/GUI.js"></script>
-  <script src="heroes/miner/GUI.js"></script>
-  <script src="heroes/alchemist/GUI.js"></script>
-  <script src="heroes/warrior/GUI.js"></script>
-  <script src="heroes/wizard/GUI.js"></script>
-  <script src="heroes/hunter/GUI.js"></script>
-  <script src="heroes/vampire/GUI.js"></script>
-  <script src="heroes/werewolf/GUI.js"></script>
-  <script src="heroes/fisherman/GUI.js"></script>
-  <script src="heroes/merfolk/GUI.js"></script>
-  <script src="heroes/chicken/GUI.js"></script>
-  <script src="heroes/shark/GUI.js"></script>
-  <script src="heroes/dog/GUI.js"></script>
-  <script src="heroes/falcon/GUI.js"></script>
-  <script src="heroes/frog/GUI.js"></script>
-  <script src="heroes/turtle/GUI.js"></script>
-  <script src="heroes/lobster/GUI.js"></script>
-  <script src="heroes/bear/GUI.js"></script>
-  <script src="heroes/tiger/GUI.js"></script>
-  <script src="heroes/raccoon/GUI.js"></script>
-  <script src="heroes/boar/GUI.js"></script>
-  <script src="heroes/lizard/GUI.js"></script>
-  <script src="heroes/mole/GUI.js"></script>
-  <script src="heroes/duck/GUI.js"></script>
-  <script src="heroes/worm/GUI.js"></script>
-  <script src="heroes/mosquito-swarm/GUI.js"></script>
-  <script src="heroes/tick/GUI.js"></script>
-  <script src="heroes/leech/GUI.js"></script>
-  <script src="heroes/helicopter/GUI.js"></script>
-  <script src="heroes/submarine/GUI.js"></script>
-  <script src="heroes/germ/GUI.js"></script>
-  <script src="heroes/plants/GUI.js"></script>
-  <script src="heroes/ai/GUI.js"></script>
-  <script src="heroes/tank/GUI.js"></script>
+  <script src="heroes/legends/fairy/GUI.js"></script>
+  <script src="heroes/legends/medusa/GUI.js"></script>
+  <script src="heroes/legends/phoenix/GUI.js"></script>
+  <script src="heroes/legends/big-foot/GUI.js"></script>
+  <script src="heroes/legends/dinosaur/GUI.js"></script>
+  <script src="heroes/legends/dragon/GUI.js"></script>
+  <script src="heroes/legends/ghost/GUI.js"></script>
+  <script src="heroes/legends/centaur/GUI.js"></script>
+  <script src="heroes/humans/miner/GUI.js"></script>
+  <script src="heroes/humans/alchemist/GUI.js"></script>
+  <script src="heroes/humans/warrior/GUI.js"></script>
+  <script src="heroes/humans/wizard/GUI.js"></script>
+  <script src="heroes/humans/hunter/GUI.js"></script>
+  <script src="heroes/humans/vampire/GUI.js"></script>
+  <script src="heroes/humans/werewolf/GUI.js"></script>
+  <script src="heroes/humans/fisherman/GUI.js"></script>
+  <script src="heroes/humans/merfolk/GUI.js"></script>
+  <script src="heroes/creatures/chicken/GUI.js"></script>
+  <script src="heroes/creatures/shark/GUI.js"></script>
+  <script src="heroes/creatures/dog/GUI.js"></script>
+  <script src="heroes/creatures/falcon/GUI.js"></script>
+  <script src="heroes/creatures/frog/GUI.js"></script>
+  <script src="heroes/creatures/turtle/GUI.js"></script>
+  <script src="heroes/creatures/lobster/GUI.js"></script>
+  <script src="heroes/creatures/bear/GUI.js"></script>
+  <script src="heroes/creatures/tiger/GUI.js"></script>
+  <script src="heroes/creatures/raccoon/GUI.js"></script>
+  <script src="heroes/creatures/boar/GUI.js"></script>
+  <script src="heroes/creatures/lizard/GUI.js"></script>
+  <script src="heroes/creatures/mole/GUI.js"></script>
+  <script src="heroes/creatures/duck/GUI.js"></script>
+  <script src="heroes/uniques/worm/GUI.js"></script>
+  <script src="heroes/uniques/mosquito-swarm/GUI.js"></script>
+  <script src="heroes/uniques/tick/GUI.js"></script>
+  <script src="heroes/uniques/leech/GUI.js"></script>
+  <script src="heroes/uniques/helicopter/GUI.js"></script>
+  <script src="heroes/uniques/submarine/GUI.js"></script>
+  <script src="heroes/uniques/germ/GUI.js"></script>
+  <script src="heroes/uniques/plants/GUI.js"></script>
+  <script src="heroes/uniques/ai/GUI.js"></script>
+  <script src="heroes/uniques/tank/GUI.js"></script>
   <script>
     // List of all hero names
     const heroNames = [
@@ -276,7 +276,7 @@
     heroNames.forEach(heroName => {
       const hero = window[`${heroName.replace(/\s+/g, '')}Data`];
       if (!hero) {
-        console.error(`Error: Data for ${heroName} not found. Check if heroes/${heroName.toLowerCase().replace(/\s+/g, '-')}/GUI.js is loaded.`);
+        console.error(`Error: Data for ${heroName} not found. Check if heroes/${hero.category.toLowerCase()}/${heroName.toLowerCase().replace(/\s+/g, '-')}/GUI.js is loaded.`);
         return;
       }
       const catId = hero.id;
