@@ -1,7 +1,7 @@
 window.BigFootData = {
   category: 'Legends',
   id: 'legends',
-  name: 'Big-Foot',
+  name: 'BigFoot',
   icon: '🦶',
   abilities: [
     { choice: 'ability1', label: 'place-holder', description: 'place-holder' },
