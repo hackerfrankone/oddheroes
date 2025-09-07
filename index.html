@@ -219,14 +219,46 @@
   <div id="selected-heroes"></div>
   <button id="start-button">Start Game</button>
   <div id="modals"></div>
-  <script src="hero-list.js"></script>
+  <script src="heroes/frog/GUI.js"></script>
+  <!-- Add <script> tags for other hero GUI files, e.g., <script src="heroes/dragon/GUI.js"></script> -->
   <script>
-    // Error handling for heroData
-    if (typeof heroData === 'undefined') {
-      console.error('Error: heroData is not defined. Ensure hero-list.js is loaded correctly.');
+    // List of expected hero names (update as you add heroes)
+    const heroNames = ['Frog']; // Add other heroes: 'Dragon', 'Medusa', etc.
+    
+    // Aggregate hero data from individual GUI files
+    const heroData = [];
+    const categoriesMap = {};
+    heroNames.forEach(heroName => {
+      const hero = window[`${heroName}Data`];
+      if (!hero) {
+        console.error(`Error: Data for ${heroName} not found. Check if heroes/${heroName}/GUI.js is loaded.`);
+        return;
+      }
+      const catId = hero.id;
+      if (!categoriesMap[catId]) {
+        categoriesMap[catId] = {
+          category: hero.category,
+          id: catId,
+          heroes: []
+        };
+        heroData.push(categoriesMap[catId]);
+      }
+      categoriesMap[catId].heroes.push({
+        name: hero.name,
+        icon: hero.icon,
+        abilities: hero.abilities
+      });
+    });
+
+    // Sort categories for consistent display (e.g., Legends, Humans, Creatures, Uniques)
+    heroData.sort((a, b) => a.category.localeCompare(b.category));
+
+    // Error handling if no heroes are loaded
+    if (heroData.length === 0) {
+      console.error('Error: No hero data loaded. Ensure hero GUI files are included.');
       const errorMessage = document.createElement('div');
       errorMessage.style.color = '#f00';
-      errorMessage.textContent = 'Error loading hero data. Please check if hero-list.js is correctly included.';
+      errorMessage.textContent = 'Error loading hero data. Please check if hero GUI files are correctly included.';
       document.body.appendChild(errorMessage);
     } else {
       // Dynamically generate categories and hero tiles
@@ -243,8 +275,10 @@
         display: null,
         id: cat.id
       }));
+
       // Disable start button by default
       startButton.disabled = true;
+
       heroData.forEach((cat, index) => {
         // Create category container
         const categoryContainer = document.createElement('div');
@@ -292,6 +326,7 @@
           modalsContainer.appendChild(modal);
         });
       });
+
       // Toggle categories
       categories.forEach(cat => {
         cat.title.addEventListener('click', () => {
@@ -306,6 +341,7 @@
           }
         });
       });
+
       // Hero selection
       categories.forEach(cat => {
         cat.list.addEventListener('click', e => {
@@ -363,6 +399,7 @@
           startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
         });
       });
+
       // Start button - redirect with selected heroes and sessionId
       startButton.addEventListener('click', () => {
         if (selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability)) return;
