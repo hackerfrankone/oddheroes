@@ -1,4 +1,4 @@
-window.livingtreeData = {
+window.LivingTreeData = {
   category: 'Uniques',
   id: 'uniques',
   name: 'LivingTree',
