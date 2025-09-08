@@ -13,3 +13,4 @@ const FrogData = {
     description: 'Read above lol.'
   }
 };
+window.FrogData = FrogData;
