@@ -4,23 +4,23 @@ const LizardData = {
   category: 'Creatures',
   id: 'creatures',
   abilities: [
-    { choice: 'Placeholder1', label: 'Placeholder 1', description: 'Placeholder ability for Lizard.' },
-    { choice: 'Placeholder2', label: 'Placeholder 2', description: 'Another placeholder ability for Lizard.' }
+    { choice: 'Extra HP', label: 'Extra HP', description: 'Your HP is now 3 and able to use move 2 twice now.' },
+    { choice: 'Enhanced Tongue Lash', label: 'Enhanced Tongue Lash', description: 'Tongue Lash deals 20 HP now.' }
   ],
-  hp: 20,
-  speed: 25,
+  hp: 2,
+  speed: 35,
   tileMove: 4,
   passive: {
-    label: 'N/A',
-    description: ''
+    label: 'Invisibilty',
+    description: 'Invisibilty.'
   },
   moveset: [
     {
-      label: 'Move 1: Placeholder',
+      label: 'Move 1: Tongue Lash 10 HP.',
       description: 'A placeholder move for Lizard in the battle arena.'
     },
     {
-      label: 'Move 2: Placeholder',
+      label: 'Move 2: Run any amount of tiles and take 1 HP',
       description: 'Another placeholder move for Lizard in the battle arena.'
     }
   ]
