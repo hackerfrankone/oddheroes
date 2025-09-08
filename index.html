@@ -12,7 +12,7 @@
       overflow: auto;
       background-color: #000;
       font-family: 'Share Tech Mono', monospace;
-      color: #0f0;
+      color: #00b300; /* Softer green */
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -23,7 +23,7 @@
     h1 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
-      text-shadow: 0 0 10px #0f0;
+      text-shadow: 0 0 8px #00b300; /* Reduced intensity */
       text-align: center;
     }
     .category-container {
@@ -34,14 +34,14 @@
     .category-title {
       font-size: 1.8rem;
       margin: 0.5rem 0;
-      text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+      text-shadow: 0 0 8px #00b300, 0 0 15px #00b300; /* Reduced intensity */
       text-align: left;
       cursor: pointer;
       padding: 0.7rem 1rem;
       background: linear-gradient(to bottom, #003300, #001100);
-      border: 2px solid #0f0;
+      border: 2px solid #00b300; /* Softer green */
       border-radius: 10px;
-      box-shadow: 0 0 15px #0f0;
+      box-shadow: 0 0 10px #00b300; /* Reduced spread */
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -50,13 +50,13 @@
       overflow: hidden;
     }
     .category-title:hover {
-      box-shadow: 0 0 20px #0f0, 0 0 30px #0f0;
+      box-shadow: 0 0 15px #00b300, 0 0 20px #00b300; /* Reduced spread */
       background: linear-gradient(to bottom, #005500, #003300);
     }
     .category-title::after {
       content: '▶';
       font-size: 1.5rem;
-      text-shadow: 0 0 5px #0f0;
+      text-shadow: 0 0 4px #00b300; /* Reduced intensity */
       transition: transform 0.3s ease;
     }
     .category-title.expanded::after {
@@ -65,7 +65,7 @@
     .selected-hero {
       font-size: 1.2rem;
       margin-right: 1rem;
-      text-shadow: 0 0 5px #0f0;
+      text-shadow: 0 0 4px #00b300; /* Reduced intensity */
     }
     .grid-container {
       display: grid;
@@ -74,7 +74,7 @@
       padding: 10px;
       background-color: #001100;
       border-radius: 8px;
-      border: 1px solid #0f0;
+      border: 1px solid #00b300; /* Softer green */
       max-height: 0;
       overflow: hidden;
       opacity: 0;
@@ -91,7 +91,7 @@
     }
     .hero-tile {
       background-color: #003300;
-      border: 2px solid #0f0;
+      border: 2px solid #00b300; /* Softer green */
       border-radius: 8px;
       text-align: center;
       font-size: 1rem;
@@ -107,12 +107,12 @@
     }
     .hero-tile:hover {
       background-color: #005500;
-      box-shadow: 0 0 15px #0f0, 0 0 30px #0f0;
+      box-shadow: 0 0 10px #00b300, 0 0 20px #00b300; /* Reduced spread */
     }
     .hero-tile.selected {
-      background-color: #00ff00;
+      background-color: #00b300; /* Softer green */
       color: #000;
-      box-shadow: 0 0 25px #00ff00, 0 0 40px #00ff00;
+      box-shadow: 0 0 15px #00b300, 0 0 25px #00b300; /* Reduced spread */
       font-weight: bold;
     }
     .hero-icon {
@@ -123,7 +123,7 @@
     #selected-heroes {
       margin-top: 0.5rem;
       font-size: 1.3rem;
-      text-shadow: 0 0 10px #0f0;
+      text-shadow: 0 0 8px #00b300; /* Reduced intensity */
       min-height: 2rem;
       text-align: center;
     }
@@ -131,13 +131,13 @@
       margin: 1.5rem 0;
       padding: 0.8rem 2rem;
       font-size: 1.3rem;
-      background-color: #0f0;
+      background-color: #00b300; /* Softer green */
       border: none;
       border-radius: 8px;
       color: #000;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 0 10px #0f0;
+      box-shadow: 0 0 8px #00b300; /* Reduced spread */
       display: none;
       transition: background-color 0.3s ease;
     }
@@ -155,11 +155,11 @@
     }
     .modal-content {
       background-color: #001100;
-      border: 2px solid #0f0;
+      border: 2px solid #00b300; /* Softer green */
       border-radius: 10px;
       padding: 1.5rem;
       text-align: center;
-      box-shadow: 0 0 20px #0f0;
+      box-shadow: 0 0 15px #00b300; /* Reduced spread */
       max-width: 400px;
       width: 90%;
     }
@@ -167,11 +167,11 @@
       margin-bottom: 1rem;
       padding: 0.8rem;
       background-color: #002200;
-      border: 1px solid #0f0;
+      border: 1px solid #00b300; /* Softer green */
       border-radius: 8px;
       text-align: left;
       font-size: 1rem;
-      text-shadow: 0 0 5px #0f0;
+      text-shadow: 0 0 4px #00b300; /* Reduced intensity */
     }
     .passive-display .label {
       font-weight: bold;
@@ -189,7 +189,7 @@
     }
     .option {
       background-color: #003300;
-      border: 2px solid #0f0;
+      border: 2px solid #00b300; /* Softer green */
       border-radius: 8px;
       padding: 1rem;
       cursor: pointer;
@@ -433,7 +433,7 @@
           // Select new hero
           tile.classList.add('selected');
           cat.selected = { name: heroName, icon: heroIcon, ability: null };
-          cat.display.textContent = `${heroIcon} ${heroName}`;
+          cat.display.textContent = `${heroName}`; // Show only hero name initially
           selectedHeroes = categories.map(c => c.selected).filter(h => h);
           // Find hero data
           const heroCat = heroData.find(c => c.id === cat.id);
@@ -447,7 +447,7 @@
               const choice = this.getAttribute('data-choice');
               cat.selected.ability = choice;
               const ability = hero.abilities.find(a => a.choice === choice);
-              cat.display.textContent = `${heroIcon} ${heroName} (${ability.label})`;
+              cat.display.textContent = `${heroName}: ${ability.label}`; // Updated format
               modal.style.display = 'none';
               cat.list.classList.remove('expanded');
               cat.title.classList.remove('expanded');
@@ -455,7 +455,7 @@
               // Update selected heroes display with <br> tags
               selectedHeroes = categories.map(c => c.selected).filter(h => h);
               selectedHeroesDiv.innerHTML = selectedHeroes.length
-                ? `Selected:<br>${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join('<br>')}`
+                ? `Selected:<br>${selectedHeroes.map(h => `${h.name}${h.ability ? ': ' + h.ability : ''}`).join('<br>')}`
                 : '';
               // Enable start button if one hero is selected from each category with an ability
               startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
@@ -464,7 +464,7 @@
           });
           // Update selected heroes display with <br> tags
           selectedHeroesDiv.innerHTML = selectedHeroes.length
-            ? `Selected:<br>${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join('<br>')}`
+            ? `Selected:<br>${selectedHeroes.map(h => `${h.name}${h.ability ? ': ' + h.ability : ''}`).join('<br>')}`
             : '';
           // Enable start button if one hero is selected from each category with an ability
           startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
