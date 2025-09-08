@@ -310,6 +310,11 @@
         passive: hero.passive // Include passive data
       });
     });
+    // Log loaded heroes for debugging
+    console.log('Loaded heroes:', heroData.map(cat => ({
+      category: cat.category,
+      heroes: cat.heroes.map(h => h.name)
+    })));
     // Sort in order
     heroData.forEach(category => {
       category.heroes.sort((a, b) => a.name.localeCompare(b.name));
