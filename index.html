@@ -292,6 +292,34 @@
       .password-modal-content .error { font-size: 0.8rem; }
     }
   </style>
+  <!-- Randomly named scripts for password chunks -->
+  <script id="x7b9k2m4">
+    window.pwChunk1 = '^4.';
+  </script>
+  <script id="q3z8n6j1">
+    window.pwChunk2 = 'BF.';
+  </script>
+  <script id="t9m4p8v3">
+    window.pwChunk3 = '*%U';
+  </script>
+  <script id="r2k7w5y9">
+    window.pwChunk4 = '>KN';
+  </script>
+  <script id="h6n3j8q2">
+    window.pwChunk5 = 'D,n';
+  </script>
+  <script id="p4v9m2k7">
+    window.pwChunk6 = '32@';
+  </script>
+  <script id="j8q3y6n1">
+    window.pwChunk7 = '#$k';
+  </script>
+  <script id="w5t2p9v4">
+    window.pwChunk8 = 'd.#';
+  </script>
+  <script id="k7m8r3z6">
+    window.pwChunk9 = '@!';
+  </script>
 </head>
 <body>
   <div id="password-modal" class="password-modal">
@@ -357,7 +385,17 @@
     // Password check
     function checkPassword() {
       const input = document.getElementById('password-input').value;
-      const correctPassword = '^4.BF.*%U>KND,n32@#$kd.#@!';
+      const correctPassword = [
+        window.pwChunk1,
+        window.pwChunk2,
+        window.pwChunk3,
+        window.pwChunk4,
+        window.pwChunk5,
+        window.pwChunk6,
+        window.pwChunk7,
+        window.pwChunk8,
+        window.pwChunk9
+      ].join('');
       const errorDiv = document.getElementById('password-error');
       if (input === correctPassword) {
         localStorage.setItem('oddHeroesAccess', 'granted');
