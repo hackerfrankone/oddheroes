@@ -157,13 +157,13 @@
       border-radius: 10px;
       padding: 1.5rem;
       text-align: center;
-      width: 90vw; /* Nearly full-screen width */
-      height: 90vh; /* Nearly full-screen height */
-      max-width: 1200px; /* Cap for very large screens */
-      max-height: 800px; /* Cap for very large screens */
+      width: 90vw;
+      height: 90vh;
+      max-width: 1200px;
+      max-height: 800px;
       position: relative;
       box-sizing: border-box;
-      overflow-y: auto; /* Vertical scroll for content */
+      overflow-y: auto;
     }
     .modal-close {
       position: absolute;
@@ -182,7 +182,7 @@
       background-color: #002200;
       border: 1px solid #00b300;
       border-radius: 8px;
-      text-align: left;
+      text-align: center; /* Center for moveset */
       font-size: 0.9rem;
     }
     .stats-display .label {
@@ -191,6 +191,11 @@
     }
     .stats-display .value {
       font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+    .stats-display .moveset {
+      font-weight: bold;
+      margin: 0.5rem 0;
     }
     .passive-display {
       margin-bottom: 1rem;
@@ -227,7 +232,7 @@
       border-radius: 8px;
       padding: 1rem;
       cursor: pointer;
-      flex: 1; /* Distribute space evenly */
+      flex: 1;
       transition: background-color 0.3s ease;
       box-sizing: border-box;
       text-align: center;
@@ -240,8 +245,19 @@
       display: block;
       margin-bottom: 0.5rem;
     }
+    .option .label {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .option .empty-line {
+      margin-bottom: 0.5rem;
+      height: 1em; /* Empty line */
+    }
+    .option .description {
+      font-size: 0.9rem;
+    }
     .single-option {
-      flex: 1; /* Match .option for consistency */
+      flex: 1;
       margin: 0 auto;
     }
     .password-modal {
@@ -305,14 +321,15 @@
       .hero-tile { font-size: 0.9rem; min-height: 70px; }
       .hero-icon { font-size: 1.5rem; }
       .grid-container { grid-template-columns: repeat(3, 1fr); max-width: 100%; }
-      .modal-content { width: 95vw; height: 95vh; max-width: 95%; max-height: 95%; } /* Responsive full-screen */
+      .modal-content { width: 95vw; height: 95vh; max-width: 95%; max-height: 95%; }
       #selected-heroes { font-size: 1.1rem; }
       #start-button { font-size: 1.1rem; padding: 0.6rem 1.5rem; width: 160px; }
-      .option { flex: 1; } /* Maintain even distribution */
+      .option { flex: 1; }
       .single-option { flex: 1; }
       .option .icon { font-size: 1.5rem; }
       .stats-display { font-size: 0.8rem; }
       .stats-display .value { font-size: 0.8rem; }
+      .stats-display .moveset { font-size: 0.8rem; }
       .passive-display { font-size: 0.8rem; }
       .passive-display .description { font-size: 0.8rem; }
       .instruction { font-size: 0.9rem; }
@@ -321,6 +338,7 @@
       .password-modal-content button { font-size: 0.9rem; }
       .password-modal-content .error { font-size: 0.8rem; }
       .modal-close { font-size: 1rem; }
+      .option .description { font-size: 0.8rem; }
     }
   </style>
   <script id="x7b9k2m4">
@@ -564,6 +582,9 @@
               <div class="label">HP: ${hero.hp || 'N/A'}</div>
               <div class="label">Speed: ${hero.speed || 'N/A'}</div>
               <div class="label">Tile Move: ${hero.tileMove || 'N/A'}</div>
+              <div class="moveset">Hero's Moveset</div>
+              <div class="value">Move 1: Placeholder</div>
+              <div class="value">Move 2: Placeholder</div>
             </div>
             <div class="passive-display">
               <div class="label">Passive: ${hero.passive?.label || 'No Passive'}</div>
@@ -577,7 +598,12 @@
             const option = document.createElement('div');
             option.className = `option ${hero.abilities.length === 1 ? 'single-option' : ''}`;
             option.setAttribute('data-choice', ability.choice);
-            option.innerHTML = `<span class="icon">${hero.icon}</span>${ability.label}${ability.description ? '<br>' + ability.description : ''}`;
+            option.innerHTML = `
+              <span class="icon">${hero.icon}</span>
+              <div class="label">${ability.label}:</div>
+              <div class="empty-line"></div>
+              <div class="description">${ability.description || 'No description available'}</div>
+            `;
             optionsContainer.appendChild(option);
           });
           modal.appendChild(modalContent);
