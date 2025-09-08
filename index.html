@@ -173,12 +173,6 @@
       font-size: 1rem;
       text-shadow: 0 0 5px #0f0;
     }
-    .passive-display .passive-label {
-      font-weight: bold;
-      font-size: 1.1rem;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 8px #0f0;
-    }
     .passive-display .label {
       font-weight: bold;
       margin-bottom: 0.3rem;
@@ -229,7 +223,6 @@
       .single-option { width: 90%; }
       .option .icon { font-size: 1.5rem; }
       .passive-display { font-size: 0.9rem; }
-      .passive-display .passive-label { font-size: 1rem; }
       .passive-display .description { font-size: 0.8rem; }
     }
   </style>
@@ -314,7 +307,7 @@
         name: hero.name,
         icon: hero.icon,
         abilities: hero.abilities,
-        passive: hero.passive // Include passive data
+        passive: hero.passive
       });
     });
     // Log loaded heroes for debugging
@@ -390,8 +383,7 @@
           modalContent.className = 'modal-content';
           modalContent.innerHTML = `
             <div class="passive-display">
-              <div class="passive-label">Passive</div>
-              <div class="label">${hero.passive?.label || 'No Passive'}</div>
+              <div class="label">Passive: ${hero.passive?.label || 'No Passive'}</div>
               ${hero.passive?.description ? `<div class="description">${hero.passive.description}</div>` : ''}
             </div>
             <div class="options"></div>
@@ -417,8 +409,8 @@
             c.title.classList.remove('expanded');
           });
           if (!expanded) {
-            cat.list.className = 'grid-container expanded';
-            cat.title.className = 'category-title expanded';
+            cat.list.classList.add('expanded');
+            cat.title.classList.add('expanded');
           }
         });
       });
@@ -431,15 +423,15 @@
           const heroIcon = tile.querySelector('.hero-icon').textContent;
           // If a hero is already selected in this category, deselect it
           if (cat.selected) {
-            const selectedTile = cat.list.querySelector('.hero-tile.selected');
-            if (selectedTile) selectedTile.className = 'hero-tile';
+            const selectedTile = cat.list.querySelector('.selected');
+            if (selectedTile) selectedTile.classList.remove('selected');
             // Hide previous modal
             const prevHeroName = cat.selected.name;
             const prevModal = document.getElementById(`${prevHeroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
             prevModal.style.display = 'none';
           }
           // Select new hero
-          tile.className = 'hero-tile selected';
+          tile.classList.add('selected');
           cat.selected = { name: heroName, icon: heroIcon, ability: null };
           cat.display.textContent = `${heroIcon} ${heroName}`;
           selectedHeroes = categories.map(c => c.selected).filter(h => h);
@@ -457,8 +449,8 @@
               const ability = hero.abilities.find(a => a.choice === choice);
               cat.display.textContent = `${heroIcon} ${heroName} (${ability.label})`;
               modal.style.display = 'none';
-              cat.list.className = 'grid-container';
-              cat.title.className = 'category-title';
+              cat.list.classList.remove('expanded');
+              cat.title.classList.remove('expanded');
               options.forEach(o => o.removeEventListener('click', handleChoice));
               // Update selected heroes display with <br> tags
               selectedHeroes = categories.map(c => c.selected).filter(h => h);
