@@ -14,6 +14,16 @@ const FrogData = {
   passive: {
     label: 'Regenerate',
     description: '+2 HP in or near water.'
-  }
+  },
+  moveset: [
+    {
+      label: 'Move 1: Tongue Lash',
+      description: 'A placeholder move for Frog in the battle arena.'
+    },
+    {
+      label: 'Move 2: Jump 3 tiles',
+      description: 'Another placeholder move for Frog in the battle arena.'
+    }
+  ]
 };
 window.FrogData = FrogData;
