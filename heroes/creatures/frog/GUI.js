@@ -17,11 +17,11 @@ const FrogData = {
   },
   moveset: [
     {
-      label: 'Move 1: Tongue Lash deals 10 dmg.',
+      label: 'Move 1: Tongue Lash deals 10 HP.',
       description: 'A placeholder move for Frog in the battle arena.'
     },
     {
-      label: 'Move 2: Jump 3 tiles & does 5 AOE dmg to opponents.',
+      label: 'Move 2: Jump 3 tiles & do 5 HP to all surrounding enemies.',
       description: 'Another placeholder move for Frog in the battle arena.'
     }
   ]
