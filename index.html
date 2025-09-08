@@ -232,10 +232,10 @@
     .options {
       display: flex;
       flex-direction: row;
-      flex-wrap: wrap; /* Allow wrapping to additional rows */
+      flex-wrap: wrap;
       margin-top: 0.5rem;
       gap: 10px;
-      justify-content: center; /* Center abilities horizontally */
+      justify-content: center;
     }
     .option {
       background-color: #003300;
@@ -243,8 +243,8 @@
       border-radius: 8px;
       padding: 1rem;
       cursor: pointer;
-      flex: 1 1 200px; /* Flexible width, minimum 200px */
-      max-width: 250px; /* Cap width for large screens */
+      flex: 1 1 200px;
+      max-width: 250px;
       transition: background-color 0.3s ease;
       box-sizing: border-box;
       text-align: center;
@@ -280,7 +280,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.9);
+      background-color: #000000cc;
       justify-content: center;
       align-items: center;
       z-index: 2000;
@@ -337,7 +337,7 @@
       .modal-content { width: 95vw; height: 95vh; max-width: 95%; max-height: 95%; }
       #selected-heroes { font-size: 1.1rem; }
       #start-button { font-size: 1.1rem; padding: 0.6rem 1.5rem; width: 160px; }
-      .option { flex: 1 1 150px; max-width: 200px; } /* Smaller for mobile */
+      .option { flex: 1 1 150px; max-width: 200px; }
       .single-option { flex: 1 1 150px; max-width: 200px; }
       .option .icon { font-size: 1.5rem; }
       .stats-display { font-size: 0.8rem; flex-direction: column; align-items: flex-start; }
@@ -517,7 +517,8 @@
         hp: hero.hp,
         speed: hero.speed,
         tileMove: hero.tileMove,
-        passive: hero.passive
+        passive: hero.passive,
+        moveset: hero.moveset || []
       });
     });
     // Log loaded heroes for debugging
@@ -601,8 +602,7 @@
               </div>
               <div class="moveset-center">
                 <div class="moveset">Hero's Moveset</div>
-                <div class="value">Move 1: Placeholder</div>
-                <div class="value">Move 2: Placeholder</div>
+                ${hero.moveset && hero.moveset.length > 0 ? hero.moveset.map(move => `<div class="value">${move.label}</div>`).join('') : '<div class="value">Move 1: Placeholder</div><div class="value">Move 2: Placeholder</div>'}
               </div>
             </div>
             <div class="passive-display">
