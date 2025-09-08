@@ -375,6 +375,7 @@
   <script src="/heroes/creatures/dog/GUI.js"></script>
   <script src="/heroes/creatures/falcon/GUI.js"></script>
   <script src="/heroes/creatures/frog/GUI.js"></script>
+  <script src="/heroes/creatures/frog/abilities.js"></script>
   <script src="/heroes/creatures/turtle/GUI.js"></script>
   <script src="/heroes/creatures/lobster/GUI.js"></script>
   <script src="/heroes/creatures/bear/GUI.js"></script>
@@ -395,6 +396,7 @@
   <script src="/heroes/uniques/livingtree/GUI.js"></script>
   <script src="/heroes/uniques/ai/GUI.js"></script>
   <script>
+    // Password check
     function checkPassword() {
       const input = document.getElementById('password-input').value;
       const correctPassword = [
@@ -535,7 +537,7 @@
           const modalContent = document.createElement('div');
           modalContent.className = 'modal-content';
           modalContent.innerHTML = `
-            <span class="modal-close" onclick="this.parentElement.parentElement.style.display='none'">X</span>
+            <span class="modal-close" onclick="document.getElementById('${hero.name.toLowerCase().replace(/\s+/g, '-')}-modal').style.display='none'; document.getElementById('${cat.id}-list').querySelector('.selected')?.classList.remove('selected'); document.getElementById('${cat.id}-title').querySelector('.selected-hero').textContent=''; window.categories[${index}].selected=null; updateSelectedHeroes();">X</span>
             <div class="passive-display">
               <div class="label">Passive: ${hero.passive?.label || 'No Passive'}</div>
               ${hero.passive?.description ? `<div class="description">${hero.passive.description}</div>` : ''}
@@ -569,6 +571,15 @@
           }
         });
       });
+      // Update selected heroes display
+      function updateSelectedHeroes() {
+        selectedHeroes = categories.map(c => c.selected).filter(h => h);
+        selectedHeroesDiv.innerHTML = selectedHeroes.length
+          ? selectedHeroes.map(h => `${h.name}${h.ability ? ': ' + h.ability : ''}`).join('<br>')
+          : '';
+        startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
+        startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
+      }
       // Hero selection
       categories.forEach(cat => {
         cat.list.addEventListener('click', e => {
@@ -589,7 +600,7 @@
           tile.classList.add('selected');
           cat.selected = { name: heroName, icon: heroIcon, ability: null };
           cat.display.textContent = `${heroName}`; // Show only hero name initially
-          selectedHeroes = categories.map(c => c.selected).filter(h => h);
+          updateSelectedHeroes();
           // Find hero data
           const heroCat = heroData.find(c => c.id === cat.id);
           const hero = heroCat.heroes.find(h => h.name === heroName);
@@ -607,23 +618,9 @@
               cat.list.classList.remove('expanded');
               cat.title.classList.remove('expanded');
               options.forEach(o => o.removeEventListener('click', handleChoice));
-              // Update selected heroes display with <br> tags
-              selectedHeroes = categories.map(c => c.selected).filter(h => h);
-              selectedHeroesDiv.innerHTML = selectedHeroes.length
-                ? selectedHeroes.map(h => `${h.name}${h.ability ? ': ' + h.ability : ''}`).join('<br>')
-                : '';
-              // Enable start button if one hero is selected from each category with an ability
-              startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
-              startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
+              updateSelectedHeroes();
             }, { once: true });
           });
-          // Update selected heroes display with <br> tags
-          selectedHeroesDiv.innerHTML = selectedHeroes.length
-            ? selectedHeroes.map(h => `${h.name}${h.ability ? ': ' + h.ability : ''}`).join('<br>')
-            : '';
-          // Enable start button if one hero is selected from each category with an ability
-          startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
-          startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
         });
       });
       // Start button - redirect with selected heroes and sessionId
