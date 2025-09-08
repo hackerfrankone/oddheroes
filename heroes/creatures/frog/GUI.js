@@ -8,6 +8,9 @@ const FrogData = {
     { choice: 'Evolution', label: 'Evolution', description: 'place-holder' },
     { choice: 'Poison', label: 'Poison', description: 'place-holder' }
   ],
+  hp: 30,
+  speed: 30,
+  tileMove: 3,
   passive: {
     label: 'Jumplickity',
     description: 'Read above lol.'
