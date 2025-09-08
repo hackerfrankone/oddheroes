@@ -280,7 +280,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: #000000cc;
       justify-content: center;
       align-items: center;
       z-index: 2000;
@@ -448,9 +448,6 @@
   <script src="/heroes/uniques/livingtree/GUI.js"></script>
   <script src="/heroes/uniques/ai/GUI.js"></script>
   <script>
-    // Debug: Log when script starts
-    console.log('Main script started');
-
     // Password check
     function checkPassword() {
       const input = document.getElementById('password-input').value;
@@ -475,10 +472,11 @@
       }
     }
 
-    // Bypass password modal for testing
-    localStorage.setItem('oddHeroesAccess', 'granted');
-    document.getElementById('password-modal').classList.add('hidden');
-    document.getElementById('main-content').classList.remove('hidden');
+    // Check if password is cached
+    if (localStorage.getItem('oddHeroesAccess') === 'granted') {
+      document.getElementById('password-modal').classList.add('hidden');
+      document.getElementById('main-content').classList.remove('hidden');
+    }
 
     // Allow Enter key to submit password
     document.getElementById('password-input').addEventListener('keypress', (e) => {
@@ -494,13 +492,11 @@
       'Bear', 'Boar', 'Chicken', 'Dog', 'Duck', 'Falcon', 'Frog', 'HoneyBadger', 'Lizard', 'Mole', 'Raccoon', 'Rat', 'Shark', 'Tiger', 'Turtle',
       'Germ', 'Leech', 'LivingTree', 'Mosquito Swarm', 'Tick', 'Worm', 'Pilot'
     ];
-
-    // Collect hero data
+    // pull from directory hero GUIs
     const heroData = [];
     const categoriesMap = {};
     heroNames.forEach(heroName => {
       const hero = window[`${heroName.replace(/\s+/g, '')}Data`];
-      console.log(`Processing ${heroName}:`, hero); // Debug log
       if (!hero) {
         console.error(`Error: Data for ${heroName} not found. Check if heroes/${hero?.category?.toLowerCase() || 'unknown'}/${heroName.toLowerCase().replace(/\s+/g, '-')}/GUI.js is loaded.`);
         return;
@@ -525,22 +521,19 @@
         moveset: hero.moveset || []
       });
     });
-
     // Log loaded heroes for debugging
     console.log('Loaded heroes:', heroData.map(cat => ({
       category: cat.category,
       heroes: cat.heroes.map(h => h.name)
     })));
-
-    // Sort heroes in order
+    // Sort in order
     heroData.forEach(category => {
       category.heroes.sort((a, b) => a.name.localeCompare(b.name));
     });
-
     // Define custom category order
     const categoryOrder = ['Legends', 'Creatures', 'Humans', 'Uniques'];
+    // Sort heroData to enforce custom category order
     heroData.sort((a, b) => categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category));
-
     // Error handling if no heroes are loaded
     if (heroData.length === 0) {
       console.error('Error: No hero data loaded. Ensure hero GUI files are included.');
@@ -563,12 +556,9 @@
         display: null,
         id: cat.id
       }));
-
       // Disable start button by default
       startButton.disabled = true;
-
       heroData.forEach((cat, index) => {
-        console.log(`Rendering category: ${cat.category}, Heroes: ${cat.heroes.map(h => h.name).join(', ')}`); // Debug log
         // Create category container
         const categoryContainer = document.createElement('div');
         categoryContainer.className = 'category-container';
@@ -639,7 +629,6 @@
           modalsContainer.appendChild(modal);
         });
       });
-
       // Toggle categories
       categories.forEach(cat => {
         cat.title.addEventListener('click', () => {
@@ -654,7 +643,6 @@
           }
         });
       });
-
       // Update selected heroes display
       function updateSelectedHeroes() {
         selectedHeroes = categories.map(c => c.selected).filter(h => h && h.ability);
@@ -664,7 +652,6 @@
         startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
         startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
       }
-
       // Hero selection
       categories.forEach(cat => {
         cat.list.addEventListener('click', e => {
@@ -676,6 +663,7 @@
           if (cat.selected) {
             const selectedTile = cat.list.querySelector('.selected');
             if (selectedTile) selectedTile.classList.remove('selected');
+            // Hide previous modal
             const prevHeroName = cat.selected.name;
             const prevModal = document.getElementById(`${prevHeroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
             prevModal.style.display = 'none';
@@ -683,7 +671,7 @@
           // Select new hero
           tile.classList.add('selected');
           cat.selected = { name: heroName, icon: heroIcon, ability: null };
-          cat.display.textContent = `${heroName}`;
+          cat.display.textContent = `${heroName}`; // Show only hero name in category title
           // Find hero data
           const heroCat = heroData.find(c => c.id === cat.id);
           const hero = heroCat.heroes.find(h => h.name === heroName);
@@ -696,7 +684,7 @@
               const choice = this.getAttribute('data-choice');
               cat.selected.ability = choice;
               const ability = hero.abilities.find(a => a.choice === choice);
-              cat.display.textContent = `${heroName}: ${ability.label}`;
+              cat.display.textContent = `${heroName}: ${ability.label}`; // Updated format for category title
               modal.style.display = 'none';
               cat.list.classList.remove('expanded');
               cat.title.classList.remove('expanded');
@@ -706,16 +694,12 @@
           });
         });
       });
-
       // Start button - redirect with selected heroes and sessionId
       startButton.addEventListener('click', () => {
         if (selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability)) return;
         const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => ({ name: h.name, ability: h.ability }))));
         window.location.href = `matchmaking.html?heroes=${heroesQuery}&sessionId=${encodeURIComponent(sessionId)}`;
       });
-
-      // Debug: Log final DOM content
-      console.log('Final DOM:', document.getElementById('categories').innerHTML);
     }
   </script>
 </body>
