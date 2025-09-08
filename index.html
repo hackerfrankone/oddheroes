@@ -182,8 +182,18 @@
       background-color: #002200;
       border: 1px solid #00b300;
       border-radius: 8px;
-      text-align: center; /* Center for moveset */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-size: 0.9rem;
+    }
+    .stats-display .stats-left {
+      text-align: left;
+      flex: 1;
+    }
+    .stats-display .moveset-center {
+      text-align: center;
+      flex: 1;
     }
     .stats-display .label {
       font-weight: bold;
@@ -251,7 +261,7 @@
     }
     .option .empty-line {
       margin-bottom: 0.5rem;
-      height: 1em; /* Empty line */
+      height: 1em;
     }
     .option .description {
       font-size: 0.9rem;
@@ -327,7 +337,9 @@
       .option { flex: 1; }
       .single-option { flex: 1; }
       .option .icon { font-size: 1.5rem; }
-      .stats-display { font-size: 0.8rem; }
+      .stats-display { font-size: 0.8rem; flex-direction: column; align-items: flex-start; }
+      .stats-display .stats-left { text-align: left; width: 100%; }
+      .stats-display .moveset-center { text-align: center; width: 100%; }
       .stats-display .value { font-size: 0.8rem; }
       .stats-display .moveset { font-size: 0.8rem; }
       .passive-display { font-size: 0.8rem; }
@@ -579,12 +591,16 @@
           modalContent.innerHTML = `
             <span class="modal-close" onclick="document.getElementById('${hero.name.toLowerCase().replace(/\s+/g, '-')}-modal').style.display='none'; document.getElementById('${cat.id}-list').querySelector('.selected')?.classList.remove('selected'); document.getElementById('${cat.id}-title').querySelector('.selected-hero').textContent=''; window.categories[${index}].selected=null; updateSelectedHeroes();">X</span>
             <div class="stats-display">
-              <div class="label">HP: ${hero.hp || 'N/A'}</div>
-              <div class="label">Speed: ${hero.speed || 'N/A'}</div>
-              <div class="label">Tile Move: ${hero.tileMove || 'N/A'}</div>
-              <div class="moveset">Hero's Moveset</div>
-              <div class="value">Move 1: Placeholder</div>
-              <div class="value">Move 2: Placeholder</div>
+              <div class="stats-left">
+                <div class="label">HP: ${hero.hp || 'N/A'}</div>
+                <div class="label">Speed: ${hero.speed || 'N/A'}</div>
+                <div class="label">Tile Move: ${hero.tileMove || 'N/A'}</div>
+              </div>
+              <div class="moveset-center">
+                <div class="moveset">Hero's Moveset</div>
+                <div class="value">Move 1: Placeholder</div>
+                <div class="value">Move 2: Placeholder</div>
+              </div>
             </div>
             <div class="passive-display">
               <div class="label">Passive: ${hero.passive?.label || 'No Passive'}</div>
