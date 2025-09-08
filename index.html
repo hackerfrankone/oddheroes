@@ -245,5 +245,234 @@
   <script src="heroes/legends/merfolk/GUI.js"></script>
   <script src="heroes/humans/miner/GUI.js"></script>
   <script src="heroes/humans/alchemist/GUI.js"></script>
-  <script src="heroes/hum ➥
-System: * Today's date and time is 08:27 PM EDT on Sunday, September 07, 2025.
+  <script src="heroes/humans/wizard/GUI.js"></script>
+  <script src="heroes/humans/hunter/GUI.js"></script>
+  <script src="heroes/humans/vampire/GUI.js"></script>
+  <script src="heroes/humans/werewolf/GUI.js"></script>
+  <script src="heroes/humans/fisherman/GUI.js"></script>
+  <script src="heroes/humans/ninja/GUI.js"></script>
+  <script src="heroes/humans/samurai/GUI.js"></script>
+  <script src="heroes/humans/spartan/GUI.js"></script>
+  <script src="heroes/creatures/chicken/GUI.js"></script>
+  <script src="heroes/creatures/shark/GUI.js"></script>
+  <script src="heroes/creatures/dog/GUI.js"></script>
+  <script src="heroes/creatures/falcon/GUI.js"></script>
+  <script src="heroes/creatures/frog/GUI.js"></script>
+  <script src="heroes/creatures/turtle/GUI.js"></script>
+  <script src="heroes/creatures/lobster/GUI.js"></script>
+  <script src="heroes/creatures/bear/GUI.js"></script>
+  <script src="heroes/creatures/tiger/GUI.js"></script>
+  <script src="heroes/creatures/raccoon/GUI.js"></script>
+  <script src="heroes/creatures/boar/GUI.js"></script>
+  <script src="heroes/creatures/lizard/GUI.js"></script>
+  <script src="heroes/creatures/mole/GUI.js"></script>
+  <script src="heroes/creatures/duck/GUI.js"></script>
+  <script src="heroes/creatures/rat/GUI.js"></script>
+  <script src="heroes/creatures/honey-badger/GUI.js"></script>
+  <script src="heroes/uniques/worm/GUI.js"></script>
+  <script src="heroes/uniques/mosquito/GUI.js"></script>
+  <script src="heroes/uniques/tick/GUI.js"></script>
+  <script src="heroes/uniques/leech/GUI.js"></script>
+  <script src="heroes/uniques/pilot/GUI.js"></script>
+  <script src="heroes/uniques/germ/GUI.js"></script>
+  <script src="heroes/uniques/livingtree/GUI.js"></script>
+  <script src="heroes/uniques/ai/GUI.js"></script>
+  <script>
+    // Hero-list
+    const heroNames = [
+      'AI', 'BigFoot', 'Centaur', 'Dinosaur', 'Dragon', 'Fairy', 'Ghost', 'Medusa', 'Merfolk', 'Phoenix',
+      'Alchemist', 'Fisherman', 'Hunter', 'Miner', 'Ninja', 'Samurai', 'Spartan', 'Vampire', 'Warrior', 'Wizard',
+      'Bear', 'Boar', 'Chicken', 'Dog', 'Duck', 'Falcon', 'Frog', 'HoneyBadger', 'Lizard', 'Mole', 'Raccoon', 'Rat', 'Shark', 'Tiger', 'Turtle',
+      'Germ', 'Leech', 'LivingTree', 'Mosquito Swarm', 'Tick', 'Worm', 'Pilot'
+    ];
+    // pull from directory hero GUIs
+    const heroData = [];
+    const categoriesMap = {};
+    heroNames.forEach(heroName => {
+      const hero = window[`${heroName.replace(/\s+/g, '')}Data`];
+      if (!hero) {
+        console.error(`Error: Data for ${heroName} not found. Check if heroes/${hero?.category?.toLowerCase() || 'unknown'}/${heroName.toLowerCase().replace(/\s+/g, '-')}/GUI.js is loaded.`);
+        return;
+      }
+      const catId = hero.id;
+      if (!categoriesMap[catId]) {
+        categoriesMap[catId] = {
+          category: hero.category,
+          id: catId,
+          heroes: []
+        };
+        heroData.push(categoriesMap[catId]);
+      }
+      categoriesMap[catId].heroes.push({
+        name: hero.name,
+        icon: hero.icon,
+        abilities: hero.abilities,
+        passive: hero.passive // Include passive data
+      });
+    });
+    // Sort in order
+    heroData.forEach(category => {
+      category.heroes.sort((a, b) => a.name.localeCompare(b.name));
+    });
+    // Define custom category order
+    const categoryOrder = ['Legends', 'Creatures', 'Humans', 'Uniques'];
+    // Sort heroData to enforce custom category order
+    heroData.sort((a, b) => categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category));
+    // Error handling if no heroes are loaded
+    if (heroData.length === 0) {
+      console.error('Error: No hero data loaded. Ensure hero GUI files are included.');
+      const errorMessage = document.createElement('div');
+      errorMessage.style.color = '#f00';
+      errorMessage.textContent = 'Error loading hero data. Please check if hero GUI files are correctly included.';
+      document.body.appendChild(errorMessage);
+    } else {
+      // Dynamically generate categories and hero tiles
+      const categoriesContainer = document.getElementById('categories');
+      const modalsContainer = document.getElementById('modals');
+      const selectedHeroesDiv = document.getElementById('selected-heroes');
+      const startButton = document.getElementById('start-button');
+      let selectedHeroes = [];
+      const sessionId = crypto.randomUUID();
+      const categories = heroData.map(cat => ({
+        title: null,
+        list: null,
+        selected: null,
+        display: null,
+        id: cat.id
+      }));
+      // Disable start button by default
+      startButton.disabled = true;
+      heroData.forEach((cat, index) => {
+        // Create category container
+        const categoryContainer = document.createElement('div');
+        categoryContainer.className = 'category-container';
+        // Create category title
+        const categoryTitle = document.createElement('div');
+        categoryTitle.className = 'category-title';
+        categoryTitle.id = `${cat.id}-title`;
+        categoryTitle.innerHTML = `<span class="selected-hero"></span>${cat.category}`;
+        // Create grid container
+        const gridContainer = document.createElement('div');
+        gridContainer.className = 'grid-container';
+        gridContainer.id = `${cat.id}-list`;
+        // Populate hero tiles
+        cat.heroes.forEach(hero => {
+          const heroTile = document.createElement('div');
+          heroTile.className = 'hero-tile';
+          heroTile.innerHTML = `<div class="hero-icon">${hero.icon}</div>${hero.name}`;
+          gridContainer.appendChild(heroTile);
+        });
+        categoryContainer.appendChild(categoryTitle);
+        categoryContainer.appendChild(gridContainer);
+        categoriesContainer.appendChild(categoryContainer);
+        // Update categories array
+        categories[index].title = categoryTitle;
+        categories[index].list = gridContainer;
+        categories[index].display = categoryTitle.querySelector('.selected-hero');
+        // Create modal for each hero
+        cat.heroes.forEach(hero => {
+          const modal = document.createElement('div');
+          modal.id = `${hero.name.toLowerCase().replace(/\s+/g, '-')}-modal`;
+          modal.className = 'modal';
+          const modalContent = document.createElement('div');
+          modalContent.className = 'modal-content';
+          modalContent.innerHTML = `
+            <div class="passive-display">
+              <div class="label">${hero.passive?.label || 'No Passive'}</div>
+              ${hero.passive?.description ? `<div class="description">${hero.passive.description}</div>` : ''}
+            </div>
+            <div class="options"></div>
+          `;
+          const optionsContainer = modalContent.querySelector('.options');
+          hero.abilities.forEach(ability => {
+            const option = document.createElement('div');
+            option.className = `option ${hero.abilities.length === 1 ? 'single-option' : ''}`;
+            option.setAttribute('data-choice', ability.choice);
+            option.innerHTML = `<span class="icon">${hero.icon}</span>${ability.label}${ability.description ? '<br>' + ability.description : ''}`;
+            optionsContainer.appendChild(option);
+          });
+          modal.appendChild(modalContent);
+          modalsContainer.appendChild(modal);
+        });
+      });
+      // Toggle categories
+      categories.forEach(cat => {
+        cat.title.addEventListener('click', () => {
+          const expanded = cat.list.classList.contains('expanded');
+          categories.forEach(c => {
+            c.list.classList.remove('expanded');
+            c.title.classList.remove('expanded');
+          });
+          if (!expanded) {
+            cat.list.classList.add('expanded');
+            cat.title.classList.add('expanded');
+          }
+        });
+      });
+      // Hero selection
+      categories.forEach(cat => {
+        cat.list.addEventListener('click', e => {
+          const tile = e.target.closest('.hero-tile');
+          if (!tile) return;
+          const heroName = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
+          const heroIcon = tile.querySelector('.hero-icon').textContent;
+          // If a hero is already selected in this category, deselect it
+          if (cat.selected) {
+            const selectedTile = cat.list.querySelector('.selected');
+            if (selectedTile) selectedTile.classList.remove('selected');
+            // Hide previous modal
+            const prevHeroName = cat.selected.name;
+            const prevModal = document.getElementById(`${prevHeroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
+            prevModal.style.display = 'none';
+          }
+          // Select new hero
+          tile.classList.add('selected');
+          cat.selected = { name: heroName, icon: heroIcon, ability: null };
+          cat.display.textContent = `${heroIcon} ${heroName}`;
+          selectedHeroes = categories.map(c => c.selected).filter(h => h);
+          // Find hero data
+          const heroCat = heroData.find(c => c.id === cat.id);
+          const hero = heroCat.heroes.find(h => h.name === heroName);
+          // Show modal
+          const modal = document.getElementById(`${heroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
+          modal.style.display = 'flex';
+          const options = modal.querySelectorAll('.option');
+          options.forEach(opt => {
+            opt.addEventListener('click', function handleChoice() {
+              const choice = this.getAttribute('data-choice');
+              cat.selected.ability = choice;
+              const ability = hero.abilities.find(a => a.choice === choice);
+              cat.display.textContent = `${heroIcon} ${heroName} (${ability.label})`;
+              modal.style.display = 'none';
+              cat.list.classList.remove('expanded');
+              cat.title.classList.remove('expanded');
+              options.forEach(o => o.removeEventListener('click', handleChoice));
+              // Update selected heroes display with <br> tags
+              selectedHeroes = categories.map(c => c.selected).filter(h => h);
+              selectedHeroesDiv.innerHTML = selectedHeroes.length
+                ? `Selected:<br>${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join('<br>')}`
+                : '';
+              // Enable start button if one hero is selected from each category with an ability
+              startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
+              startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
+            }, { once: true });
+          });
+          // Update selected heroes display with <br> tags
+          selectedHeroesDiv.innerHTML = selectedHeroes.length
+            ? `Selected:<br>${selectedHeroes.map(h => `${h.name} (${h.ability || 'No ability'})`).join('<br>')}`
+            : '';
+          // Enable start button if one hero is selected from each category with an ability
+          startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
+          startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
+        });
+      });
+      // Start button - redirect with selected heroes and sessionId
+      startButton.addEventListener('click', () => {
+        if (selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability)) return;
+        const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => ({ name: h.name, ability: h.ability }))));
+        window.location.href = `matchmaking.html?heroes=${heroesQuery}&sessionId=${encodeURIComponent(sessionId)}`;
+      });
+    }
+  </script>
+</body>
+</html>
