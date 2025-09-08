@@ -4,7 +4,7 @@ const LizardData = {
   category: 'Creatures',
   id: 'creatures',
   abilities: [
-    { choice: '+1 HP', label: '+1 HP', description: 'Your HP is now 3 and able to use move 2 twice now.' },
+    { choice: '+1 HP', label: '+1 HP', description: 'Your HP is now 3.' },
     { choice: 'Enhanced Tongue Lash', label: 'Enhanced Tongue Lash', description: 'Tongue Lash deals 20 HP.' }
   ],
   hp: 2,
