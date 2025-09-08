@@ -157,7 +157,7 @@
       background-color: #001100;
       border: 2px solid #0f0;
       border-radius: 10px;
-      padding: 1rem;
+      padding: 1.5rem;
       text-align: center;
       box-shadow: 0 0 20px #0f0;
       max-width: 400px;
@@ -171,7 +171,7 @@
     .options {
       display: flex;
       justify-content: space-around;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
       flex-wrap: wrap;
       gap: 10px;
     }
@@ -271,7 +271,6 @@
       'Bear', 'Boar', 'Chicken', 'Dog', 'Duck', 'Falcon', 'Frog', 'HoneyBadger', 'Lizard', 'Mole', 'Raccoon', 'Rat', 'Shark', 'Tiger', 'Turtle',
       'Germ', 'Leech', 'LivingTree', 'Mosquito Swarm', 'Tick', 'Worm', 'Pilot'
     ];
-
     // pull from directory hero GUIs
     const heroData = [];
     const categoriesMap = {};
@@ -296,17 +295,14 @@
         abilities: hero.abilities
       });
     });
-
     // Sort in order
     heroData.forEach(category => {
       category.heroes.sort((a, b) => a.name.localeCompare(b.name));
     });
-
     // Define custom category order
     const categoryOrder = ['Legends', 'Creatures', 'Humans', 'Uniques'];
     // Sort heroData to enforce custom category order
     heroData.sort((a, b) => categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category));
-
     // Error handling if no heroes are loaded
     if (heroData.length === 0) {
       console.error('Error: No hero data loaded. Ensure hero GUI files are included.');
@@ -329,10 +325,8 @@
         display: null,
         id: cat.id
       }));
-
       // Disable start button by default
       startButton.disabled = true;
-
       heroData.forEach((cat, index) => {
         // Create category container
         const categoryContainer = document.createElement('div');
@@ -367,7 +361,7 @@
           modal.className = 'modal';
           const modalContent = document.createElement('div');
           modalContent.className = 'modal-content';
-          modalContent.innerHTML = `<h2>Choose ${hero.name}'s Ability</h2><div class="options"></div>`;
+          modalContent.innerHTML = `<div class="options"></div>`; // Removed "Choose [hero.name]'s Ability" text
           const optionsContainer = modalContent.querySelector('.options');
           hero.abilities.forEach(ability => {
             const option = document.createElement('div');
@@ -380,7 +374,6 @@
           modalsContainer.appendChild(modal);
         });
       });
-
       // Toggle categories
       categories.forEach(cat => {
         cat.title.addEventListener('click', () => {
@@ -395,7 +388,6 @@
           }
         });
       });
-
       // Hero selection
       categories.forEach(cat => {
         cat.list.addEventListener('click', e => {
@@ -406,14 +398,10 @@
           // If a hero is already selected in this category, deselect it
           if (cat.selected) {
             const selectedTile = cat.list.querySelector('.selected');
-            if (selectedTile) selectedTile.classList.remove('selected');
-            // Hide previous modal
-            const prevHeroName = cat.selected.name;
-            const prevModal = document.getElementById(`${prevHeroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
-            prevModal.style.display = 'none';
+            if (selectedTile) selectedTile.className = 'hero-tile';
           }
           // Select new hero
-          tile.classList.add('selected');
+          tile.className = 'hero-tile selected';
           cat.selected = { name: heroName, icon: heroIcon, ability: null };
           cat.display.textContent = `${heroIcon} ${heroName}`;
           selectedHeroes = categories.map(c => c.selected).filter(h => h);
@@ -453,7 +441,6 @@
           startButton.disabled = selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability);
         });
       });
-
       // Start button - redirect with selected heroes and sessionId
       startButton.addEventListener('click', () => {
         if (selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability)) return;
