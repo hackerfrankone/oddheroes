@@ -5,7 +5,7 @@ const HoneyBadgerData = {
   id: 'creatures',
   abilities: [
     { choice: 'Fearless', label: 'Fearless', description: 'Reduce all physical HP by 2.' },
-    { choice: 'Death & Fearless', label: 'Death & Fearless', description: 'If this hero dies to a physical HP, this hero returns 20 HP. .' }
+    { choice: 'Death & Fearless', label: 'Fearless Through Death', description: 'If this hero dies to a physical HP, this hero returns 10 HP.' }
   ],
   hp: 50,
   speed: 20,
@@ -20,7 +20,7 @@ const HoneyBadgerData = {
       description: 'A placeholder move for HoneyBadger in the battle arena.'
     },
     {
-      label: 'Move 2: Bravery causes this hero to return 30 HP in return to any physical HP taken. This move can simultanously picked while picking move 1. 3 turn CD.',
+      label: 'Move 2: Bravery causes this hero to return 30 HP in return to any physical HP taken. This move can simultanously picked while picking move 1. 4 turn CD.',
       description: 'Another placeholder move for HoneyBadger in the battle arena.'
     }
   ]
