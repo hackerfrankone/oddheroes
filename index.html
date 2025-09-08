@@ -22,7 +22,6 @@
     h1 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
-      text-shadow: 0 0 8px #00b300;
       text-align: center;
       width: 100%;
     }
@@ -34,30 +33,24 @@
     .category-title {
       font-size: 1.8rem;
       margin: 0.5rem 0;
-      text-shadow: 0 0 8px #00b300, 0 0 15px #00b300;
       text-align: left;
       cursor: pointer;
       padding: 0.7rem 1rem;
       background: linear-gradient(to bottom, #003300, #001100);
       border: 2px solid #00b300;
       border-radius: 10px;
-      box-shadow: 0 0 10px #00b300;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: box-shadow 0.3s ease, background 0.3s ease;
       position: relative;
       overflow: hidden;
     }
     .category-title:hover {
-      box-shadow: 0 0 15px #00b300, 0 0 20px #00b300;
       background: linear-gradient(to bottom, #005500, #003300);
     }
     .category-title::after {
       content: '▶';
       font-size: 1.5rem;
-      text-shadow: 0 0 4px #00b300;
-      transition: transform 0.3s ease;
     }
     .category-title.expanded::after {
       content: '▼';
@@ -65,7 +58,6 @@
     .selected-hero {
       font-size: 1.2rem;
       margin-right: 1rem;
-      text-shadow: 0 0 4px #00b300;
     }
     .grid-container {
       display: grid;
@@ -96,7 +88,7 @@
       text-align: center;
       font-size: 1rem;
       cursor: pointer;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      transition: background-color 0.3s ease;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -107,12 +99,10 @@
     }
     .hero-tile:hover {
       background-color: #005500;
-      box-shadow: 0 0 10px #00b300, 0 0 20px #00b300;
     }
     .hero-tile.selected {
       background-color: #00b300;
       color: #000;
-      box-shadow: 0 0 15px #00b300, 0 0 25px #00b300;
       font-weight: bold;
     }
     .hero-icon {
@@ -123,7 +113,6 @@
     #selected-heroes {
       margin-top: 0.5rem;
       font-size: 1.3rem;
-      text-shadow: 0 0 8px #00b300;
       min-height: 2rem;
       text-align: center;
       width: 90%;
@@ -138,7 +127,6 @@
       color: #000;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 0 8px #00b300;
       transition: background-color 0.3s ease;
       display: none;
       width: 200px;
@@ -169,7 +157,6 @@
       border-radius: 10px;
       padding: 1.5rem;
       text-align: center;
-      box-shadow: 0 0 15px #00b300;
       max-width: 400px;
       width: 90%;
       position: relative;
@@ -181,7 +168,6 @@
       font-size: 1.2rem;
       color: #00b300;
       cursor: pointer;
-      text-shadow: 0 0 4px #00b300;
     }
     .modal-close:hover {
       color: #005500;
@@ -193,8 +179,7 @@
       border: 1px solid #00b300;
       border-radius: 8px;
       text-align: left;
-      font-size: 1rem;
-      text-shadow: 0 0 4px #00b300;
+      font-size: 0.9rem;
     }
     .stats-display .label {
       font-weight: bold;
@@ -210,8 +195,7 @@
       border: 1px solid #00b300;
       border-radius: 8px;
       text-align: left;
-      font-size: 1rem;
-      text-shadow: 0 0 4px #00b300;
+      font-size: 0.9rem;
     }
     .passive-display .label {
       font-weight: bold;
@@ -224,7 +208,6 @@
       font-size: 1rem;
       font-weight: bold;
       text-align: center;
-      text-shadow: 0 0 4px #00b300;
       margin: 0.5rem 0;
     }
     .options {
@@ -274,7 +257,6 @@
       border-radius: 10px;
       padding: 1.5rem;
       text-align: center;
-      box-shadow: 0 0 15px #00b300;
       max-width: 400px;
       width: 90%;
     }
@@ -323,9 +305,9 @@
       .option { width: 80%; }
       .single-option { width: 90%; }
       .option .icon { font-size: 1.5rem; }
-      .stats-display { font-size: 0.9rem; }
+      .stats-display { font-size: 0.8rem; }
       .stats-display .value { font-size: 0.8rem; }
-      .passive-display { font-size: 0.9rem; }
+      .passive-display { font-size: 0.8rem; }
       .passive-display .description { font-size: 0.8rem; }
       .instruction { font-size: 0.9rem; }
       .password-modal-content { padding: 1rem; }
