@@ -12,7 +12,7 @@
       overflow: auto;
       background-color: #000;
       font-family: 'Share Tech Mono', monospace;
-      color: #00b300; /* Softer green */
+      color: #00b300;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -23,7 +23,7 @@
     h1 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
-      text-shadow: 0 0 8px #00b300; /* Reduced intensity */
+      text-shadow: 0 0 8px #00b300;
       text-align: center;
     }
     .category-container {
@@ -34,14 +34,14 @@
     .category-title {
       font-size: 1.8rem;
       margin: 0.5rem 0;
-      text-shadow: 0 0 8px #00b300, 0 0 15px #00b300; /* Reduced intensity */
+      text-shadow: 0 0 8px #00b300, 0 0 15px #00b300;
       text-align: left;
       cursor: pointer;
       padding: 0.7rem 1rem;
       background: linear-gradient(to bottom, #003300, #001100);
-      border: 2px solid #00b300; /* Softer green */
+      border: 2px solid #00b300;
       border-radius: 10px;
-      box-shadow: 0 0 10px #00b300; /* Reduced spread */
+      box-shadow: 0 0 10px #00b300;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -50,13 +50,13 @@
       overflow: hidden;
     }
     .category-title:hover {
-      box-shadow: 0 0 15px #00b300, 0 0 20px #00b300; /* Reduced spread */
+      box-shadow: 0 0 15px #00b300, 0 0 20px #00b300;
       background: linear-gradient(to bottom, #005500, #003300);
     }
     .category-title::after {
       content: '▶';
       font-size: 1.5rem;
-      text-shadow: 0 0 4px #00b300; /* Reduced intensity */
+      text-shadow: 0 0 4px #00b300;
       transition: transform 0.3s ease;
     }
     .category-title.expanded::after {
@@ -65,7 +65,7 @@
     .selected-hero {
       font-size: 1.2rem;
       margin-right: 1rem;
-      text-shadow: 0 0 4px #00b300; /* Reduced intensity */
+      text-shadow: 0 0 4px #00b300;
     }
     .grid-container {
       display: grid;
@@ -74,7 +74,7 @@
       padding: 10px;
       background-color: #001100;
       border-radius: 8px;
-      border: 1px solid #00b300; /* Softer green */
+      border: 1px solid #00b300;
       max-height: 0;
       overflow: hidden;
       opacity: 0;
@@ -91,7 +91,7 @@
     }
     .hero-tile {
       background-color: #003300;
-      border: 2px solid #00b300; /* Softer green */
+      border: 2px solid #00b300;
       border-radius: 8px;
       text-align: center;
       font-size: 1rem;
@@ -107,12 +107,12 @@
     }
     .hero-tile:hover {
       background-color: #005500;
-      box-shadow: 0 0 10px #00b300, 0 0 20px #00b300; /* Reduced spread */
+      box-shadow: 0 0 10px #00b300, 0 0 20px #00b300;
     }
     .hero-tile.selected {
-      background-color: #00b300; /* Softer green */
+      background-color: #00b300;
       color: #000;
-      box-shadow: 0 0 15px #00b300, 0 0 25px #00b300; /* Reduced spread */
+      box-shadow: 0 0 15px #00b300, 0 0 25px #00b300;
       font-weight: bold;
     }
     .hero-icon {
@@ -123,7 +123,7 @@
     #selected-heroes {
       margin-top: 0.5rem;
       font-size: 1.3rem;
-      text-shadow: 0 0 8px #00b300; /* Reduced intensity */
+      text-shadow: 0 0 8px #00b300;
       min-height: 2rem;
       text-align: center;
     }
@@ -131,13 +131,13 @@
       margin: 1.5rem 0;
       padding: 0.8rem 2rem;
       font-size: 1.3rem;
-      background-color: #00b300; /* Softer green */
+      background-color: #00b300;
       border: none;
       border-radius: 8px;
       color: #000;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 0 8px #00b300; /* Reduced spread */
+      box-shadow: 0 0 8px #00b300;
       display: none;
       transition: background-color 0.3s ease;
     }
@@ -155,11 +155,11 @@
     }
     .modal-content {
       background-color: #001100;
-      border: 2px solid #00b300; /* Softer green */
+      border: 2px solid #00b300;
       border-radius: 10px;
       padding: 1.5rem;
       text-align: center;
-      box-shadow: 0 0 15px #00b300; /* Reduced spread */
+      box-shadow: 0 0 15px #00b300;
       max-width: 400px;
       width: 90%;
     }
@@ -167,11 +167,11 @@
       margin-bottom: 1rem;
       padding: 0.8rem;
       background-color: #002200;
-      border: 1px solid #00b300; /* Softer green */
+      border: 1px solid #00b300;
       border-radius: 8px;
       text-align: left;
       font-size: 1rem;
-      text-shadow: 0 0 4px #00b300; /* Reduced intensity */
+      text-shadow: 0 0 4px #00b300;
     }
     .passive-display .label {
       font-weight: bold;
@@ -179,6 +179,13 @@
     }
     .passive-display .description {
       font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .instruction {
+      font-size: 1rem;
+      font-weight: bold;
+      text-align: center;
+      text-shadow: 0 0 4px #00b300;
     }
     .options {
       display: flex;
@@ -189,7 +196,7 @@
     }
     .option {
       background-color: #003300;
-      border: 2px solid #00b300; /* Softer green */
+      border: 2px solid #00b300;
       border-radius: 8px;
       padding: 1rem;
       cursor: pointer;
@@ -224,11 +231,12 @@
       .option .icon { font-size: 1.5rem; }
       .passive-display { font-size: 0.9rem; }
       .passive-display .description { font-size: 0.8rem; }
+      .instruction { font-size: 0.9rem; }
     }
   </style>
 </head>
 <body>
-  <h1>Pick Your Odd Heroes</h1>
+  <h1>Pick Your Odd Hero Team</h1>
   <div id="categories"></div>
   <div id="selected-heroes"></div>
   <button id="start-button">Start Game</button>
@@ -385,6 +393,7 @@
             <div class="passive-display">
               <div class="label">Passive: ${hero.passive?.label || 'No Passive'}</div>
               ${hero.passive?.description ? `<div class="description">${hero.passive.description}</div>` : ''}
+              <div class="instruction">Pick a CD ability</div>
             </div>
             <div class="options"></div>
           `;
