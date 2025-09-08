@@ -20,7 +20,7 @@ const LizardData = {
       description: 'A placeholder move for Lizard in the battle arena.'
     },
     {
-      label: 'Move 2: Run any amount of tiles and take 1 HP',
+      label: 'Move 2: Hyper Speed reduce 1 HP and able to move to ANY path on map.',
       description: 'Another placeholder move for Lizard in the battle arena.'
     }
   ]
