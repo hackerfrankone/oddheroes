@@ -8,7 +8,7 @@ const BearData = {
     { choice: 'Roar of Terror', label: 'Roar of Terror', description: 'All surrounding tiles x3 outward from this hearo cant move for 2 turns. 4 turn CD. ' },
     { choice: 'Hibernate', label: 'Hibernate', description: 'Sleep for 3 turns to recover 25 HP. 3 turn CD.' }
   ],
-  hp: 40,
+  hp: 70,
   speed: 40,
   tileMove: 4,
   passive: {
