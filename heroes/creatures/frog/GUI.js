@@ -13,16 +13,16 @@ const FrogData = {
   tileMove: 1,
   passive: {
     label: 'Regenerate',
-    description: '+2 HP in or near water.'
+    description: '+2 HP in or near water'
   },
   moveset: [
     {
-      label: 'Move 1: Tongue Lash deals 10 HP.',
-      description: 'A placeholder move for Frog in the battle arena.'
+      label: 'Move 1: Tongue Lash deals 10 HP',
+      description: 'A placeholder move for Frog in the battle arena'
     },
     {
-      label: 'Move 2: Jump 3 tiles & do 5 HP to all surrounding enemies.',
-      description: 'Another placeholder move for Frog in the battle arena.'
+      label: 'Move 2: Jump 3 tiles & do 5 HP to all surrounding enemies inlucding under-ground',
+      description: 'Another placeholder move for Frog in the battle arena'
     }
   ]
 };
