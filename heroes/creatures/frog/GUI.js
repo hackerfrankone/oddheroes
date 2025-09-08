@@ -1,11 +1,15 @@
-window.FrogData = {
-  category: 'Creatures',
-  id: 'creatures',
+const FrogData = {
   name: 'Frog',
   icon: '🐸',
+  category: 'Creatures',
+  id: 'creatures',
   abilities: [
-    { choice: 'ability1', label: 'Blue', description: 'Poison' },
-    { choice: 'ability2', label: 'Green', description: 'Duplication' },
-    { choice: 'ability3', label: 'Yellow', description: 'Evolution' }
-  ]
+    { choice: 'green', label: 'Duplication', description: 'place-holder' },
+    { choice: 'yellow', label: 'Evolution', description: 'place-holder' },
+    { choice: 'blue', label: 'Posion', description: 'place-holder' }
+  ],
+  passive: {
+    label: 'A Jumping and licking hero',
+    description: 'Read above lol.'
+  }
 };
