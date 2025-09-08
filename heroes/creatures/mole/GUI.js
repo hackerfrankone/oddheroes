@@ -1,7 +1,7 @@
 const MoleData = {
   name: 'Mole',
   icon: '🐀',
-  category: 'Creatures',
+  category: 'Creatures', 
   id: 'creatures',
   abilities: [
     { choice: 'Placeholder1', label: 'Placeholder 1', description: 'Placeholder ability for Mole.' },
