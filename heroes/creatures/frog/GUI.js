@@ -6,7 +6,7 @@ const FrogData = {
   abilities: [
     { choice: 'Duplication', label: 'Duplication', description: 'Lay 3 frog eggs. 5 turn CD. Turn 4 will complete the evolution process. If eggs near water, tadpoles will emerge for scouts.' },
     { choice: 'Evolution', label: 'Evolution', description: 'Evolution into a giant Goliath BullFrog. Stats are tripled.' },
-    { choice: 'Poison', label: 'Poison Tongue', description: 'Tongue lash no longer does dmg but will cause target to be deadly poisoned. -10 hp per turn.' }
+    { choice: 'Poison', label: 'Poison Tongue', description: 'Tongue lash does no HP but will cause target to be deadly & biological poisoned. -10 hp per turn. Cannot heal or cure.' }
   ],
   hp: 20,
   speed: 10,
