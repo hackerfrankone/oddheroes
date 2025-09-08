@@ -13,7 +13,7 @@ const BearData = {
   tileMove: 4,
   passive: {
     label: 'Smell',
-    description: 'Can see camoflauged heroes if within field of vision.'
+    description: 'Can see camoflauged heroes if within field of vision from this hero.'
   },
   moveset: [
     {
