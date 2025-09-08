@@ -4,26 +4,26 @@ const ChickenData = {
   category: 'Creatures',
   id: 'creatures',
   abilities: [
-    { choice: 'Duplication', label: 'Duplication', description: 'Lay 3 frog eggs. 5 turn CD. Turn 4 will complete the evolution process. If eggs near water, tadpoles will emerge for scouts.' },
-    { choice: 'Evolution', label: 'Evolution', description: 'Evolution into a giant Goliath BullFrog. Stats are tripled.' },
-    { choice: 'Poison', label: 'Poison Tongue', description: 'Tongue lash no longer does dmg but will cause target to be deadly poisoned. -10hp per turn.' }
+    { choice: 'Chicken', label: 'Chicken', description: 'Choose friendly hero to eat this incredible healthy tasty chicken to recover +40 HP. This hero dies. Must be within tiles.' },
+    { choice: 'Flap', label: 'Flap', description: 'Flaps wings to create a gust, pushing enemies back 2 tiles.' },
+    { choice: 'EggDrop', label: 'Egg Drop', 'Egg drop onto a tile, Any hero may eat egg to recover 10 HP. 1 turn CD.' }
   ],
-  hp: 20,
-  speed: 10,
-  tileMove: 1,
+  hp: 25,
+  speed: 15,
+  tileMove: 2,
   passive: {
-    label: 'Regenerate',
-    description: '+2 HP in or near water.'
+    label: 'Search.',
+    description: 'End of every turn, this hero will search under-ground for food if successful +5 HP'
   },
   moveset: [
     {
-      label: 'Move 1: Tongue Lash',
-      description: 'A placeholder move for Frog in the battle arena.'
+      label: 'Move 1: Peck deals 10 HP.',
+      description: 'A placeholder move for Chicken in the battle arena.'
     },
     {
-      label: 'Move 2: Jump 3 tiles',
-      description: 'Another placeholder move for Frog in the battle arena.'
+      label: 'Move 2: Roost onto a tree to recover 20 HP',
+      description: 'Another placeholder move for Chicken in the battle arena.'
     }
   ]
 };
-window.FrogData = ChickenData;
+window.ChickenData = ChickenData;
