@@ -25,6 +25,7 @@
       margin-bottom: 1rem;
       text-shadow: 0 0 8px #00b300;
       text-align: center;
+      width: 100%; /* Ensure full-width centering */
     }
     .category-container {
       width: 90%;
@@ -179,13 +180,13 @@
     }
     .passive-display .description {
       font-size: 0.9rem;
-      margin-bottom: 0.5rem;
     }
     .instruction {
       font-size: 1rem;
       font-weight: bold;
       text-align: center;
       text-shadow: 0 0 4px #00b300;
+      margin: 0.5rem 0;
     }
     .options {
       display: flex;
@@ -236,7 +237,7 @@
   </style>
 </head>
 <body>
-  <h1>Pick Your Odd Hero Team</h1>
+  <h1>Pick Your Odd Heroes</h1>
   <div id="categories"></div>
   <div id="selected-heroes"></div>
   <button id="start-button">Start Game</button>
@@ -393,8 +394,8 @@
             <div class="passive-display">
               <div class="label">Passive: ${hero.passive?.label || 'No Passive'}</div>
               ${hero.passive?.description ? `<div class="description">${hero.passive.description}</div>` : ''}
-              <div class="instruction">Pick a CD ability</div>
             </div>
+            <div class="instruction">Pick a CD ability</div>
             <div class="options"></div>
           `;
           const optionsContainer = modalContent.querySelector('.options');
