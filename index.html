@@ -130,7 +130,6 @@
       max-width: 600px;
     }
     #start-button {
-      margin: 1.5rem 0;
       padding: 0.8rem 2rem;
       font-size: 1.3rem;
       background-color: #00b300;
@@ -142,7 +141,7 @@
       box-shadow: 0 0 8px #00b300;
       transition: background-color 0.3s ease;
       display: none;
-      width: 200px; /* Fixed width for consistency */
+      width: 200px;
     }
     #start-button-container {
       display: flex;
@@ -186,6 +185,23 @@
     }
     .modal-close:hover {
       color: #005500;
+    }
+    .stats-display {
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      background-color: #002200;
+      border: 1px solid #00b300;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 1rem;
+      text-shadow: 0 0 4px #00b300;
+    }
+    .stats-display .label {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+    .stats-display .value {
+      font-size: 0.9rem;
     }
     .passive-display {
       margin-bottom: 1rem;
@@ -307,6 +323,8 @@
       .option { width: 80%; }
       .single-option { width: 90%; }
       .option .icon { font-size: 1.5rem; }
+      .stats-display { font-size: 0.9rem; }
+      .stats-display .value { font-size: 0.8rem; }
       .passive-display { font-size: 0.9rem; }
       .passive-display .description { font-size: 0.8rem; }
       .instruction { font-size: 0.9rem; }
@@ -475,6 +493,9 @@
         name: hero.name,
         icon: hero.icon,
         abilities: hero.abilities,
+        hp: hero.hp,
+        speed: hero.speed,
+        tileMove: hero.tileMove,
         passive: hero.passive
       });
     });
@@ -551,6 +572,11 @@
           modalContent.className = 'modal-content';
           modalContent.innerHTML = `
             <span class="modal-close" onclick="document.getElementById('${hero.name.toLowerCase().replace(/\s+/g, '-')}-modal').style.display='none'; document.getElementById('${cat.id}-list').querySelector('.selected')?.classList.remove('selected'); document.getElementById('${cat.id}-title').querySelector('.selected-hero').textContent=''; window.categories[${index}].selected=null; updateSelectedHeroes();">X</span>
+            <div class="stats-display">
+              <div class="label">HP: ${hero.hp || 'N/A'}</div>
+              <div class="label">Speed: ${hero.speed || 'N/A'}</div>
+              <div class="label">Tile Move: ${hero.tileMove || 'N/A'}</div>
+            </div>
             <div class="passive-display">
               <div class="label">Passive: ${hero.passive?.label || 'No Passive'}</div>
               ${hero.passive?.description ? `<div class="description">${hero.passive.description}</div>` : ''}
