@@ -4,7 +4,7 @@ const HoneyBadgerData = {
   category: 'Creatures',
   id: 'creatures',
   abilities: [
-    { choice: 'Fearless', label: 'Fearless 1', description: 'Reduce all physical HP by 2.' },
+    { choice: 'Fearless', label: 'Fearless', description: 'Reduce all physical HP by 2.' },
     { choice: 'Death & Fearless', label: 'Death & Fearless', description: 'If this hero dies to a physical HP, this hero returns 20 HP. .' }
   ],
   hp: 50,
