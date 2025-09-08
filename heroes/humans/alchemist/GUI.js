@@ -1,10 +1,16 @@
-window.AlchemistData = {
-  category: 'Humans', 
-  id: 'humans',
+const AlchemistData = {
   name: 'Alchemist',
   icon: '🧪',
+  category: 'Humans',
+  id: 'humans',
   abilities: [
-    { choice: 'ability1', label: 'place-holder', description: 'place-holder' },
-    { choice: 'ability2', label: 'place-holder', description: 'place-holder' }
-  ]
+    { choice: 'Transmute', label: 'Transmute', description: 'place-holder' },
+    { choice: 'Elixir', label: 'Elixir', description: 'place-holder' },
+    { choice: 'Explosion', label: 'Explosion', description: 'place-holder' }
+  ],
+  passive: {
+    label: 'Chemical Mastery',
+    description: 'place-holder'
+  }
 };
+window.AlchemistData = AlchemistData;
