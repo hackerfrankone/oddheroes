@@ -4,9 +4,9 @@ const BearData = {
   category: 'Creatures',
   id: 'creatures',
   abilities: [
-    { choice: 'ClawSwipe', label: 'Claw Swipe', description: 'Swipes with powerful claws, dealing damage to a single target.' },
-    { choice: 'Roar', label: 'Roar', description: 'Intimidates enemies & reducing speed and attack.' },
-    { choice: 'Hibernate', label: 'Hibernate', description: 'Enters a defensive state, recovering HP over time.' }
+    { choice: 'n/a', label: 'Claw Swipe', description: 'n/a.' },
+    { choice: 'n/a', label: 'Roar', description: 'n/a.' },
+    { choice: 'n/a', label: 'Hibernate', description: 'n/a.' }
   ],
   hp: 40,
   speed: 15,
@@ -17,7 +17,7 @@ const BearData = {
   },
   moveset: [
     {
-      label: 'Move 1: Placeholder',
+      label: 'Move 1: Bite & Claw deals 20 HP',
       description: 'A placeholder move for Bear in the battle arena.'
     },
     {
