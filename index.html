@@ -162,6 +162,19 @@
       box-shadow: 0 0 15px #00b300;
       max-width: 400px;
       width: 90%;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.2rem;
+      color: #00b300;
+      cursor: pointer;
+      text-shadow: 0 0 4px #00b300;
+    }
+    .modal-close:hover {
+      color: #005500;
     }
     .passive-display {
       margin-bottom: 1rem;
@@ -290,35 +303,35 @@
       .password-modal-content input { font-size: 0.9rem; }
       .password-modal-content button { font-size: 0.9rem; }
       .password-modal-content .error { font-size: 0.8rem; }
+      .modal-close { font-size: 1rem; }
     }
   </style>
-  <!-- Randomly named scripts for password chunks -->
   <script id="x7b9k2m4">
-    window.pwChunk1 = '^4.';
+    window.oddchunk1 = '^4.';
   </script>
   <script id="q3z8n6j1">
-    window.pwChunk2 = 'BF.';
+    window.oddchunk2 = 'BF.';
   </script>
   <script id="t9m4p8v3">
-    window.pwChunk3 = '*%U';
+    window.oddchunk3 = '*%U';
   </script>
   <script id="r2k7w5y9">
-    window.pwChunk4 = '>KN';
+    window.oddchunk4 = '>KN';
   </script>
   <script id="h6n3j8q2">
-    window.pwChunk5 = 'D,n';
+    window.oddchunk5 = 'D,n';
   </script>
   <script id="p4v9m2k7">
-    window.pwChunk6 = '32@';
+    window.oddchunk6 = '32@';
   </script>
   <script id="j8q3y6n1">
-    window.pwChunk7 = '#$k';
+    window.oddchunk7 = '#$k';
   </script>
   <script id="w5t2p9v4">
-    window.pwChunk8 = 'd.#';
+    window.oddchunk8 = 'd.#';
   </script>
   <script id="k7m8r3z6">
-    window.pwChunk9 = '@!';
+    window.oddchunk9 = '@!';
   </script>
 </head>
 <body>
@@ -386,15 +399,15 @@
     function checkPassword() {
       const input = document.getElementById('password-input').value;
       const correctPassword = [
-        window.pwChunk1,
-        window.pwChunk2,
-        window.pwChunk3,
-        window.pwChunk4,
-        window.pwChunk5,
-        window.pwChunk6,
-        window.pwChunk7,
-        window.pwChunk8,
-        window.pwChunk9
+        window.oddchunk1,
+        window.oddchunk2,
+        window.oddchunk3,
+        window.oddchunk4,
+        window.oddchunk5,
+        window.oddchunk6,
+        window.oddchunk7,
+        window.oddchunk8,
+        window.oddchunk9
       ].join('');
       const errorDiv = document.getElementById('password-error');
       if (input === correctPassword) {
@@ -523,6 +536,7 @@
           const modalContent = document.createElement('div');
           modalContent.className = 'modal-content';
           modalContent.innerHTML = `
+            <span class="modal-close" onclick="this.parentElement.parentElement.style.display='none'">X</span>
             <div class="passive-display">
               <div class="label">Passive: ${hero.passive?.label || 'No Passive'}</div>
               ${hero.passive?.description ? `<div class="description">${hero.passive.description}</div>` : ''}
