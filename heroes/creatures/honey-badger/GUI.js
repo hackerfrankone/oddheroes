@@ -4,23 +4,23 @@ const HoneyBadgerData = {
   category: 'Creatures',
   id: 'creatures',
   abilities: [
-    { choice: 'Placeholder1', label: 'Placeholder 1', description: 'Placeholder ability for HoneyBadger.' },
-    { choice: 'Placeholder2', label: 'Placeholder 2', description: 'Another placeholder ability for HoneyBadger.' }
+    { choice: 'Fearless', label: 'Fearless 1', description: 'Reduce all physical HP by 2.' },
+    { choice: 'Death & Fearless', label: 'Death & Fearless', description: 'If this hero dies to a physical HP, this hero returns 20 HP. .' }
   ],
-  hp: 30,
+  hp: 50,
   speed: 20,
   tileMove: 3,
   passive: {
-    label: 'N/A',
-    description: ''
+    label: 'Fight Back',
+    description: 'If this hero is physically attacked, this hero will return 10 HP in return.'
   },
   moveset: [
     {
-      label: 'Move 1: Placeholder',
+      label: 'Move 1: Bite & Claw deals 10 HP.',
       description: 'A placeholder move for HoneyBadger in the battle arena.'
     },
     {
-      label: 'Move 2: Placeholder',
+      label: 'Move 2: Bravery causes this hero to return 30 HP in return to any physical HP taken. This move can simultanously picked while picking move 1. 3 turn CD.',
       description: 'Another placeholder move for HoneyBadger in the battle arena.'
     }
   ]
