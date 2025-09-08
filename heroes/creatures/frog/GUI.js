@@ -4,12 +4,12 @@ const FrogData = {
   category: 'Creatures',
   id: 'creatures',
   abilities: [
-    { choice: 'green', label: 'Duplication', description: 'place-holder' },
-    { choice: 'yellow', label: 'Evolution', description: 'place-holder' },
-    { choice: 'blue', label: 'Posion', description: 'place-holder' }
+    { choice: 'Duplication', label: 'Duplication', description: 'place-holder' },
+    { choice: 'Evolution', label: 'Evolution', description: 'place-holder' },
+    { choice: 'Poison', label: 'Poison', description: 'place-holder' }
   ],
   passive: {
-    label: 'A Jumping and licking hero',
+    label: 'Jumplickity',
     description: 'Read above lol.'
   }
 };
