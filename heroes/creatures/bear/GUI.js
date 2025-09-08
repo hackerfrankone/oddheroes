@@ -14,6 +14,16 @@ const BearData = {
   passive: {
     label: 'N/A',
     description: ''
-  }
+  },
+  moveset: [
+    {
+      label: 'Move 1: Placeholder',
+      description: 'A placeholder move for Bear in the battle arena.'
+    },
+    {
+      label: 'Move 2: Placeholder',
+      description: 'Another placeholder move for Bear in the battle arena.'
+    }
+  ]
 };
 window.BearData = BearData;
