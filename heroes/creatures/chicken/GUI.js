@@ -21,7 +21,7 @@ const ChickenData = {
       description: 'A placeholder move for Chicken in the battle arena.'
     },
     {
-      label: 'Move 2: Roost onto a tree to recover 20 HP',
+      label: 'Move 2: Roost onto any tall structure to recover 10 HP. Next Peck will increase +10 HP',
       description: 'Another placeholder move for Chicken in the battle arena.'
     }
   ]
