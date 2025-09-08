@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Odd Heroes</title>
-  <link rel="icon" type="image/png" href="oddheroes/images/OHO.png" />
+  <link rel="icon" type="image/png" href="/oddheroes/images/OHO.png" />
   <style>
     html, body {
       margin: 0;
@@ -216,6 +216,60 @@
       width: 60%;
       margin: 0 auto;
     }
+    .password-modal {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    .password-modal-content {
+      background-color: #001100;
+      border: 2px solid #00b300;
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 0 15px #00b300;
+      max-width: 400px;
+      width: 90%;
+    }
+    .password-modal-content input {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border: 1px solid #00b300;
+      background-color: #002200;
+      color: #00b300;
+      font-family: monospace;
+      font-size: 1rem;
+      border-radius: 5px;
+      width: 80%;
+    }
+    .password-modal-content button {
+      padding: 0.5rem 1rem;
+      background-color: #00b300;
+      border: none;
+      border-radius: 5px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    .password-modal-content button:hover {
+      background-color: #005500;
+    }
+    .password-modal-content .error {
+      color: #f00;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    .hidden {
+      display: none;
+    }
     @media (max-width: 400px) {
       h1 { font-size: 2rem; }
       .category-title { font-size: 1.5rem; padding: 0.5rem 0.8rem; }
@@ -232,60 +286,101 @@
       .passive-display { font-size: 0.9rem; }
       .passive-display .description { font-size: 0.8rem; }
       .instruction { font-size: 0.9rem; }
+      .password-modal-content { padding: 1rem; }
+      .password-modal-content input { font-size: 0.9rem; }
+      .password-modal-content button { font-size: 0.9rem; }
+      .password-modal-content .error { font-size: 0.8rem; }
     }
   </style>
 </head>
 <body>
-  <h1>Pick Your Odd Hero Team</h1>
-  <div id="categories"></div>
-  <div id="selected-heroes"></div>
-  <button id="start-button">Start Game</button>
-  <div id="modals"></div>
+  <div id="password-modal" class="password-modal">
+    <div class="password-modal-content">
+      <h2>Enter Access Password</h2>
+      <input type="password" id="password-input" placeholder="Enter password">
+      <button onclick="checkPassword()">Submit</button>
+      <div id="password-error" class="error"></div>
+    </div>
+  </div>
+  <div id="main-content" class="hidden">
+    <h1>Pick Your Odd Heroes</h1>
+    <div id="categories"></div>
+    <div id="selected-heroes"></div>
+    <button id="start-button">Start Game</button>
+    <div id="modals"></div>
+  </div>
   <!-- Load all hero GUI files -->
-  <script src="heroes/legends/fairy/GUI.js"></script>
-  <script src="heroes/legends/medusa/GUI.js"></script>
-  <script src="heroes/legends/phoenix/GUI.js"></script>
-  <script src="heroes/legends/big-foot/GUI.js"></script>
-  <script src="heroes/legends/dinosaur/GUI.js"></script>
-  <script src="heroes/legends/dragon/GUI.js"></script>
-  <script src="heroes/legends/ghost/GUI.js"></script>
-  <script src="heroes/legends/centaur/GUI.js"></script>
-  <script src="heroes/legends/merfolk/GUI.js"></script>
-  <script src="heroes/humans/miner/GUI.js"></script>
-  <script src="heroes/humans/alchemist/GUI.js"></script>
-  <script src="heroes/humans/wizard/GUI.js"></script>
-  <script src="heroes/humans/hunter/GUI.js"></script>
-  <script src="heroes/humans/vampire/GUI.js"></script>
-  <script src="heroes/humans/werewolf/GUI.js"></script>
-  <script src="heroes/humans/fisherman/GUI.js"></script>
-  <script src="heroes/humans/ninja/GUI.js"></script>
-  <script src="heroes/humans/samurai/GUI.js"></script>
-  <script src="heroes/humans/spartan/GUI.js"></script>
-  <script src="heroes/creatures/chicken/GUI.js"></script>
-  <script src="heroes/creatures/shark/GUI.js"></script>
-  <script src="heroes/creatures/dog/GUI.js"></script>
-  <script src="heroes/creatures/falcon/GUI.js"></script>
-  <script src="heroes/creatures/frog/GUI.js"></script>
-  <script src="heroes/creatures/turtle/GUI.js"></script>
-  <script src="heroes/creatures/lobster/GUI.js"></script>
-  <script src="heroes/creatures/bear/GUI.js"></script>
-  <script src="heroes/creatures/tiger/GUI.js"></script>
-  <script src="heroes/creatures/raccoon/GUI.js"></script>
-  <script src="heroes/creatures/boar/GUI.js"></script>
-  <script src="heroes/creatures/lizard/GUI.js"></script>
-  <script src="heroes/creatures/mole/GUI.js"></script>
-  <script src="heroes/creatures/duck/GUI.js"></script>
-  <script src="heroes/creatures/rat/GUI.js"></script>
-  <script src="heroes/creatures/honey-badger/GUI.js"></script>
-  <script src="heroes/uniques/worm/GUI.js"></script>
-  <script src="heroes/uniques/mosquito/GUI.js"></script>
-  <script src="heroes/uniques/tick/GUI.js"></script>
-  <script src="heroes/uniques/leech/GUI.js"></script>
-  <script src="heroes/uniques/pilot/GUI.js"></script>
-  <script src="heroes/uniques/germ/GUI.js"></script>
-  <script src="heroes/uniques/livingtree/GUI.js"></script>
-  <script src="heroes/uniques/ai/GUI.js"></script>
+  <script src="/heroes/legends/fairy/GUI.js"></script>
+  <script src="/heroes/legends/medusa/GUI.js"></script>
+  <script src="/heroes/legends/phoenix/GUI.js"></script>
+  <script src="/heroes/legends/big-foot/GUI.js"></script>
+  <script src="/heroes/legends/dinosaur/GUI.js"></script>
+  <script src="/heroes/legends/dragon/GUI.js"></script>
+  <script src="/heroes/legends/ghost/GUI.js"></script>
+  <script src="/heroes/legends/centaur/GUI.js"></script>
+  <script src="/heroes/legends/merfolk/GUI.js"></script>
+  <script src="/heroes/humans/miner/GUI.js"></script>
+  <script src="/heroes/humans/alchemist/GUI.js"></script>
+  <script src="/heroes/humans/wizard/GUI.js"></script>
+  <script src="/heroes/humans/hunter/GUI.js"></script>
+  <script src="/heroes/humans/vampire/GUI.js"></script>
+  <script src="/heroes/humans/werewolf/GUI.js"></script>
+  <script src="/heroes/humans/fisherman/GUI.js"></script>
+  <script src="/heroes/humans/ninja/GUI.js"></script>
+  <script src="/heroes/humans/samurai/GUI.js"></script>
+  <script src="/heroes/humans/spartan/GUI.js"></script>
+  <script src="/heroes/creatures/chicken/GUI.js"></script>
+  <script src="/heroes/creatures/shark/GUI.js"></script>
+  <script src="/heroes/creatures/dog/GUI.js"></script>
+  <script src="/heroes/creatures/falcon/GUI.js"></script>
+  <script src="/heroes/creatures/frog/GUI.js"></script>
+  <script src="/heroes/creatures/turtle/GUI.js"></script>
+  <script src="/heroes/creatures/lobster/GUI.js"></script>
+  <script src="/heroes/creatures/bear/GUI.js"></script>
+  <script src="/heroes/creatures/tiger/GUI.js"></script>
+  <script src="/heroes/creatures/raccoon/GUI.js"></script>
+  <script src="/heroes/creatures/boar/GUI.js"></script>
+  <script src="/heroes/creatures/lizard/GUI.js"></script>
+  <script src="/heroes/creatures/mole/GUI.js"></script>
+  <script src="/heroes/creatures/duck/GUI.js"></script>
+  <script src="/heroes/creatures/rat/GUI.js"></script>
+  <script src="/heroes/creatures/honey-badger/GUI.js"></script>
+  <script src="/heroes/uniques/worm/GUI.js"></script>
+  <script src="/heroes/uniques/mosquito/GUI.js"></script>
+  <script src="/heroes/uniques/tick/GUI.js"></script>
+  <script src="/heroes/uniques/leech/GUI.js"></script>
+  <script src="/heroes/uniques/pilot/GUI.js"></script>
+  <script src="/heroes/uniques/germ/GUI.js"></script>
+  <script src="/heroes/uniques/livingtree/GUI.js"></script>
+  <script src="/heroes/uniques/ai/GUI.js"></script>
   <script>
+    // Password check
+    function checkPassword() {
+      const input = document.getElementById('password-input').value;
+      const correctPassword = '^4.BF.*%U>KND,n32@#$kd.#@!';
+      const errorDiv = document.getElementById('password-error');
+      if (input === correctPassword) {
+        localStorage.setItem('oddHeroesAccess', 'granted');
+        document.getElementById('password-modal').classList.add('hidden');
+        document.getElementById('main-content').classList.remove('hidden');
+      } else {
+        errorDiv.textContent = 'Invalid password. Try again.';
+      }
+    }
+
+    // Check if password is cached
+    if (localStorage.getItem('oddHeroesAccess') === 'granted') {
+      document.getElementById('password-modal').classList.add('hidden');
+      document.getElementById('main-content').classList.remove('hidden');
+    }
+
+    // Allow Enter key to submit password
+    document.getElementById('password-input').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        checkPassword();
+      }
+    });
+
     // Hero-list
     const heroNames = [
       'AI', 'BigFoot', 'Centaur', 'Dinosaur', 'Dragon', 'Fairy', 'Ghost', 'Medusa', 'Merfolk', 'Phoenix',
@@ -464,7 +559,7 @@
               // Update selected heroes display with <br> tags
               selectedHeroes = categories.map(c => c.selected).filter(h => h);
               selectedHeroesDiv.innerHTML = selectedHeroes.length
-                ? `Selected:<br>${selectedHeroes.map(h => `${h.name}${h.ability ? ': ' + h.ability : ''}`).join('<br>')}`
+                ? selectedHeroes.map(h => `${h.name}${h.ability ? ': ' + h.ability : ''}`).join('<br>')
                 : '';
               // Enable start button if one hero is selected from each category with an ability
               startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
@@ -473,7 +568,7 @@
           });
           // Update selected heroes display with <br> tags
           selectedHeroesDiv.innerHTML = selectedHeroes.length
-            ? `Selected:<br>${selectedHeroes.map(h => `${h.name}${h.ability ? ': ' + h.ability : ''}`).join('<br>')}`
+            ? selectedHeroes.map(h => `${h.name}${h.ability ? ': ' + h.ability : ''}`).join('<br>')
             : '';
           // Enable start button if one hero is selected from each category with an ability
           startButton.style.display = selectedHeroes.length && !selectedHeroes.some(h => !h.ability) ? 'inline-block' : 'none';
