@@ -4,8 +4,8 @@ const LizardData = {
   category: 'Creatures',
   id: 'creatures',
   abilities: [
-    { choice: 'Extra HP', label: 'Extra HP', description: 'Your HP is now 3 and able to use move 2 twice now.' },
-    { choice: 'Enhanced Tongue Lash', label: 'Enhanced Tongue Lash', description: 'Tongue Lash deals 20 HP now.' }
+    { choice: '+1 HP', label: '+1 HP', description: 'Your HP is now 3 and able to use move 2 twice now.' },
+    { choice: 'Enhanced Tongue Lash', label: 'Enhanced Tongue Lash', description: 'Tongue Lash deals 20 HP.' }
   ],
   hp: 2,
   speed: 35,
@@ -16,11 +16,11 @@ const LizardData = {
   },
   moveset: [
     {
-      label: 'Move 1: Tongue Lash 10 HP.',
+      label: 'Move 1: Tongue Lash deals 10 HP.',
       description: 'A placeholder move for Lizard in the battle arena.'
     },
     {
-      label: 'Move 2: Hyper Speed reduce 1 HP and able to move to ANY path on map.',
+      label: 'Move 2: Hyper Speed costs 1 HP and you path to ANY tile on map.',
       description: 'Another placeholder move for Lizard in the battle arena.'
     }
   ]
