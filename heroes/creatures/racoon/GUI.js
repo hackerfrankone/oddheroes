@@ -4,14 +4,14 @@ const RaccoonData = {
   category: 'Creatures',
   id: 'creatures',
   abilities: [
-    { choice: 'Night Vision', label: 'Night Vision', description: 'Can see entire map and heroes that are not invisible..' },
+    { choice: 'Night Vision', label: 'Night Vision', description: 'Can see entire map and heroes that are not invisible.' },
     { choice: 'Pockets', label: 'pockets', description: 'Can carry two items at once.' }
   ],
   hp: 25,
   speed: 20,
   tileMove: 3,
   passive: {
-    label: 'Picket Pocket a humans item and gain access to its benefits. Usable item will have your hero icon or an X and you can drop.',
+    label: 'Picket Pocket a humans item and gain access to its benefits. Usable item will have your hero icon or a X which are NOT usable.',
     description: ''
   },
   moveset: [
