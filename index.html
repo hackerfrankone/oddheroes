@@ -482,7 +482,7 @@
       'Bear', 'Chicken', 'Falcon', 'Frog', 'HoneyBadger', 'Lizard', 'Mole', 'Raccoon', 'Rat',
       'Germ', 'Leech', 'LivingTree', 'Mosquito Swarm', 'Tick', 'Worm', 'Pilot'
     ];
-    // pull from directory hero GUIs
+    // Pull from directory hero GUIs
     const heroData = [];
     const categoriesMap = {};
     heroNames.forEach(heroName => {
@@ -646,10 +646,15 @@
       // Hero selection
       categories.forEach(cat => {
         cat.list.addEventListener('click', e => {
+          console.log('Hero tile clicked:', e.target); // Debug click events
           const tile = e.target.closest('.hero-tile');
-          if (!tile) return;
+          if (!tile) {
+            console.log('No hero-tile found for click');
+            return;
+          }
           const heroName = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
           const heroIcon = tile.querySelector('.hero-icon').textContent;
+          console.log(`Selected hero: ${heroName}`); // Debug selected hero
           // If a hero is already selected in this category, deselect it
           if (cat.selected) {
             const selectedTile = cat.list.querySelector('.selected');
@@ -660,12 +665,13 @@
             prevModal.style.display = 'none';
           }
           // Select new hero
-          tile.className.add('selected');
+          tile.classList.add('selected'); // Fixed from className.add
           cat.selected = { name: heroName, icon: heroIcon, ability: null };
-          cat.display.textContent = `${heroName}`; // Show only hero name in category title
+          cat.display.textContent = `${heroName}`;
           // Find hero data
           const heroCat = heroData.find(c => c.id === cat.id);
           const hero = heroCat.heroes.find(h => h.name === heroName);
+          console.log('Hero data:', hero); // Debug hero data
           // Show modal
           const modal = document.getElementById(`${heroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
           modal.style.display = 'flex';
@@ -675,7 +681,7 @@
               const choice = this.getAttribute('data-choice');
               cat.selected.ability = choice;
               const ability = hero.abilities.find(a => a.choice === choice);
-              cat.display.textContent = `${heroName}: ${ability.label}`; // Updated format for category title
+              cat.display.textContent = `${heroName}: ${ability.label}`;
               modal.style.display = 'none';
               cat.list.classList.remove('expanded');
               cat.title.classList.remove('expanded');
