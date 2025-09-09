@@ -4,15 +4,15 @@ const RatData = {
   category: 'Creatures',
   id: 'creatures',
   abilities: [
-    { choice: 'Scavenger', label: 'Scavenger', description: 'Use items on ground or find ways to enter chests or houses or any holes.' },
-    { choice: 'Escape', label: 'Escape', description: 'If this hero takes physical HP, this hero will gain +5 move tile on hero turn.' }
+    { choice: 'Scavenger', label: 'Scavenger, Back Pack', description: 'Carries one item in back pack. Find holes to enter objects.' },
+    { choice: 'Escape', label: 'Search & Rescue, Back Pack', description: 'Inside the back pack holds the rarest cheesy nugget and will heal any hero to full HP. 1 use per match.' }
   ],
   hp: 15,
   speed: 25,
-  tileMove: 3,
+  tileMove: 5,
   passive: {
-    label: 'Detection',
-    description: 'This hero can detect anything underground. This hero will auto-eat enemy hero worm and gain new max heatlh 40 HP.'
+    label: 'Smell',
+    description: 'This hero can detect underground, airborn and germs 7 tiles away.
   },
   moveset: [
     {
