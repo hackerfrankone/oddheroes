@@ -77,7 +77,7 @@
       box-sizing: border-box;
     }
     .grid-container.expanded {
-      max-height: 1000px; /* Increased to ensure all tiles are visible */
+      max-height: 1000px;
       opacity: 1;
       visibility: visible;
     }
@@ -406,6 +406,7 @@
   <script src="/heroes/legends/fairy/GUI.js"></script>
   <script src="/heroes/legends/medusa/GUI.js"></script>
   <script src="/heroes/legends/livingtree/GUI.js"></script>
+  <script src="/heroes/legends/phoenix/GUI.js"></script>
   <script src="/heroes/legends/big-foot/GUI.js"></script>
   <script src="/heroes/legends/dinosaur/GUI.js"></script>
   <script src="/heroes/legends/dragon/GUI.js"></script>
@@ -476,10 +477,10 @@
     });
     // Hero-list
     const heroNames = [
-      'AI', 'BigFoot', 'Centaur', 'Dinosaur', 'Dragon', 'Fairy', 'Ghost', 'Medusa', 'Merfolk', 'Phoenix',
+      'BigFoot', 'Centaur', 'Dinosaur', 'Dragon', 'Fairy', 'Ghost', 'LivingTree', 'Medusa', 'Merfolk', 'Phoenix',
       'Alchemist', 'Fisherman', 'Hunter', 'Miner', 'Ninja', 'Samurai', 'Spartan', 'Vampire', 'Warrior', 'Wizard',
       'Bear', 'Chicken', 'Falcon', 'Frog', 'HoneyBadger', 'Lizard', 'Mole', 'Raccoon', 'Rat',
-      'Germ', 'Leech', 'LivingTree', 'Mosquito Swarm', 'Tick', 'NightCrawler', 'Pilot'
+      'AI', 'Germ', 'Leech', 'Mosquito Swarm', 'NightCrawler', 'Pilot', 'Tick', 'Worm'
     ];
     // Pull from directory hero GUIs
     const heroData = [];
@@ -511,11 +512,14 @@
       });
     });
     // Log loaded heroes for debugging
+    console.log('Legends heroes:', heroData.find(cat => cat.category === 'Legends')?.heroes.map(h => h.name) || 'No Legends loaded');
     console.log('Creatures heroes:', heroData.find(cat => cat.category === 'Creatures')?.heroes.map(h => h.name) || 'No Creatures loaded');
+    console.log('Uniques heroes:', heroData.find(cat => cat.category === 'Uniques')?.heroes.map(h => h.name) || 'No Uniques loaded');
     console.log('Loaded heroes:', heroData.map(cat => ({
       category: cat.category,
       heroes: cat.heroes.map(h => h.name)
     })));
+    console.log('LivingTree data:', window.LivingTreeData);
     // Sort in order
     heroData.forEach(category => {
       category.heroes.sort((a, b) => a.name.localeCompare(b.name));
@@ -645,7 +649,7 @@
       // Hero selection
       categories.forEach(cat => {
         cat.list.addEventListener('click', e => {
-          console.log('Hero tile clicked:', e.target); // Debug click events
+          console.log('Hero tile clicked:', e.target);
           const tile = e.target.closest('.hero-tile');
           if (!tile) {
             console.log('No hero-tile found for click');
@@ -653,25 +657,20 @@
           }
           const heroName = tile.querySelector('.hero-icon').nextSibling.textContent.trim();
           const heroIcon = tile.querySelector('.hero-icon').textContent;
-          console.log(`Selected hero: ${heroName}`); // Debug selected hero
-          // If a hero is already selected in this category, deselect it
+          console.log(`Selected hero: ${heroName}`);
           if (cat.selected) {
             const selectedTile = cat.list.querySelector('.selected');
             if (selectedTile) selectedTile.classList.remove('selected');
-            // Hide previous modal
             const prevHeroName = cat.selected.name;
             const prevModal = document.getElementById(`${prevHeroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
             prevModal.style.display = 'none';
           }
-          // Select new hero
-          tile.classList.add('selected'); // Fixed from className.add
+          tile.classList.add('selected');
           cat.selected = { name: heroName, icon: heroIcon, ability: null };
           cat.display.textContent = `${heroName}`;
-          // Find hero data
           const heroCat = heroData.find(c => c.id === cat.id);
           const hero = heroCat.heroes.find(h => h.name === heroName);
-          console.log('Hero data:', hero); // Debug hero data
-          // Show modal
+          console.log('Hero data:', hero);
           const modal = document.getElementById(`${heroName.toLowerCase().replace(/\s+/g, '-')}-modal`);
           modal.style.display = 'flex';
           const options = modal.querySelectorAll('.option');
@@ -690,7 +689,6 @@
           });
         });
       });
-      // Start button - redirect with selected heroes and sessionId
       startButton.addEventListener('click', () => {
         if (selectedHeroes.length !== categories.length || selectedHeroes.some(h => !h.ability)) return;
         const heroesQuery = encodeURIComponent(JSON.stringify(selectedHeroes.map(h => ({ name: h.name, ability: h.ability }))));
