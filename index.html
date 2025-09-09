@@ -77,7 +77,7 @@
       box-sizing: border-box;
     }
     .grid-container.expanded {
-      max-height: 500px;
+      max-height: 1000px; /* Increased to ensure all tiles are visible */
       opacity: 1;
       visibility: visible;
     }
@@ -424,11 +424,10 @@
   <script src="/heroes/creatures/falcon/GUI.js"></script>
   <script src="/heroes/creatures/frog/GUI.js"></script>
   <script src="/heroes/creatures/frog/abilities.js"></script>
-  <script src="/heroes/creatures/turtle/GUI.js"></script>
+  <script src="/heroes/creatures/racoon/GUI.js"></script>
   <script src="/heroes/creatures/lobster/GUI.js"></script>
   <script src="/heroes/creatures/bear/GUI.js"></script>
   <script src="/heroes/creatures/tiger/GUI.js"></script>
-  <script src="/heroes/creatures/raccoon/GUI.js"></script>
   <script src="/heroes/creatures/lizard/GUI.js"></script>
   <script src="/heroes/creatures/mole/GUI.js"></script>
   <script src="/heroes/creatures/rat/GUI.js"></script>
@@ -465,20 +464,17 @@
         errorDiv.textContent = 'Invalid password. Try again.';
       }
     }
-
     // Check if password is cached
     if (localStorage.getItem('oddHeroesAccess') === 'granted') {
       document.getElementById('password-modal').classList.add('hidden');
       document.getElementById('main-content').classList.remove('hidden');
     }
-
     // Allow Enter key to submit password
     document.getElementById('password-input').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
         checkPassword();
       }
     });
-
     // Hero-list
     const heroNames = [
       'AI', 'BigFoot', 'Centaur', 'Dinosaur', 'Dragon', 'Fairy', 'Ghost', 'Medusa', 'Merfolk', 'Phoenix',
@@ -516,6 +512,7 @@
       });
     });
     // Log loaded heroes for debugging
+    console.log('Creatures heroes:', heroData.find(cat => cat.category === 'Creatures')?.heroes.map(h => h.name) || 'No Creatures loaded');
     console.log('Loaded heroes:', heroData.map(cat => ({
       category: cat.category,
       heroes: cat.heroes.map(h => h.name)
@@ -663,7 +660,7 @@
             prevModal.style.display = 'none';
           }
           // Select new hero
-          tile.classList.add('selected');
+          tile.className.add('selected');
           cat.selected = { name: heroName, icon: heroIcon, ability: null };
           cat.display.textContent = `${heroName}`; // Show only hero name in category title
           // Find hero data
