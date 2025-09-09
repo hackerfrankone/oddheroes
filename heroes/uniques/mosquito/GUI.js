@@ -4,23 +4,23 @@ const MosquitoSwarmData = {
   category: 'Uniques', 
   id: 'uniques',
   abilities: [
-    { choice: 'place-holder-1', label: 'place-holder', description: 'place-holder' },
-    { choice: 'place-holder-2', label: 'place-holder', description: 'place-holder' }
+    { choice: 'Female', label: 'Female', description: 'Suck and transmit a deadly disease called West Nile Virus and deals -10 HP every turn. Cannot be cured. 5 turn CD. ' },
+    { choice: 'Male', label: 'Male', description: 'This ability has a swarm of 5 mosquitos. Each hit this hero takes will remove a mosquito. When the last mosquito is remove. This hero dies' }
   ],
-  hp: 14,
-  speed: 18,
-  tileMove: 3,
+  hp: 1,
+  speed: 15,
+  tileMove: 2,
   passive: {
-    label: 'N/A',
-    description: ''
+    label: 'Army of Mosquitos',
+    description: '.'
   },
   moveset: [
     {
-      label: 'Move 1: Placeholder',
+      label: 'Move 1: proboscis deals 5 HP.',
       description: 'A placeholder move for Mosquito Swarm in the battle arena.'
     },
     {
-      label: 'Move 2: Placeholder',
+      label: 'Move 2: If last turn you lost a mosquito or used proboscis, this hero can use proboscis and fly away moving up to 7 tiles.',
       description: 'Another placeholder move for Mosquito Swarm in the battle arena.'
     }
   ]
