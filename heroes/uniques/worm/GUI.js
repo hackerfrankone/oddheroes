@@ -1,4 +1,4 @@
-const NightCrawler = {
+const NightCrawlerData = {
   name: 'NightCrawler',
   icon: '🪱',
   category: 'Uniques',
@@ -7,7 +7,7 @@ const NightCrawler = {
     { choice: 'place-holder-1', label: 'place-holder', description: 'place-holder' },
     { choice: 'place-holder-2', label: 'place-holder', description: 'place-holder' }
   ],
-  hp: 1,
+  hp: 18,
   speed: 14,
   tileMove: 2,
   passive: {
@@ -17,12 +17,12 @@ const NightCrawler = {
   moveset: [
     {
       label: 'Move 1: Placeholder',
-      description: 'A placeholder move for Worm in the battle arena.'
+      description: 'A placeholder move for NightCrawler in the battle arena.'
     },
     {
       label: 'Move 2: Placeholder',
-      description: 'Another placeholder move for Worm in the battle arena.'
+      description: 'Another placeholder move for NightCrawler in the battle arena.'
     }
   ]
 };
-window.NightCrawler = NightCrawler;
+window.NightCrawlerData = NightCrawlerData;
