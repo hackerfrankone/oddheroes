@@ -4,7 +4,7 @@ const NightCrawlerData = {
   category: 'Uniques',
   id: 'uniques',
   abilities: [
-    { choice: 'Enhanced Consume', label: 'Enhanced Consume', description: 'Consuming dead heroes grant an additional +10' },
+    { choice: 'Enhanced Consume', label: 'Enhanced Consume', description: 'Consuming dead heroes grant an additional +10 HP' },
     { choice: 'Enhanced Burrowing', label: 'Enhanced Burrowing', description: 'Increase tile +3' }
   ],
   hp: 1,
