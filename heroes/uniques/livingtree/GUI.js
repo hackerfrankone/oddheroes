@@ -7,7 +7,7 @@ const LivingTreeData = {
     { choice: 'Tree Walker', label: 'Tree Walker', description: 'Able to move and provide camouflage looks like an in-game tree.' },
     { choice: 'Tree Elder', label: 'Tree Elder', description: 'Spawn a tumble weed with 1 HP, deals 1 HP and moves 5 tiles. 4 turn CD. Spawn a flytrap near LivingTree with 1 HP, deals 3 HP, cant move. 4 turn CD.' }
   ],
-  hp: 10,
+  hp: 90,
   speed: 0,
   tileMove: 1,
   passive: {
