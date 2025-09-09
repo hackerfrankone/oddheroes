@@ -5,7 +5,7 @@ const AIData = {
   id: 'uniques',
   abilities: [
     { choice: 'Unethical Hacking', label: 'Unethical Hacking', description: 'Hack into any device that contains wires, chips, hardwawre,software. Gain control of that target for 2 turns. This hero cannot move for 2 turns. No tile range. 1 time use per match.' },
-    { choice: 'Calculate Hero Data', label: 'Process data calculations', description: 'Decipher every enemy heros picked ability & item. ONLY when you have vision on enemy hero.' }
+    { choice: 'Unethical Hacking', label: 'Process data calculations', description: 'Identify enemy heros item and ability within field of vision. Ends the turn.' }
   ],
   hp: 11,
   speed: 20,
