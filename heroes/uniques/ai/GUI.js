@@ -20,7 +20,7 @@ const AIData = {
       description: 'A placeholder move for AI in the battle arena.'
     },
     {
-      label: 'Move 2: Robotic Kick Deals 10 HP',
+      label: 'Move 2: Robotic Kick Deals 10 HP.',
       description: 'Another placeholder move for AI in the battle arena.'
     }
   ]
