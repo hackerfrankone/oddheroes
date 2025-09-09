@@ -4,13 +4,25 @@ const AlchemistData = {
   category: 'Humans',
   id: 'humans',
   abilities: [
-    { choice: 'Transmute', label: 'Transmute', description: 'place-holder' },
-    { choice: 'Elixir', label: 'Elixir', description: 'place-holder' },
-    { choice: 'Explosion', label: 'Explosion', description: 'place-holder' }
+    { choice: 'place-holder-1', label: 'place-holder', description: 'place-holder' },
+    { choice: 'place-holder-2', label: 'place-holder', description: 'place-holder' }
   ],
+  hp: 25,
+  speed: 15,
+  tileMove: 3,
   passive: {
-    label: 'Chemical Mastery',
-    description: 'place-holder'
-  }
+    label: 'N/A',
+    description: ''
+  },
+  moveset: [
+    {
+      label: 'Move 1: Placeholder',
+      description: 'A placeholder move for Alchemist in the battle arena.'
+    },
+    {
+      label: 'Move 2: Placeholder',
+      description: 'Another placeholder move for Alchemist in the battle arena.'
+    }
+  ]
 };
 window.AlchemistData = AlchemistData;
