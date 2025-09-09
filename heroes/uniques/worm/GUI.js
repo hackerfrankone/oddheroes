@@ -1,4 +1,4 @@
-const WormData = {
+const NightCrawler = {
   name: 'NightCrawler',
   icon: '🪱',
   category: 'Uniques',
@@ -25,4 +25,4 @@ const WormData = {
     }
   ]
 };
-window.WormData = WormData;
+window.NightCrawler = NightCrawler;
