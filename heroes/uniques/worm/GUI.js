@@ -1,5 +1,5 @@
 const WormData = {
-  name: 'Worm',
+  name: 'NightCrawler',
   icon: '🪱',
   category: 'Uniques',
   id: 'uniques',
@@ -7,7 +7,7 @@ const WormData = {
     { choice: 'place-holder-1', label: 'place-holder', description: 'place-holder' },
     { choice: 'place-holder-2', label: 'place-holder', description: 'place-holder' }
   ],
-  hp: 18,
+  hp: 1,
   speed: 14,
   tileMove: 2,
   passive: {
