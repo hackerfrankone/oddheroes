@@ -16,7 +16,7 @@ const AlchemistData = {
   },
   moveset: [
     {
-      label: 'Move 1: Craft common, uncommon, rare or very rare potions. Common potion is a range bomb potion that deals AOE 10 HP including underground. Uncommon potion heal 20 HP. Rare potion increases friendly hero new max HP by 10 HP and move tile by 1 and increases attack by 5 HP.',
+      label: 'Move 1: Craft common, uncommon, rare or very rare potions. Common potion is a range bomb potion that deals AOE 10 HP including underground. Uncommon potion heal 20 HP. Rare potion increases friendly hero new max HP by 10 HP and move tile by 1 and increases attack by 5 HP. Cannot stack.',
       description: 'A placeholder move for Alchemist in the battle arena.'
     },
     {
