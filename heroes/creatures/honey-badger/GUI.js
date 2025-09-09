@@ -12,7 +12,7 @@ const HoneyBadgerData = {
   tileMove: 3,
   passive: {
     label: 'Fight Back',
-    description: 'If this hero is physically attacked, this hero will return 10 HP in return.'
+    description: 'If this hero is physically attacked, this hero will return 10% HP in return.'
   },
   moveset: [
     {
