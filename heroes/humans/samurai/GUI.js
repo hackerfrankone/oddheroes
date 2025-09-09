@@ -12,7 +12,7 @@ const SamuraiData = {
   tileMove: 4,
   passive: {
     label: 'Honor',
-    description: 'If this hero lands the killing blow of a enemy hero using Honor. He permanently gains +10 HP, +10 to Honor & Double Strike.'
+    description: 'If this hero lands the killing blow of a enemy hero using Honor. He permanently gains +10 HP, +10 to Honor, Double Strike or Triple Strike.'
   },
   moveset: [
     {
