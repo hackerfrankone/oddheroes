@@ -4,23 +4,23 @@ const NinjaData = {
   category: 'Humans',
   id: 'humans',
   abilities: [
-    { choice: 'place-holder-1', label: 'place-holder', description: 'place-holder' },
-    { choice: 'place-holder-2', label: 'place-holder', description: 'place-holder' }
+    { choice: 'Katana', label: 'Katana', description: 'This sword deals 25 HP.' },
+    { choice: 'Shurikens', label: 'Shuriken', description: 'Range is 5 tiles and deals 10 HP. You can choose to throw any amount at once. Dagger is your other weapon and deals 10 HP.' }
   ],
   hp: 55,
   speed: 90,
-  tileMove: 6,
+  tileMove: 4,
   passive: {
-    label: 'Shadow',
-    description: ''
+    label: 'Light Feet',
+    description: 'This hero moves twice in one turn.'
   },
   moveset: [
     {
-      label: 'Move 1: Placeholder',
+      label: 'Move 1: Climb any tall structure',
       description: 'A placeholder move for Ninja in the battle arena.'
     },
     {
-      label: 'Move 2: Placeholder',
+      label: 'Move 2: Grappling hook causes this hero to path to tree instantly. Can still move twice. If you target hero it deals 15 HP, you do not path to them.',
       description: 'Another placeholder move for Ninja in the battle arena.'
     }
   ]
