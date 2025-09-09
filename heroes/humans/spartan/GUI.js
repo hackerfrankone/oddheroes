@@ -4,23 +4,23 @@ const SpartanData = {
   category: 'Humans',
   id: 'humans',
   abilities: [
-    { choice: 'place-holder-1', label: 'place-holder', description: 'place-holder' },
-    { choice: 'place-holder-2', label: 'place-holder', description: 'place-holder' }
+    { choice: 'Offensive', label: 'Offensive', description: 'Throw Spartan spear to stun target enemy for 1 turn and deal 20 HP. 10 tile range. 5 turn CD.' },
+    { choice: 'Defensive', label: 'Defensive', description: 'Enhanced shield increases chance to dodge by 40%' }
   ],
-  hp: 30,
-  speed: 15,
-  tileMove: 2,
+  hp: 55,
+  speed: 55,
+  tileMove: 4,
   passive: {
-    label: 'Spartan Shield',
-    description: 'Blocks ALL ranged attacks. 20% to block melee attacks.'
+    label: 'Shield',
+    description: 'Spartan shield has a 20% to block all melee or ranged attacks.'
   },
   moveset: [
     {
-      label: 'Move 1: Placeholder',
+      label: 'Move 1: Short Sword deals 20 HP.',
       description: 'A placeholder move for Spartan in the battle arena.'
     },
     {
-      label: 'Move 2: Placeholder',
+      label: 'Move 2: Shield Bash deals 10 HP and target hero cant move for 1 turn. 3 turn CD.',
       description: 'Another placeholder move for Spartan in the battle arena.'
     }
   ]
