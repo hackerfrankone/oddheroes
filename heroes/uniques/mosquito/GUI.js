@@ -1,7 +1,7 @@
 const MosquitoSwarmData = {
   name: 'Mosquito Swarm',
   icon: '🦟',
-  category: 'Uniques',
+  category: 'Uniques', 
   id: 'uniques',
   abilities: [
     { choice: 'place-holder-1', label: 'place-holder', description: 'place-holder' },
