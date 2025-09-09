@@ -12,7 +12,7 @@ const RatData = {
   tileMove: 5,
   passive: {
     label: 'Smell',
-    description: 'This hero can detect underground, airborn and germs 7 tiles away.
+    description: 'This hero can detect underground, airborn and germs 7 tiles away.'
   },
   moveset: [
     {
