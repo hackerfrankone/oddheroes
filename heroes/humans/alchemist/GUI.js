@@ -4,7 +4,7 @@ const AlchemistData = {
   category: 'Humans',
   id: 'humans',
   abilities: [
-    { choice: 'Herbalist & Pockets', label: 'Herbalist', description: 'Increases chance to find herbs but 10%. Can carry an additional potion.' },
+    { choice: 'Herbalist & Pockets', label: 'Herbalist', description: 'Increases chance to find herbs by 10%. Can carry an additional potion.' },
     { choice: 'Very Rare Potion', label: 'Very Rare Potion', description: 'This potion takes 2 rare herbs. Grants immunity from everything for 1 turn. Can give friendly hero this very rare potion but instatnly consumes it unless hero has pockets.' }
   ],
   hp: 55,
