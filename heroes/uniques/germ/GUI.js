@@ -11,8 +11,8 @@ const GermData = {
   speed: 1,
   tileMove: 1,
   passive: {
-    label: '',
-    description: ''
+    label: 'AirBorne',
+    description: 'AirBorn cannot be seen, detected, removed. ONLY the hero rat can detect this.'
   },
   moveset: [
     {
