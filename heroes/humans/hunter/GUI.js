@@ -16,7 +16,7 @@ const HunterData = {
   },
   moveset: [
     {
-      label: 'Move 1: Shoot Bow or CrossBow. Bow deals 20 HP with 4 tile range. Cross Bow deals 30 HP with 3 tile range.',
+      label: 'Move 1: Shoot Bow or CrossBow. Bow deals 20 HP with 4 tile range, uses 1 arrow. CrossBow deals 30 HP with 3 tile range, uses one Bolt.',
       description: 'A placeholder move for Hunter in the battle arena.'
     },
     {
