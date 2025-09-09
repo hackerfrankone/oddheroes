@@ -12,7 +12,7 @@ const MinerData = {
   tileMove: 4,
   passive: {
     label: 'Dig',
-    description: 'Underground heroes will take half of their HP if miner uses pick axe on correct underground tile. Shatters underground heros passive.'
+    description: 'Underground heroes will take half of their HP if miner uses pick axe on correct underground tile. Shatters underground heros passive. Shattered passives will recover in 2 turns.'
   },
   moveset: [
     {
