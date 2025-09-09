@@ -12,7 +12,7 @@ const LivingTreeData = {
   tileMove: 1,
   passive: {
     label: 'Fruit Set',
-    description: 'Every 5th turn this tree grows a random fruit. 60% Apple, 35% bananas and 5% Peach. Apple heals 20 HP, bannanas heal 30 HP and reduce non-curable poisons and diseases by half rounded up. Peaches heal 40 HP and granting a permanent +10 HP.'
+    description: 'Every 5th turn this tree grows a random fruit. 60% Apple, 35% bananas and 5% Peach. Apple heals 20 HP, bannanas heal 30 HP and reduce non-curable poisons and diseases by half rounded up. Peaches heal 40 HP and granting a permanent +10 HP. This hero is immune to poison & diseases.'
   },
   moveset: [
     {
