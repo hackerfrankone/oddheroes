@@ -12,7 +12,7 @@ const HunterData = {
   tileMove: 4,
   passive: {
     label: 'Quiver',
-    description: 'holds 5 arrows or 15 bolts.'
+    description: 'Quiver holds 5 arrows or 15 bolts.'
   },
   moveset: [
     {
@@ -20,7 +20,7 @@ const HunterData = {
       description: 'A placeholder move for Hunter in the battle arena.'
     },
     {
-      label: 'Move 2: Craft home made Arrows or Bolts. Craft 5 arrows at once or 5 bolts at once. These are half HP from original arrows and bolts.',
+      label: 'Move 2: Craft home made Arrows or Bolts. Craft 5 arrows at once or 15 bolts at once. These are half HP from original arrows and bolts. Cannot use this move untill current quiver is empty.',
       description: 'Another placeholder move for Hunter in the battle arena.'
     }
   ]
