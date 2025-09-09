@@ -11,7 +11,7 @@ const RaccoonData = {
   speed: 20,
   tileMove: 3,
   passive: {
-    label: 'Picket Pocket a humans item and gain access to its benefits. Usable item will have your hero icon or a X which are NOT usable.',
+    label: 'Picket Pocket a humans item and gain access to its benefits. Usable item will have your hero icon or a X which are NOT usable. This hero can also open chests.',
     description: ''
   },
   moveset: [
