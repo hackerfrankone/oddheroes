@@ -4,7 +4,7 @@ const HunterData = {
   category: 'Humans',
   id: 'humans',
   abilities: [
-    { choice: 'Bow & Arrows', label: 'Bow & Arrows', description: 'This has 5 tile rage and deals 20 HP. },
+    { choice: 'Bow & Arrows', label: 'Bow & Arrows', description: 'This has 5 tile rage and deals 20 HP.' },
     { choice: 'Crossbow & Bolts', label: 'Crossbow & Bolts', description: 'Shoot 5 bolts in one turn to deal 50 HP. Reloading bolts: 4 turn CD.' }
   ],
   hp: 55,
