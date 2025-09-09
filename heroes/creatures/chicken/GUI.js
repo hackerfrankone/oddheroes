@@ -5,7 +5,7 @@ const ChickenData = {
   id: 'creatures',
   abilities: [
     { choice: 'Chicken', label: 'Chicken', description: 'Choose friendly hero to eat this incredible healthy tasty chicken to recover +40 HP. This hero dies. Must be within tiles.' },
-    { choice: 'EggDrop', label: 'Egg Drop', description: 'Egg drop onto a tile, Any hero may eat egg to recover 10 HP. 1 turn CD.' }
+    { choice: 'EggDrop', label: 'Egg Drop', description: 'Egg drop onto a tile, Any hero may eat egg to recover 10 HP. 1 turn CD. 2 Turns Egg is destroyed.' }
   ],
   hp: 25,
   speed: 15,
