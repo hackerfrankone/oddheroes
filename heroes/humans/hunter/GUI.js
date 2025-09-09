@@ -16,7 +16,7 @@ const HunterData = {
   },
   moveset: [
     {
-      label: 'Move 1: Shoot Bow or CrossBow HP depends on ability picked.',
+      label: 'Move 1: Shoot Bow or CrossBow HP depends on ability picked. You can shoot 5 different targets with crossbow at once within tiles and each bolt deals 10HP.',
       description: 'A placeholder move for Hunter in the battle arena.'
     },
     {
