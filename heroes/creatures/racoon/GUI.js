@@ -20,7 +20,7 @@ const RaccoonData = {
       description: 'A placeholder move for Raccoon in the battle arena.'
     },
     {
-      label: 'Move 2: Climb tall structurs nearby and recover 5 HP every turn. You cannot be physically touched but range can target you',
+      label: 'Move 2: Climb tall structure that is 8 tiles away and recover 5 HP every turn. You cannot be physically touched but range can target you but 40% to dodge ranged attacks.',
       description: 'Another placeholder move for Raccoon in the battle arena.'
     }
   ]
