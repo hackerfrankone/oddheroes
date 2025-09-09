@@ -4,7 +4,7 @@ const RaccoonData = {
   category: 'Creatures',
   id: 'creatures',
   abilities: [
-    { choice: 'Night Vision', label: 'Night Vision', description: 'Can see entire map and heroes that are not invisible.' },
+    { choice: 'Night Vision', label: 'Night Vision', description: 'Can see entire map and heroes that are not invisible. ONLY at night.' },
     { choice: 'Pockets', label: 'pockets', description: 'Can carry two items at once.' }
   ],
   hp: 25,
