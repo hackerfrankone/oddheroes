@@ -4,14 +4,14 @@ const GermData = {
   category: 'Uniques',
   id: 'uniques',
   abilities: [
-    { choice: 'place-holder-1', label: 'place-holder', description: 'place-holder' },
-    { choice: 'place-holder-2', label: 'place-holder', description: 'place-holder' }
+    { choice: 'Small Pox', label: 'Small Pox', description: 'Activate sickness on attached hero causing -10 HP per turn.' },
+    { choice: 'symbiotic', label: 'symbiotic', description: 'Activate symbiotic on attached hero granting +15 HP permanently.' }
   ],
-  hp: 15,
-  speed: 16,
-  tileMove: 3,
+  hp: 1,
+  speed: 1,
+  tileMove: 1,
   passive: {
-    label: 'N/A',
+    label: '',
     description: ''
   },
   moveset: [
