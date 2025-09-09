@@ -4,23 +4,23 @@ const RaccoonData = {
   category: 'Creatures',
   id: 'creatures',
   abilities: [
-    { choice: 'Placeholder1', label: 'Placeholder 1', description: 'Placeholder ability for Raccoon.' },
-    { choice: 'Placeholder2', label: 'Placeholder 2', description: 'Another placeholder ability for Raccoon.' }
+    { choice: 'Night Vision', label: 'Night Vision', description: 'Can see entire map and heroes that are not invisible..' },
+    { choice: 'Pockets', label: 'pockets', description: 'Can carry two items at once.' }
   ],
   hp: 25,
   speed: 20,
   tileMove: 3,
   passive: {
-    label: 'N/A',
+    label: 'Picket Pocket a humans item and gain access to its benefits. Usable item will have your hero icon or an X and you can drop.',
     description: ''
   },
   moveset: [
     {
-      label: 'Move 1: Placeholder',
+      label: 'Move 1: Bite & Claw deals 10 HP.',
       description: 'A placeholder move for Raccoon in the battle arena.'
     },
     {
-      label: 'Move 2: Placeholder',
+      label: 'Move 2: Climb tall structurs nearby and recover 5 HP every turn. You cannot be physically touched but range can target you',
       description: 'Another placeholder move for Raccoon in the battle arena.'
     }
   ]
