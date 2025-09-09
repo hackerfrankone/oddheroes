@@ -1,6 +1,6 @@
 const MoleData = {
   name: 'Mole',
-  icon: '',
+  icon: '🐹',
   category: 'Creatures', 
   id: 'creatures',
   abilities: [
