@@ -11,8 +11,8 @@ const MosquitoSwarmData = {
   speed: 15,
   tileMove: 2,
   passive: {
-    label: 'Army of Mosquitos',
-    description: '.'
+    label: 'Blood Bag',
+    description: 'Using proboscis collects 1 bag of blood. use blood bag to increase move tile +8.'
   },
   moveset: [
     {
