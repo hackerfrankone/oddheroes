@@ -11,8 +11,8 @@ const FishermanData = {
   speed: 45,
   tileMove: 4,
   passive: {
-    label: 'End of every turn you fish. Common fish heals 10 HP, uncommon fish heals 30 HP, rare fish heals entire heros HP, worlds rarest fish heals entire heros HP and give +1 defense(cant stack, cant be debuffed)',
-    description: ''
+    label: 'Fish',
+    description: 'End of every turn you fish. Common fish heals 10 HP, uncommon fish heals 30 HP, rare fish heals entire heros HP, worlds rarest fish heals entire heros HP and give +1 defense(cant stack, cant be debuffed, can only catch once per game).'
   },
   moveset: [
     {
