@@ -5,7 +5,7 @@ const MosquitoSwarmData = {
   id: 'uniques',
   abilities: [
     { choice: 'Female', label: 'Female', description: 'Suck and transmit a deadly disease called West Nile Virus and deals -10 HP every turn. Cannot be cured. 5 turn CD. ' },
-    { choice: 'Male', label: 'Male', description: 'This ability has a swarm of 5 mosquitos. Each hit this hero takes will remove a mosquito. When the last mosquito is remove. This hero dies' }
+    { choice: 'Male', label: 'Male', description: 'This ability has a swarm of 5 mosquitos. Each hit this hero takes will remove a mosquito. When the last mosquito dies. This hero dies. 50% Chance to kill ONE mosquito.' }
   ],
   hp: 1,
   speed: 15,
