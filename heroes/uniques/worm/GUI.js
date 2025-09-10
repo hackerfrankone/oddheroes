@@ -16,11 +16,11 @@ const NightCrawlerData = {
   },
   moveset: [
     {
-      label: 'Move 1: Burrow any direction.',
+      label: 'Move 1: Unburrow for vision.',
       description: 'A placeholder move for NightCrawler in the battle arena.'
     },
     {
-      label: 'Move 2: Unburrow to grant vision and granting food.',
+      label: 'Move 2: ',
       description: 'Another placeholder move for NightCrawler in the battle arena.'
     }
   ]
