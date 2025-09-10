@@ -4,8 +4,8 @@ const SpartanData = {
   category: 'Humans',
   id: 'humans',
   abilities: [
-    { choice: 'Offensive', label: 'Offensive', description: 'Throw Spartan spear to stun target enemy for 1 turn and deal 20 HP. 10 tile range. 5 turn CD.' },
-    { choice: 'Defensive', label: 'Defensive', description: 'Enhanced shield increases chance to dodge by 40%' }
+    { choice: 'Offensive', label: 'Offensive', description: 'Throw Spartan spear to stun target enemy for 1 turn and deal 20 HP. 5 tile range. 2 turn CD. 80% accuracy.' },
+    { choice: 'Defensive', label: 'Defensive', description: 'Enhanced shield passive by + 20%.' }
   ],
   hp: 55,
   speed: 55,
@@ -16,7 +16,7 @@ const SpartanData = {
   },
   moveset: [
     {
-      label: 'Move 1: Short Sword deals 20 HP.',
+      label: 'Move 1: Short Sword Slash deals 20 HP.',
       description: 'A placeholder move for Spartan in the battle arena.'
     },
     {
