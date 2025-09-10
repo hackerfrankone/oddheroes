@@ -4,7 +4,7 @@ const SamuraiData = {
   category: 'Humans',
   id: 'humans',
   abilities: [
-    { choice: 'Honor', label: 'Honor', description: 'Honor has increased attack + 5 HP.' },
+    { choice: 'Honor', label: 'Honor', description: 'Honor has increased attack +5 HP.' },
     { choice: 'Bushido', label: 'Bushido', description: 'Replace Double Strike with Bushido. Bushido deals 75 HP but a 6 turn CD.' }
   ],
   hp: 55,
