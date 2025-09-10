@@ -4,8 +4,8 @@ const WizardData = {
   category: 'Humans',
   id: 'humans',
   abilities: [
-    { choice: 'Ultimate spell', label: 'Ultimate', description: 'Deal 35 HP AOE, including underground. Cannot be blocked. ALL inflicted heroes cannot heal for 4 turns. Uses 10 mana.' },
-    { choice: 'Illusions', label: 'place-holder', description: 'Create 2 Illusions of this hero. They cant cast spells. You can Switch positions with any illusions on map. Uses 10 mana. Switching positions uses 6 mana.' }
+    { choice: 'Ultimate spell', label: 'Ultimate', description: 'Deal 35 HP in a 4x4 AOE area, including underground. Cannot be blocked. ALL inflicted heroes cannot heal for 4 turns. Uses 10 mana.' },
+    { choice: 'Illusions', label: 'place-holder', description: 'Create 2 Illusions of this hero. They cant cast spells. You can Switch positions with any illusions on map. Uses 10 mana. Can only have up to 2 illusions on map.' }
   ],
   hp: 25,
   speed: 30,
