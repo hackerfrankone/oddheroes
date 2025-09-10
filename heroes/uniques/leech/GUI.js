@@ -11,8 +11,8 @@ const LeechData = {
   speed: 15,
   tileMove: 2,
   passive: {
-    label: 'N/A',
-    description: ''
+    label: 'Bood Sucker',
+    description: 'it will attach itself using its suckers, secrete a local anesthetic so you dont feel it attach, and then begin to suck bloodv'
   },
   moveset: [
     {
