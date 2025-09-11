@@ -5,7 +5,7 @@ const BigFootData = {
   id: 'legends',
   abilities: [
     { choice: 'Enraged', label: 'Enraged', description: 'Permanantly grants +10 HP, +1 tile move, 20 speed, rip deals additional 10 HP, Boulder deals additional 5 HP.' },
-    { choice: 'Apex Roar', label: 'Devestating Roar', description: 'AOE 5 tiles outward from this hero, all heroes enemy heroes takes 25 HP, stunned for 1 turn. 2nd turn each hero has reduced accuracy by 20%. 5 turn CD.' }
+    { choice: 'Apex Roar', label: 'Devestating Roar', description: 'AOE 5 tiles outward from this hero, all enemy heroes takes 25 HP, stunned for 1 turn. 2nd turn each hero has reduced accuracy by 20%. 5 turn CD.' }
   ],
   hp: 90,
   speed: 60,
