@@ -4,23 +4,23 @@ const FairyData = {
   category: 'Legends',
   id: 'legends',
   abilities: [
-    { choice: 'place-holder-1', label: 'place-holder', description: 'place-holder' },
-    { choice: 'place-holder-2', label: 'place-holder', description: 'place-holder' }
+    { choice: 'Heal', label: 'Heal', description: 'Heal friendly hero max health. If you target self, this heals 60 HP instead. 3 turn CD.' },
+    { choice: 'Steal', label: 'Steal', description: 'Steal enemy heros item. 5 tile range. 5 turn CD.' }
   ],
-  hp: 20,
-  speed: 22,
-  tileMove: 4,
+  hp: 120,
+  speed: 100,
+  tileMove: 6,
   passive: {
-    label: 'N/A',
-    description: ''
+    label: 'Disable',
+    description: 'When an ability or move is used to attack this hero. Enemy hero ability or move is disabled for 5 turns.'
   },
   moveset: [
     {
-      label: 'Move 1: Placeholder',
+      label: 'Move 1: Flash Needle deals 25 HP.',
       description: 'A placeholder move for Fairy in the battle arena.'
     },
     {
-      label: 'Move 2: Placeholder',
+      label: 'Move 2: Grants immunity to self for 2 turns, 8 turn CD.',
       description: 'Another placeholder move for Fairy in the battle arena.'
     }
   ]
