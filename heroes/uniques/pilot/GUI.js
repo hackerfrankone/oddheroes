@@ -4,24 +4,24 @@ const PilotData = {
   category: 'Uniques',
   id: 'uniques',
   abilities: [
-    { choice: 'place-holder-1', label: 'place-holder', description: 'place-holder' },
-    { choice: 'place-holder-2', label: 'place-holder', description: 'place-holder' },
-    { choice: 'place-holder-3', label: 'place-holder', description: 'place-holder' }
+    { choice: 'Light Tank', label: 'Light Tank', description: 'Carry two .50 Calibar penetration ammunition, this has unlimited map rage. Able to shoot into fog of war. each .50 bullet deals 20 HP.' },
+    { choice: 'Helicopter', label: 'Helicopter', description: 'Carry 2 missle that deals 30 HP, 2x2. 6 tile range.' },
+    { choice: 'Submarine', label: 'Submarine', description: 'Cary 1 atomic bomb that has unlimited map range. Deals 30 HP, AOE 4x4, including underground. takes 1 turn to reach destination.' }
   ],
-  hp: 23,
-  speed: 22,
+  hp: 45,
+  speed: 45,
   tileMove: 4,
   passive: {
-    label: 'N/A',
-    description: ''
+    label: 'Pilot Officer.',
+    description: 'Control 1 of 3 military equipment.'
   },
   moveset: [
     {
-      label: 'Move 1: Placeholder',
+      label: 'Move 1: Machine Gun deals 10 HP.',
       description: 'A placeholder move for Pilot in the battle arena.'
     },
     {
-      label: 'Move 2: Placeholder',
+      label: 'Move 2: Missles deals 20 HP. 2 turn CD.',
       description: 'Another placeholder move for Pilot in the battle arena.'
     }
   ]
