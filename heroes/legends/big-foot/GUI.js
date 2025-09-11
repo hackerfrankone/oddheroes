@@ -4,7 +4,7 @@ const BigFootData = {
   category: 'Legends',
   id: 'legends',
   abilities: [
-    { choice: 'Enraged', label: 'Enraged', description: 'Permanantly grants +10 HP, +1 tile move, 20 speed, rip deals additional 10 HP, Boulder deals additional 5 HP.' },
+    { choice: 'Enraged', label: 'Enraged', description: 'Permanantly grants +10 HP, +1 tile move, 20 speed, rip deals additional 10 HP, Boulder deals additional 5 HP and +2 tile range.' },
     { choice: 'Apex Roar', label: 'Devestating Roar', description: 'AOE 5 tiles outward from this hero, all enemy heroes takes 25 HP, stunned for 1 turn. 2nd turn each hero has reduced accuracy by 20%. 5 turn CD.' }
   ],
   hp: 90,
@@ -16,11 +16,11 @@ const BigFootData = {
   },
   moveset: [
     {
-      label: 'Move 1: Rip deals 25 HP. ',
+      label: 'Move 1: Rip deals 20 HP and additional 10 HP every turn for 3 turns. stacks x3.',
       description: 'A placeholder move for BigFoot in the battle arena.'
     },
     {
-      label: 'Move 2: Boulder Throw deals 20 HP. 4 tiles range 1 turn CD.',
+      label: 'Move 2: Boulder Throw deals 25 HP. 4 tiles range. 2 turn CD.',
       description: 'Another placeholder move for BigFoot in the battle arena.'
     }
   ]
