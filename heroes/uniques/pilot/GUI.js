@@ -5,7 +5,8 @@ const PilotData = {
   id: 'uniques',
   abilities: [
     { choice: 'place-holder-1', label: 'place-holder', description: 'place-holder' },
-    { choice: 'place-holder-2', label: 'place-holder', description: 'place-holder' }
+    { choice: 'place-holder-2', label: 'place-holder', description: 'place-holder' },
+    { choice: 'place-holder-3', label: 'place-holder', description: 'place-holder' }
   ],
   hp: 23,
   speed: 22,
