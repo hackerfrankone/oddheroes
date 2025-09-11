@@ -1,7 +1,7 @@
 const MosquitoSwarmData = {
   name: 'Mosquito Swarm',
   icon: '🦟',
-  category: 'Uniques', 
+  category: 'Uniques',  
   id: 'uniques',
   abilities: [
     { choice: 'Female', label: 'Female', description: 'Suck and transmit a deadly disease called West Nile Virus and deals -10 HP every turn. Cannot be cured. 5 turn CD. ' },
