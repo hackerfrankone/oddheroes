@@ -4,8 +4,8 @@ const LeechData = {
   category: 'Uniques', 
   id: 'uniques',
   abilities: [
-    { choice: 'Leeches', label: 'Leeches', description: 'This ability has a group of 3 Leeches. Each hit this hero takes will remove one leech. When the last leech dies. This hero dies. This also does an additional 5 HP if attached to enemy hero.' },
-    { choice: 'Power Stick', label: 'Power Stick', description: 'When heroes search/check self they now have 40% chance to remove a single leech.' }
+    { choice: 'Leeches', label: 'Leeches', description: 'This ability has an additional 3 Leeches. Each hit this hero takes will remove one leech. When the last leech dies. This hero dies. This also does an additional 5 HP if attached to enemy hero.' },
+    { choice: 'Power Stick', label: 'Power Stick', description: 'When heroes search/check self they now have 60% chance to remove a single leech.' }
   ],
   hp: 15,
   speed: 10,
