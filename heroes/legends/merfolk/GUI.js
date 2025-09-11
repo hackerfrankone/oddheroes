@@ -11,7 +11,7 @@ const MerfolkData = {
   speed: 55,
   tileMove: 10,
   passive: {
-    label: 'Deep Dweller',
+    label: 'Born Vitality',
     description: '+25 HP and passively regenerates 5 HP end of every turn'
   },
   moveset: [
